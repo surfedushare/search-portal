@@ -63,7 +63,7 @@ admin.site.index_title = 'Surf'
 public_api_patterns = [
     url(r'^search/filter-categories/', FilterCategoryView.as_view()),
     url(r'^search/autocomplete/', KeywordsAPIView.as_view()),
-    url(r'^search/', MaterialSearchAPIView.as_view()),
+    url(r'^search/', MaterialSearchAPIView.as_view(), kwargs={"limit_filter_categories": "1"}),
     url(r'^documents/stats', StatsView.as_view()),
     url(r'^suggestions/similarity/', SimilarityAPIView.as_view()),
     url(r'^suggestions/author/', AuthorSuggestionsAPIView.as_view()),
@@ -90,6 +90,7 @@ router.register(r'stats', StatsViewSet, basename="stats")
 apipatterns = public_api_patterns + router.urls + [
     path('openapi', schema_view, name='openapi-schema'),
     path('docs/', swagger_view, name='docs'),
+    url(r'^', include('waffle.urls')),
     url(r'^users/me/', UserDetailsAPIView.as_view()),
     url(r'^users/delete-account/', DeleteAccountAPIView.as_view()),
     url(r'^users/obtain-token/', ObtainTokenAPIView.as_view()),

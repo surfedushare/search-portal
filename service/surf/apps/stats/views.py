@@ -7,7 +7,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from surf.vendor.search.api import SearchApiClient
+from surf.apps.core.search import get_search_client
 from surf.apps.core.schema import SearchSchema
 
 
@@ -23,7 +23,7 @@ class StatsViewSet(ViewSet):
         """
         Returns the number of all available materials
         """
-        client = SearchApiClient()
+        client = get_search_client()
         return Response(dict(value=client.stats()))
 
 
@@ -52,7 +52,7 @@ class StatsView(generics.RetrieveAPIView):
     filter_backends = []
 
     def get_object(self):
-        client = SearchApiClient()
+        client = get_search_client()
         return {
             "documents": client.stats()
         }

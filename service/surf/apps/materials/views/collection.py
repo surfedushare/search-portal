@@ -11,7 +11,7 @@ from rest_framework.decorators import action
 from rest_framework.exceptions import AuthenticationFailed, MethodNotAllowed
 from rest_framework.viewsets import ModelViewSet
 
-from surf.vendor.search.api import SearchApiClient
+from surf.apps.core.search import get_search_client
 from surf.apps.communities.models import Team, Community
 from surf.apps.materials.models import (
     Collection,
@@ -112,7 +112,7 @@ class CollectionViewSet(ModelViewSet):
                       page_size=data["page_size"])
 
             if ids:
-                client = SearchApiClient()
+                client = get_search_client()
 
                 res = client.get_materials_by_id(ids, 1, len(ids))
                 records = res.get("records", [])

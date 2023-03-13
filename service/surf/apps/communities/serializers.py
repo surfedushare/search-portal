@@ -4,7 +4,7 @@ This module contains API view serializers for communities app.
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
-from surf.vendor.search.api import SearchApiClient
+from surf.apps.core.search import get_search_client
 from surf.apps.communities.models import Community, CommunityDetail
 from surf.apps.materials.models import Material
 from django.core.exceptions import ValidationError
@@ -55,7 +55,7 @@ class CommunitySerializer(serializers.ModelSerializer):
             )
             return materials_set.count()
         # Special case does use a "consortium publisher" as filter to indicate which materials belong to this community
-        client = SearchApiClient()
+        client = get_search_client()
         res = client.search(
             search_text='',
             filters=[{

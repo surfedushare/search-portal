@@ -8,7 +8,7 @@ django:
   protocol: "https"
   logging:
     level: "DEBUG"
-    is_open_search: true
+    is_opensearch: true
   send_admin_notifications: false
 
 postgres:
@@ -18,11 +18,10 @@ postgres:
 redis:
   host: "harvester.pzm5ru.0001.euc1.cache.amazonaws.com:6379"
 
-open_search:
-  username: null
-  host: "search-nppo-main-vqrc3btlbtx62gj3mrk4qxzctu.eu-central-1.es.amazonaws.com"
-  protocol: "https"
+opensearch:
+  host: "https://search-nppo-main-vqrc3btlbtx62gj3mrk4qxzctu.eu-central-1.es.amazonaws.com"
   verify_certs: true
+  alias_prefix: "publinova"
   enable_decompound_analyzers: false
   decompound_word_lists:
     dutch: "analyzers/F180542430"

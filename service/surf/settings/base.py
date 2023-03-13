@@ -17,13 +17,12 @@ import requests
 from sentry_sdk.integrations.django import DjangoIntegration
 from sentry_sdk.integrations.logging import ignore_logger
 
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(os.path.join(BASE_DIR, "..", "..", "environments"))
 from project import create_configuration_and_session, MODE, CONTEXT, PROJECT
 from utils.packaging import get_package_info
-from utils.logging import OpensearchHandler, create_opensearch_handler
+from search_client.opensearch.logging import create_opensearch_handler, OpensearchHandler
 
 # We're adding the environments directory outside of the project directory to the path
 # That way we can load the environments and re-use them in different contexts
@@ -39,7 +38,10 @@ SITE_ID = 1  # should be overridden by extending settings file
 SITE_SLUG = "edusources"
 DOMAIN = environment.django.domain
 PROTOCOL = environment.django.protocol
-BASE_URL = "{}://{}".format(PROTOCOL, DOMAIN)
+try:
+    BASE_URL = "{}://{}:{}".format(PROTOCOL, DOMAIN, environment.django.port)
+except Exception:
+    BASE_URL = "{}://{}".format(PROTOCOL, DOMAIN)
 try:
     response = requests.get("https://api.ipify.org/?format=json")
     IP = response.json()["ip"]
@@ -87,6 +89,7 @@ INSTALLED_APPS = [
     'social_django',
     'rest_framework',
     'django_filters',
+    'waffle',
 
     # SURF apps
     'surf',
@@ -130,6 +133,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'waffle.middleware.WaffleMiddleware',
 ]
 
 ROOT_URLCONF = 'surf.urls'
@@ -289,14 +293,10 @@ WEBPACK_LOADER = {
 
 # Search
 
-OPENSEARCH_HOST = environment.open_search.host
-OPENSEARCH_PROTOCOL = environment.open_search.protocol
-OPENSEARCH_VERIFY_CERTS = environment.open_search.verify_certs  # ignored when protocol != https
+OPENSEARCH_HOST = environment.opensearch.host
+OPENSEARCH_ALIAS_PREFIX = environment.opensearch.alias_prefix
+OPENSEARCH_VERIFY_CERTS = environment.opensearch.verify_certs  # ignored when protocol != https
 OPENSEARCH_PASSWORD = environment.secrets.opensearch.password
-
-OPENSEARCH_NL_INDEX = "latest-nl"
-OPENSEARCH_EN_INDEX = "latest-en"
-OPENSEARCH_UNK_INDEX = "latest-unk"
 
 
 # Logging
@@ -323,15 +323,16 @@ LOGGING = {
             'formatter': 'standard'
         },
         'search_service': create_opensearch_handler(
+            OPENSEARCH_HOST,
             'service-logs',
             OpensearchHandler.IndexNameFrequency.WEEKLY,
-            environment,
+            environment.container.id,
             OPENSEARCH_PASSWORD
         ),
     },
     'loggers': {
         'service': {
-            'handlers': ['search_service'] if environment.django.logging.is_open_search else ['console'],
+            'handlers': ['search_service'] if environment.django.logging.is_opensearch else ['console'],
             'level': _log_level,
             'propagate': True,
         }
@@ -371,8 +372,11 @@ SOCIAL_AUTH_USERNAME_IS_FULL_EMAIL = True
 SOCIAL_AUTH_RAISE_EXCEPTIONS = False
 SOCIAL_AUTH_SURF_CONEXT_OIDC_ENDPOINT = environment.surfconext.oidc_endpoint
 SOCIAL_AUTH_LOGIN_ERROR_URL = BASE_URL
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = environment.surfconext.login_redirect
 SOCIAL_AUTH_SURF_CONEXT_KEY = environment.surfconext.client_id
-SOCIAL_AUTH_SURF_CONEXT_SECRET = environment.secrets.surfconext.secret_key
+SOCIAL_AUTH_SURF_CONEXT_SECRET = os.environ.get('SURFCONEXT')
+if not SOCIAL_AUTH_SURF_CONEXT_SECRET:
+    SOCIAL_AUTH_SURF_CONEXT_SECRET = environment.secrets.surfconext.secret_key
 
 AUTHENTICATION_BACKENDS = (
     'surf.vendor.surfconext.oidc.backend.SurfConextOpenIDConnectBackend',
@@ -402,6 +406,7 @@ LOGIN_REDIRECT_URL = BASE_URL + "/login/success"
 LOGOUT_REDIRECT_URL = "https://engine.surfconext.nl/logout"
 
 VOOT_API_ENDPOINT = environment.surfconext.voot_api_endpoint
+USE_API_ENDPOINT = environment.surfconext.use_api_endpoint
 
 
 # CKEditor

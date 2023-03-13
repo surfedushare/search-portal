@@ -2,17 +2,22 @@
   <div id="app">
     <v-app>
       <div class="main_block">
-        <MainHeader />
+        <NewMainHeader v-if="isNewHeader" />
+        <MainHeader v-else />
         <router-view />
-        <MainFooter />
+        <NewMainFooter v-if="isNewHeader" />
+        <MainFooter v-else />
       </div>
     </v-app>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import { setLanguage } from "~/axios";
 import MainFooter from "~/components/MainFooter/MainFooter.vue";
+import NewMainHeader from "~/components/NewMainHeader.vue";
+import NewMainFooter from "~/components/NewMainFooter.vue";
 import MainHeader from "~/components/MainHeader/MainHeader.vue";
 
 const DEFAULT_TITLE = "Edusources";
@@ -22,6 +27,11 @@ export default {
   components: {
     MainHeader,
     MainFooter,
+    NewMainHeader,
+    NewMainFooter,
+  },
+  computed: {
+    ...mapGetters(["isNewHeader"]),
   },
   watch: {
     "$i18n.locale"(newLocale) {
@@ -40,7 +50,7 @@ export default {
     },
     isMBOEnvironment() {
       return this.$window.location.hostname.indexOf("mbo.") >= 0;
-    }
+    },
   },
   metaInfo: {
     title: DEFAULT_TITLE,

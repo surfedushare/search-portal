@@ -14,8 +14,6 @@ class UserDetailsSerializer(serializers.ModelSerializer):
     """
     User profile instance serializer
     """
-
-    full_name = serializers.CharField(source="email")
     communities = serializers.SerializerMethodField()
     collections = serializers.SerializerMethodField()
 
@@ -32,4 +30,4 @@ class UserDetailsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'full_name', 'is_staff', 'communities', 'collections')
+        fields = ('id', 'is_staff', 'communities', 'collections')

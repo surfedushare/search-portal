@@ -37,7 +37,7 @@ class TestGetHarvestSeedsEdurep(SeedExtractionTestCase):
 
     def test_get_complete_set_without_deletes(self):
         seeds = get_harvest_seeds(Repositories.EDUREP, self.set_spec, self.begin_of_time, include_deleted=False)
-        self.assertEqual(len(seeds), 14)
+        self.assertEqual(len(seeds), 9)
         self.check_seed_integrity(seeds, include_deleted=False)
 
     def test_get_partial_set_without_deletes(self):
@@ -119,9 +119,9 @@ class TestGetHarvestSeedsEdurep(SeedExtractionTestCase):
         seeds = self.seeds
         self.assertEqual(seeds[0]["lom_educational_levels"], [],
                          "Expected deleted materials to have no educational level")
-        self.assertEqual(seeds[1]["lom_educational_levels"], ["HBO"],
+        self.assertEqual(sorted(seeds[1]["lom_educational_levels"]), ["HBO", "HBO - Bachelor"],
                          "Expected HBO materials to have an educational level")
-        self.assertEqual(seeds[2]["lom_educational_levels"], ["WO"],
+        self.assertEqual(sorted(seeds[2]["lom_educational_levels"]), ["WO", "WO - Bachelor"],
                          "Expected HBO materials to have an educational level")
 
     def test_lowest_educational_level(self):

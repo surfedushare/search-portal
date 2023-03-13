@@ -1,4 +1,8 @@
 import logging
+from django.conf import settings
+import requests
+import json
+
 
 from sentry_sdk import capture_message
 
@@ -30,6 +34,7 @@ class UserDetailsAPIView(APIView):
             data = UserDetailsSerializer().to_representation(request.user)
         else:
             data = {}
+
         privacy_statement = PrivacyStatement.objects.get_latest_active()
         if privacy_statement is None:
             capture_message("Trying to retrieve user details without an active privacy statement")
@@ -38,6 +43,31 @@ class UserDetailsAPIView(APIView):
             permissions = request.session["permissions"] = \
                 privacy_statement.get_privacy_settings(request.user, permissions)
         data["permissions"] = permissions
+        data["email"] = request.session.get("email", None)
+        data["name"] = request.session.get("name", None)
+        institution_id = request.session.get("institution_id", None)
+        if institution_id is None:
+            return Response(data)
+        query = """query {
+            institutions(filter: { name: { _eq: \""""+institution_id+"""\"}, participating: { _eq: true } } ) {
+                id
+                name
+                translations(filter: { languages_code: { code: { _eq: "nl-NL" } } }) {
+                    name
+                }
+            }
+        }"""
+        url = settings.USE_API_ENDPOINT + '/api/graphql'
+        r = requests.post(url, json={'query': query})
+        json_data = json.loads(r.text)
+        try:
+            institution_name = json_data['data']['institutions'][0]['translations'][0]['name']
+            institution_link = json_data['data']['institutions'][0]['name']
+        except (IndexError, NameError, AttributeError):
+            institution_name = institution_id
+
+        data["institution_name"] = institution_name
+        data["institution_link"] = institution_link
         request.session.modified = True  # this extends expiry
         return Response(data)
 
