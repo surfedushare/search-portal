@@ -5,21 +5,25 @@ from metadata.utils.translate import translate_with_deepl
 from metadata.models import StudyVocabularyResource, MetadataField, MetadataTranslation, MetadataValue
 from datagrowth.configuration import create_config
 from datagrowth.processors import ExtractProcessor
+import ipdb;
+
 logger = logging.getLogger("harvester")
 
 
 def create_metadata_value(term, field, parent):
     if not MetadataValue.objects.filter(value=term["name"]).exists():
         vocabulary = MetadataValue(value=term["value"])
-        if term["language"] == "nl":
-            vocabulary.translation = MetadataTranslation(
-                nl=term["name"],
-                en=translate_with_deepl(term["name"])
-            ).save()
+        translation = MetadataTranslation.objects.create(
+            nl=term["name"],
+            en=translate_with_deepl(term["name"])
+        )
+        vocabulary.translation = translation
         vocabulary.field = field
         vocabulary.name = str(term["name"])
         vocabulary.parent = parent
         return vocabulary
+    else:
+        return MetadataValue.objects.get(value=term["name"])
 
 
 class Command(BaseCommand):
@@ -29,31 +33,37 @@ class Command(BaseCommand):
             "path": "applied-science/applied-science-2021.skos.json",
             "nl": "Toegepaste Wetenschappen",
             "en": "Applied Science",
-            "value": "applied_science"
+            "value": "applied_science",
+            "name": "applied_science",
+            "language": "nl"
         },
         "informatievaardigheid": {
             "path": "informatievaardigheid/informatievaardigheid-2020.skos.json",
             "nl": "Informatievaardigheid",
             "en": "Information literacy",
-            "value": "informatievaardigheid"
+            "value": "informatievaardigheid",
+            "name": "informatievaardigheid",
+            "language": "nl"
         },
         "vaktherapie": {
             "path": "vaktherapie/vaktherapie-2020.skos.json",
             "nl": "Vaktherapie",
             "en": "Information literacy",
-            "value": "vaktherapie"
+            "value": "vaktherapie",
+            "name": "vaktherapie",
+            "language": "nl"
         },
         "verpleegkunde": {
             "path": "verpleegkunde/verpleegkunde-2019.skos.json",
             "nl": "Verpleegkunde",
             "en": "Nursing",
-            "value": "verpleegkunde"
+            "value": "verpleegkunde",
+            "name": "verpleegkunde",
+            "language": "nl"
         }
     }
 
     def handle(self, **options):
-
-        vocabulary_list = []
 
         config = create_config("extract_processor", {
             "objective": {
@@ -67,11 +77,6 @@ class Command(BaseCommand):
 
         extractor = ExtractProcessor(config=config)
 
-        for key in self.domain_dictionary:
-            raw_source = StudyVocabularyResource().get(self.domain_dictionary[key]["path"])
-            searched_source = extractor.extract(*raw_source.content)
-            vocabulary_list.append(searched_source)
-
         field_translation, _ = MetadataTranslation.objects.get_or_create(
             nl="Vakvocabulaire",
             en="Study vocabulary"
@@ -81,29 +86,27 @@ class Command(BaseCommand):
             defaults={"translation": field_translation}
         )
 
-        to_add_vocabulary = []
+        vocabulary_list = []
 
-        for vocab in vocabulary_list:
-            vocab_frame = pd.DataFrame.from_records(vocab).fillna("root")
+        for key in self.domain_dictionary:
+            raw_source = StudyVocabularyResource().get(self.domain_dictionary[key]["path"])
+            searched_source = extractor.extract(*raw_source.content)
+            vocab_frame = pd.DataFrame.from_records(searched_source).fillna("root")
             vocab_groups = vocab_frame.groupby("parent_id").groups
-            vocab_groups.get()
-            import ipdb;
-            ipdb.set_trace()
+            root = create_metadata_value(field=field, term=self.domain_dictionary[key], parent=None)
+            root.save()
             for sub_root in vocab_groups["root"].tolist():
-                # toDo: Add values described in domain dictionary here as root.
-                self.depth_first_algorithm(sub_root)
-
-        MetadataValue.objects.bulk_create(to_add_vocabulary)
+                self.depth_first_algorithm(value=sub_root, parent=root, field=field, groups=vocab_groups,
+                                           frame=vocab_frame, output_list=vocabulary_list)
         logger.info('Done with study vocabulary harvest')
 
     def depth_first_algorithm(self, value, parent, field, groups, frame, output_list):
         new_term = create_metadata_value(term=frame.iloc[value], field=field, parent=parent)
+        new_term.save()
         output_list.append(new_term)
         try:
-            for sub_values in groups.get(value).tolist():
+            for sub_values in groups[frame.iloc[value].value].tolist():
+                print("Check")
                 output_list = self.depth_first_algorithm(sub_values, new_term, field, groups, frame, output_list)
         finally:
             return output_list
-
-
-
