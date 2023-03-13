@@ -65,9 +65,9 @@ describe("Home page - search - filters", () => {
     cy.selectFilter("language.keyword", "nl").selectedFiltersShouldContain("Taal", "Nederlands", 1, 0);
   });
 
-  it("Should filter on disciplines", () => {
-    cy.selectFilter("disciplines", "0861c43d-1874-4788-b522-df8be575677f").selectedFiltersShouldContain(
-      "Vakgebied",
+  it("Should filter on studies", () => {
+    cy.selectFilter("studies", "0861c43d-1874-4788-b522-df8be575677f").selectedFiltersShouldContain(
+      "Studie",
       "Onderwijskunde",
       1,
       0
