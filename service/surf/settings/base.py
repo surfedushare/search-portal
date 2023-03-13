@@ -20,9 +20,9 @@ from sentry_sdk.integrations.logging import ignore_logger
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(os.path.join(BASE_DIR, "..", "..", "environments"))
-from project import create_configuration_and_session, MODE, CONTEXT, PROJECT
-from utils.packaging import get_package_info
 from utils.logging import OpensearchHandler, create_opensearch_handler
+from utils.packaging import get_package_info
+from project import create_configuration_and_session, MODE, CONTEXT, PROJECT
 
 # We're adding the environments directory outside of the project directory to the path
 # That way we can load the environments and re-use them in different contexts
@@ -38,8 +38,8 @@ SITE_ID = 1  # should be overridden by extending settings file
 SITE_SLUG = "edusources"
 DOMAIN = environment.django.domain
 PROTOCOL = environment.django.protocol
-try: 
-    BASE_URL  = "{}://{}:{}".format(PROTOCOL, DOMAIN, environment.django.port)
+try:
+    BASE_URL = "{}://{}:{}".format(PROTOCOL, DOMAIN, environment.django.port)
 except Exception:
     BASE_URL = "{}://{}".format(PROTOCOL, DOMAIN)
 try:

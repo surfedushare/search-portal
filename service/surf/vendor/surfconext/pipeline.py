@@ -4,7 +4,7 @@ from sentry_sdk import capture_message
 from social_core.pipeline.partial import partial
 
 from surf.vendor.surfconext.models import PrivacyStatement, DataGoalPermissionSerializer, DataGoalTypes
-from surf.vendor.surfconext.voot.api import VootApiClient
+# from surf.vendor.surfconext.voot.api import VootApiClient
 from surf.apps.communities.models import Community, Team
 
 
@@ -56,11 +56,11 @@ def get_groups(strategy, details, response, *args, **kwargs):
         groups = response["edumember_is_member_of"]
     else:
         groups = []
-    
+
     details["groups"] = groups
     strategy.request.session["email"] = details["email"]
     strategy.request.session["name"] = details["fullname"]
-    strategy.request.session["institution_id"] = response["schac_home_organization"].replace('.','-')
+    strategy.request.session["institution_id"] = response["schac_home_organization"].replace('.', '-')
     # Retrieve team data from Voot service to connect communities later
     # vac = VootApiClient(api_endpoint=settings.VOOT_API_ENDPOINT)
     # groups = vac.get_groups(response.get("access_token"))
@@ -68,8 +68,6 @@ def get_groups(strategy, details, response, *args, **kwargs):
     if not isinstance(groups, list):
         capture_message(f"VootApiClient didn't return a list but returned \"{groups}\" instead.")
         groups = []
-
-
 
 
 def assign_communities(strategy, details, user, *args, **kwargs):
