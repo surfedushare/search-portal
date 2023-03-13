@@ -1,7 +1,7 @@
 from rest_framework.schemas.openapi import AutoSchema
 from rest_framework import serializers
 
-from surf.vendor.search.serializers import RelationSerializer
+from search_client.serializers import RelationSerializer
 from surf.apps.materials.serializers import KeywordsRequestSerializer
 
 
@@ -62,6 +62,20 @@ class SearchSchema(AutoSchema):
                     "description": "The language of the document you want similar documents for.",
                     'schema': {
                         'type': 'string',
+                    }
+                }
+            ]
+        if path.endswith("search/"):
+            return [
+                {
+                    "name": "limit_filter_categories",
+                    "in": "query",
+                    "required": False,
+                    "default": 1,
+                    "description": "Whether to return a partial or full metadata value tree "
+                                   "inside the filter_categories property.",
+                    'schema': {
+                        'type': 'integer',
                     }
                 }
             ]

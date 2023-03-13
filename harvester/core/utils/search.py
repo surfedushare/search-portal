@@ -6,9 +6,8 @@ from django.conf import settings
 def get_search_client():
 
     opensearch_url = settings.OPENSEARCH_HOST
-    protocol = settings.OPENSEARCH_PROTOCOL
     protocol_config = {}
-    if protocol == "https":
+    if opensearch_url.startswith("https"):
         protocol_config = {
             "scheme": "https",
             "port": 443,

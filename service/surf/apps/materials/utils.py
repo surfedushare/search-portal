@@ -4,9 +4,9 @@ from functools import reduce
 from django.conf import settings
 from django.apps import apps
 
+from surf.apps.core.search import get_search_client
 from surf.apps.communities.models import Community
 from surf.apps.materials.models import Material
-from surf.vendor.search.api import SearchApiClient
 
 
 def add_extra_parameters_to_materials(metadata, materials):
@@ -79,7 +79,7 @@ def get_material_details_by_id(external_id):
     :param external_id: id of material
     :return: list containing updated material
     """
-    client = SearchApiClient()
+    client = get_search_client()
     response = client.get_materials_by_id([external_id])
     records = response.get("records", [])
     if not records:
@@ -129,7 +129,7 @@ def create_search_results_index(client):
 
 
 def add_search_query_to_log(number_of_results, query, filters):
-    api_client = SearchApiClient()
+    api_client = get_search_client()
     if not api_client.client.indices.exists(index='search-results'):
         create_search_results_index(api_client.client)
 
