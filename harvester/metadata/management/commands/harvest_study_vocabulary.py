@@ -119,7 +119,6 @@ class Command(BaseCommand):
         output_list.append(new_term)
         try:
             for sub_values in groups[frame.iloc[value].value].tolist():
-                print("Check")
                 output_list = self.depth_first_algorithm(sub_values, new_term, field, groups, frame, output_list)
         finally:
             return output_list
