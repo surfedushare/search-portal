@@ -32,6 +32,9 @@ class TestHarvestStudyVocabulary(TestCase):
 
     def test_data_contains_right_values(self):
         call_command("harvest_study_vocabulary", "--vocabulary=applied-science")
-        value = MetadataValue.objects.get(value="http://purl.edustandaard.nl/concept/27aee99f-1b5f-45ba-84e9-4a52c1d46a63")
+        value = MetadataValue.objects.get(
+            value="http://purl.edustandaard.nl/concept/27aee99f-1b5f-45ba-84e9-4a52c1d46a63")
         self.assertEqual(value.name, "Python")
+        self.assertEqual(value.parent.value,
+                         "http://purl.edustandaard.nl/concept/982e3b48-90b9-4fbd-9365-04289afe6929")
 
