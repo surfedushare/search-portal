@@ -73,11 +73,11 @@ class Command(BaseCommand):
         vocabulary = options["vocabulary"]
 
         field_translation, _ = MetadataTranslation.objects.get_or_create(
-            nl="Vakvocabulaire",
-            en="Study vocabulary"
+            nl="vakvocabulaire",
+            en="study_vocabulary"
         )
         field, _ = MetadataField.objects.get_or_create(
-            name="Vakvocabulaire",
+            name="study_vocabulary",
             defaults={"translation": field_translation}
         )
 
