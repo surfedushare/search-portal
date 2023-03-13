@@ -1,7 +1,7 @@
 # Service Django
 django-filter==2.4.0
 django-ckeditor==5.9.0
-django-mptt==0.11.0
+django-mptt==0.14.0
 django-debug-toolbar==2.2
 django-enumfield==2.0.2
 social-auth-app-django==4.0.0
