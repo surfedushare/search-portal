@@ -34,7 +34,7 @@ class UserDetailsAPIView(APIView):
             data = UserDetailsSerializer().to_representation(request.user)
         else:
             data = {}
-        
+
         privacy_statement = PrivacyStatement.objects.get_latest_active()
         if privacy_statement is None:
             capture_message("Trying to retrieve user details without an active privacy statement")
@@ -43,9 +43,9 @@ class UserDetailsAPIView(APIView):
             permissions = request.session["permissions"] = \
                 privacy_statement.get_privacy_settings(request.user, permissions)
         data["permissions"] = permissions
-        data["email"]= request.session.get("email", None)
-        data["name"]= request.session.get("name", None)
-        institution_id= request.session.get("institution_id", None)
+        data["email"] = request.session.get("email", None)
+        data["name"] = request.session.get("name", None)
+        institution_id = request.session.get("institution_id", None)
         if institution_id is None:
             return Response(data)
         query = """query {
@@ -66,8 +66,8 @@ class UserDetailsAPIView(APIView):
         except (IndexError, NameError, AttributeError):
             institution_name = institution_id
 
-        data["institution_name"]= institution_name
-        data["institution_link"]= institution_link
+        data["institution_name"] = institution_name
+        data["institution_link"] = institution_link
         request.session.modified = True  # this extends expiry
         return Response(data)
 

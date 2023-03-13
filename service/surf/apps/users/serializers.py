@@ -2,15 +2,14 @@
 This module contains API view serializers for users app.
 """
 
-from asyncio.locks import _ContextManagerMixin
-from django.forms import CharField
-from django.http import HttpResponse
 from rest_framework import serializers
 
 from surf.apps.users.models import User
 from surf.apps.communities.models import Community
 from surf.apps.materials.models import Collection
 from surf.apps.materials.serializers import CollectionSerializer
+
+
 class UserDetailsSerializer(serializers.ModelSerializer):
     """
     User profile instance serializer
