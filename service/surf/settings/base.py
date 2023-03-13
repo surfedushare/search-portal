@@ -40,7 +40,7 @@ SITE_SLUG = "edusources"
 DOMAIN = environment.django.domain
 PROTOCOL = environment.django.protocol
 BASE_URL = "{}://{}".format(PROTOCOL, DOMAIN)
-if (environment.django.port):
+if environment.django.port:
     BASE_URL  = "{}://{}:{}".format(PROTOCOL, DOMAIN, environment.django.port)
 try:
     response = requests.get("https://api.ipify.org/?format=json")
