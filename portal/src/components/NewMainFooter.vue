@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import NewLanguageSwitch from "./NewLanguageSwitch";
 
 export default {
@@ -30,21 +31,11 @@ export default {
     };
   },
   computed: {
-    links() {
-      return [
-        { text: this.$i18n.t("navigation.find-material"), href: "/", active: false },
-        {
-          text: this.$i18n.t("navigation.communities"),
-          href: process.env.VUE_APP_USE_URL + "/communitys",
-          active: false,
-        },
-        { text: this.$i18n.t("navigation.services"), href: process.env.VUE_APP_USE_URL, active: true },
-      ];
-    },
+    ...mapGetters(["use_api_endpoint"]),
   },
   methods: {
     openUseLink(link) {
-      window.open(`${process.env.VUE_APP_USE_URL}${link}`, "_blank");
+      window.open(`${this.use_api_endpoint}${link}`, "_blank");
     },
   },
 };

@@ -76,6 +76,7 @@ export default {
   },
   computed: {
     ...mapGetters([
+      "use_api_endpoint",
       "isAuthenticated",
       "user",
       "show_header_menu",
@@ -109,12 +110,9 @@ export default {
     },
     toInstitution() {
       if (this.user?.institution_link) {
-        console.log(process.env.VUE_APP_USE_URL);
-        if (process.env.VUE_APP_USE_URL) {
-          window.open(process.env.VUE_APP_USE_URL + "/instellingen/" + this.user?.institution_link, "_blank");
-        }
+        window.open(`${this.use_api_endpoint}/instellingen/${this.user?.institution_link}`, "_blank");
       } else {
-        window.open(process.env.VUE_APP_USE_URL + "/instellingen", "_blank");
+        window.open(`${this.use_api_endpoint}/instellingen`, "_blank");
       }
     },
   },
