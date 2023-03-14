@@ -20,6 +20,8 @@ surfconext:
   oidc_endpoint: none
   voot_api_endpoint: "https://voot.test.surfconext.nl"
   client_id: "https@//front-test.surfcatalog.nl/"
+  use_api_endpoint: null
+  login_redirect: null
 
 aws:
   image_upload_bucket: null
