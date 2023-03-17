@@ -4,7 +4,7 @@
       <div class="main_block">
         <NewMainHeader v-if="isNewHeader" />
         <MainHeader v-else />
-        <router-view />
+        <router-view :key="$route.fullPath" />
         <NewMainFooter v-if="isNewHeader" />
         <MainFooter v-else />
       </div>
@@ -32,6 +32,9 @@ export default {
   },
   computed: {
     ...mapGetters(["isNewHeader"]),
+    route() {
+      return this.$router.currentRoute;
+    },
   },
   watch: {
     "$i18n.locale"(newLocale) {

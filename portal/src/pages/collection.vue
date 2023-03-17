@@ -15,14 +15,25 @@
         @onSubmit="onSubmit"
       />
 
-      <div v-if="contenteditable" class="add-materials">
+      <div class="add-materials">
         <button
+          v-if="contenteditable"
           data-test="add_materials_button"
-          class="materials__add__link button secondary"
+          class="button secondary"
           @click.prevent="showAddMaterial"
         >
           {{ $t("Add-materials") }}
         </button>
+
+        <v-btn
+          v-else-if="collection && hasPermission"
+          data-test="add_materials_button"
+          elevation="0"
+          class="bg-yellow mr-4"
+          :to="localePath({ name: 'my-collection', params: { id: collection.id }, force: true })"
+        >
+          {{ $t("Edit-collection") }}
+        </v-btn>
       </div>
       <SortableMaterials
         v-if="contenteditable && collection_materials"
@@ -98,6 +109,9 @@ export default {
       }
 
       return null;
+    },
+    hasPermission() {
+      return this.user && this.user.collections?.find((collection) => collection.id === this.collection.id);
     },
   },
   created() {
