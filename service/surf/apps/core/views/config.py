@@ -18,4 +18,3 @@ class ConfigAPIView(APIView):
         print(settings)
         data = {"use_api_endpoint": settings.USE_API_ENDPOINT}
         return Response(data, status.HTTP_200_OK)
-

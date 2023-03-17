@@ -34,6 +34,19 @@ class HkuMetadataExtraction(ExtractProcessor):
         return f"hku:person:{identifier}"
 
     @classmethod
+    def build_full_name(cls, person):
+        match person:
+            case {"first_name": first_name, "last_name": last_name, "prefix": prefix} if person.get("prefix"):
+                full_name = f"{first_name} {prefix} {last_name}"
+            case {"first_name": first_name, "last_name": last_name} if person.get("first_name"):
+                full_name = f"{first_name} {last_name}"
+            case {"last_name": last_name}:
+                full_name = last_name
+            case _:
+                full_name = None
+        return full_name
+
+    @classmethod
     def get_external_id(cls, node):
         identifier = node["resultid"] or None
         return cls.build_product_id(identifier)
@@ -103,11 +116,7 @@ class HkuMetadataExtraction(ExtractProcessor):
 
     @classmethod
     def get_copyright(cls, node):
-        if node["licence"] == "Creative Commons Non-Commercial license":
-            return "cc-by-nc-40"
-        elif node["licence"] == "Niet commerieel - geen afgeleide werken (CC BY-NC-ND)":
-            return "cc-by-nc-nd-40"
-        elif node["licence"] == "Niet commercieel - geen afgeleide werken (CC BY-NC-ND)":
+        if node["licence"] == "Niet commercieel - geen afgeleide werken (CC BY-NC-ND)":
             return "cc-by-nc-nd-40"
         return "yes"
 
@@ -127,14 +136,21 @@ class HkuMetadataExtraction(ExtractProcessor):
 
     @classmethod
     def get_authors(cls, node):
-        return [{
-            "name": node["author"],
-            "email": node["owner"] or None,
-            "external_id": cls.build_person_id(node["persons"].get("person_id", None)),
-            "dai": None,
-            "orcid": None,
-            "isni": None
-        }]
+        if not node["persons"]:
+            return []
+        if isinstance(node["persons"]["person"], dict):
+            node["persons"]["person"] = [node["persons"]["person"]]
+        return [
+            {
+                "name": cls.build_full_name(person),
+                "email": person["email"] or None,
+                "external_id": cls.build_person_id(person.get("person_id", None)),
+                "dai": None,
+                "orcid": None,
+                "isni": None
+            }
+            for person in node["persons"]["person"]
+        ]
 
     @classmethod
     def get_publisher_year(cls, node):
