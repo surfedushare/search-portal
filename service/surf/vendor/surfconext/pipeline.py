@@ -2,11 +2,13 @@ from django.conf import settings
 
 from sentry_sdk import capture_message
 from social_core.pipeline.partial import partial
+import logging
 
 from surf.vendor.surfconext.models import PrivacyStatement, DataGoalPermissionSerializer, DataGoalTypes
 # from surf.vendor.surfconext.voot.api import VootApiClient
 from surf.apps.communities.models import Community, Team
 
+logger = logging.getLogger("service")
 
 @partial
 def require_data_permissions(strategy, details, user=None, is_new=False, *args, **kwargs):
@@ -44,7 +46,7 @@ def store_data_permissions(strategy, details, user, *args, **kwargs):
 
 def get_groups(strategy, details, response, *args, **kwargs):
     # Cancel data processing if permission is not given
-    print("SURFCONEXT RESPONSE", response)
+    logger.info("SURFCONEXT RESPONSE", response)
     permissions = details["permissions"]
     community_permission = next(
         (permission for permission in permissions if permission["type"] == DataGoalTypes.COMMUNITIES),
