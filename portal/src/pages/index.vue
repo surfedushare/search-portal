@@ -1,5 +1,5 @@
 <template>
-  <section class="edusources-container main">
+  <section class="edusources-container main" :class="{ 'new-header': isNewHeader }">
     <div>
       <div class="main__info">
         <div class="center_block center-header">
@@ -91,6 +91,7 @@ export default {
       materials: "materials",
       allCommunities: "allCommunities",
       statistic: "statistic",
+      isNewHeader: "isNewHeader",
     }),
     numberOfMaterials() {
       return numeral(this.statistic.value).format("0,0").replace(",", ".");

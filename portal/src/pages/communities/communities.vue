@@ -1,5 +1,5 @@
 <template>
-  <section class="edusources-container main">
+  <section class="edusources-container main" :class="{ 'new-header': isNewHeader }">
     <section class="communities">
       <HeaderBlock :title="$t('Communities')" />
       <div class="center_block">
@@ -68,7 +68,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["user", "allCommunities", "userCommunities"]),
+    ...mapGetters(["user", "allCommunities", "userCommunities", "isNewHeader"]),
     communities() {
       if (this.showDrafts) {
         return this.allCommunities(this.user);

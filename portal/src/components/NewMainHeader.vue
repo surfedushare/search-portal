@@ -90,7 +90,7 @@ export default {
       return [
         { text: this.$i18n.t("navigation.find-material"), href: "/", active: false },
         { text: this.$i18n.t("navigation.communities"), href: "/communitys", active: false },
-        { text: this.$i18n.t("navigation.services"), href: "https://use.edusources.nl", active: true },
+        { text: this.$i18n.t("navigation.services"), href: this.use_api_endpoint, active: true },
       ];
     },
   },

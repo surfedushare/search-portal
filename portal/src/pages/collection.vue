@@ -1,5 +1,5 @@
 <template>
-  <section class="edusources-container main collection">
+  <section class="edusources-container main collection" :class="{ 'new-header': isNewHeader }">
     <div v-if="!collectionInfo && isReady">
       <error status-code="404" message-key="collection-not-found" />
     </div>
@@ -87,7 +87,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["collection", "collection_materials", "collection_materials_loading", "user"]),
+    ...mapGetters(["collection", "collection_materials", "collection_materials_loading", "user", "isNewHeader"]),
     collectionInfo() {
       if (isEmpty(this.collection)) {
         return null;

@@ -1,5 +1,5 @@
 <template>
-  <section class="edusources-container main how_work">
+  <section class="edusources-container main how_work" :class="{ 'new-header': isNewHeader }">
     <HeaderBlock :title="$t('How-does-it-work')" />
     <InfoBlock :title="$t('About-the-portal')" :content="$t('html-About-the-portal-text')" />
     <div class="center_block">
@@ -24,7 +24,7 @@ export default {
   },
   mixins: [PageMixin],
   computed: {
-    ...mapGetters(["materials"]),
+    ...mapGetters(["materials", "isNewHeader"]),
   },
   mounted() {
     this.$store.dispatch("getMaterials", { page_size: 4 });
