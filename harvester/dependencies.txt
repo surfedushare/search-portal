@@ -10,7 +10,7 @@ flower==1.0.0
 
 # Harvester other
 django-log-formatter-json==0.2.0
-ujson==3.1.0  # implicit dependency of django-log-formatter-json
+#ujson==3.1.0  # implicit dependency of django-log-formatter-json
 vobject==0.9.6.1
 youtube-dl@git+https://github.com/ytdl-org/youtube-dl.git@master
 pdf2image==1.14.0
