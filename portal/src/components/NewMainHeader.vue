@@ -6,8 +6,11 @@
       </router-link>
 
       <div v-if="!isAuthenticated" class="links">
-        <div v-for="(link, index) in links" :key="index" :class="{ active: link.active === true }">
-          <v-btn elevation="0" :href="link.href">
+        <div v-for="(link, index) in links" :key="index">
+          <v-btn v-if="link.href" elevation="0" :href="link.href">
+            {{ link.text }}
+          </v-btn>
+          <v-btn v-else elevation="0" :to="link.to">
             {{ link.text }}
           </v-btn>
         </div>
@@ -283,5 +286,21 @@ export default {
 
 .v-menu__content .v-list .v-list-item {
   width: 100% !important;
+}
+
+.v-btn--active {
+  border-radius: 0;
+}
+
+.v-btn--active::before {
+  opacity: 0 !important;
+}
+
+.v-btn--active::after {
+  content: "";
+  position: absolute;
+  width: 90%;
+  margin-top: 62px;
+  border-bottom: 2px solid @green;
 }
 </style>
