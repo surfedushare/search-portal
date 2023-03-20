@@ -6,24 +6,27 @@ from metadata.models import StudyVocabularyResource, MetadataField, MetadataTran
 from datagrowth.configuration import create_config
 from datagrowth.processors import ExtractProcessor
 
+
 logger = logging.getLogger("harvester")
 
 
 def get_or_create_metadata_value(term, field, parent):
-    if not MetadataValue.objects.filter(value=str(term["value"])).exists():
-        vocabulary = MetadataValue(value=term["value"])
-        translation = MetadataTranslation.objects.create(
-            nl=term["name"],
-            en=translate_with_deepl(term["name"])
-        )
-        vocabulary.translation = translation
-        vocabulary.field = field
-        vocabulary.name = str(term["name"])
-        vocabulary.parent = parent
-        vocabulary.save()
-        return vocabulary
-    else:
+    try:
         return MetadataValue.objects.get(value=str(term["value"]))
+    except MetadataValue.DoesNotExist:
+        pass
+
+    vocabulary = MetadataValue(value=term["value"])
+    translation = MetadataTranslation.objects.create(
+        nl=term["name"],
+        en=translate_with_deepl(term["name"])
+    )
+    vocabulary.translation = translation
+    vocabulary.field = field
+    vocabulary.name = term["name"]
+    vocabulary.parent = parent
+    vocabulary.save()
+    return vocabulary
 
 
 class Command(BaseCommand):
@@ -81,14 +84,13 @@ class Command(BaseCommand):
             defaults={"translation": field_translation}
         )
 
-        vocabulary_list = []
         if vocabulary is not None:
-            self.export_vocabulary(key=vocabulary, field=field, output_list=vocabulary_list)
+            self.export_vocabulary(key=vocabulary, field=field)
         else:
             for key in self.domain_dictionary:
-                self.export_vocabulary(key=key, field=field, output_list=vocabulary_list)
+                self.export_vocabulary(key=key, field=field)
 
-    def export_vocabulary(self, key, field, output_list):
+    def export_vocabulary(self, key, field):
 
         config = create_config("extract_processor", {
             "objective": {
@@ -106,11 +108,12 @@ class Command(BaseCommand):
         raw_source.close()
         searched_source = extractor.extract(*raw_source.content)
         vocab_frame = pd.DataFrame.from_records(searched_source).fillna("root")
+        vocab_frame = vocab_frame.astype("string")
         vocab_groups = vocab_frame.groupby("parent_id").groups
         root = get_or_create_metadata_value(field=field, term=self.domain_dictionary[key], parent=None)
         for sub_root in vocab_groups["root"].tolist():
             self.depth_first_algorithm(value=sub_root, parent=root, field=field, groups=vocab_groups,
-                                       frame=vocab_frame, output_list=output_list)
+                                       frame=vocab_frame, output_list=[])
 
         logger.info('Done with study vocabulary harvest: ' + key)
 
@@ -120,5 +123,6 @@ class Command(BaseCommand):
         try:
             for sub_values in groups[frame.iloc[value].value].tolist():
                 output_list = self.depth_first_algorithm(sub_values, new_term, field, groups, frame, output_list)
-        finally:
-            return output_list
+        except KeyError:
+            pass
+        return output_list
