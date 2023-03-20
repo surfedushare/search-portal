@@ -9,7 +9,7 @@ from datagrowth.processors import ExtractProcessor
 logger = logging.getLogger("harvester")
 
 
-def create_metadata_value(term, field, parent):
+def get_or_create_metadata_value(term, field, parent):
     if not MetadataValue.objects.filter(value=str(term["value"])).exists():
         vocabulary = MetadataValue(value=term["value"])
         translation = MetadataTranslation.objects.create(
@@ -107,7 +107,7 @@ class Command(BaseCommand):
         searched_source = extractor.extract(*raw_source.content)
         vocab_frame = pd.DataFrame.from_records(searched_source).fillna("root")
         vocab_groups = vocab_frame.groupby("parent_id").groups
-        root = create_metadata_value(field=field, term=self.domain_dictionary[key], parent=None)
+        root = get_or_create_metadata_value(field=field, term=self.domain_dictionary[key], parent=None)
         for sub_root in vocab_groups["root"].tolist():
             self.depth_first_algorithm(value=sub_root, parent=root, field=field, groups=vocab_groups,
                                        frame=vocab_frame, output_list=output_list)
@@ -115,7 +115,7 @@ class Command(BaseCommand):
         logger.info('Done with study vocabulary harvest: ' + key)
 
     def depth_first_algorithm(self, value, parent, field, groups, frame, output_list):
-        new_term = create_metadata_value(term=frame.iloc[value], field=field, parent=parent)
+        new_term = get_or_create_metadata_value(term=frame.iloc[value], field=field, parent=parent)
         output_list.append(new_term)
         try:
             for sub_values in groups[frame.iloc[value].value].tolist():
