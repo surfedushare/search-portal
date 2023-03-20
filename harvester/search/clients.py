@@ -3,7 +3,7 @@ from opensearchpy import OpenSearch, RequestsHttpConnection
 from django.conf import settings
 
 
-def get_search_client():
+def get_opensearch_client():
 
     opensearch_url = settings.OPENSEARCH_HOST
     protocol_config = {}
