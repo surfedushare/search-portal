@@ -5,7 +5,6 @@ from social_core.pipeline.partial import partial
 import logging
 
 from surf.vendor.surfconext.models import PrivacyStatement, DataGoalPermissionSerializer, DataGoalTypes
-# from surf.vendor.surfconext.voot.api import VootApiClient
 from surf.apps.communities.models import Community, Team
 
 logger = logging.getLogger("service")
@@ -65,10 +64,6 @@ def get_groups(strategy, details, response, *args, **kwargs):
     strategy.request.session["name"] = details["fullname"]
     strategy.request.session["institution_id"] = response["schac_home_organization"].replace('.', '-')
 
-    # Retrieve team data from Voot service to connect communities later
-    # vac = VootApiClient(api_endpoint=settings.VOOT_API_ENDPOINT)
-    # groups = vac.get_groups(response.get("access_token"))
-
     if not isinstance(groups, list):
         capture_message(f"VootApiClient didn't return a list but returned \"{groups}\" instead.")
         groups = []
@@ -76,9 +71,14 @@ def get_groups(strategy, details, response, *args, **kwargs):
 
 def assign_communities(strategy, details, user, *args, **kwargs):
     user.team_set.all().delete()
-    group_urns = [group["id"] for group in details.get("groups", [])]
+    if type(details['groups']) is not list:
+        group_urns = [details['groups']]
+    else:
+        group_urns = details['groups']
+
     teams = []
     for community in Community.objects.filter(external_id__in=group_urns):
         teams.append(Team(user=user, community=community, team_id=community.external_id))
+    
     if len(teams):
         Team.objects.bulk_create(teams)
