@@ -290,6 +290,7 @@ export default {
 
 .v-btn--active {
   border-radius: 0;
+  color: @green !important;
 }
 
 .v-btn--active::before {
