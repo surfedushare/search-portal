@@ -88,8 +88,6 @@ class Command(BaseCommand):
             for key in self.domain_dictionary:
                 self.export_vocabulary(key=key, field=field, output_list=vocabulary_list)
 
-        logger.info('Done with study vocabulary harvest')
-
     def export_vocabulary(self, key, field, output_list):
 
         config = create_config("extract_processor", {
@@ -113,6 +111,8 @@ class Command(BaseCommand):
         for sub_root in vocab_groups["root"].tolist():
             self.depth_first_algorithm(value=sub_root, parent=root, field=field, groups=vocab_groups,
                                        frame=vocab_frame, output_list=output_list)
+
+        logger.info('Done with study vocabulary harvest: ' + key)
 
     def depth_first_algorithm(self, value, parent, field, groups, frame, output_list):
         new_term = create_metadata_value(term=frame.iloc[value], field=field, parent=parent)
