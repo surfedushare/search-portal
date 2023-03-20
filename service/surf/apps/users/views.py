@@ -66,7 +66,7 @@ class UserDetailsAPIView(APIView):
         except (IndexError, NameError, AttributeError):
             logger.warning('Cannot find institution page for ' + institution_id)
             data["institution_name"] = institution_id
-            
+
         request.session.modified = True  # this extends expiry
         return Response(data)
 

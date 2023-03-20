@@ -1,6 +1,5 @@
 from django.conf import settings
 
-from sentry_sdk import capture_message
 from social_core.pipeline.partial import partial
 import logging
 
@@ -8,6 +7,7 @@ from surf.vendor.surfconext.models import PrivacyStatement, DataGoalPermissionSe
 from surf.apps.communities.models import Community, Team
 
 logger = logging.getLogger("service")
+
 
 @partial
 def require_data_permissions(strategy, details, user=None, is_new=False, *args, **kwargs):
@@ -48,7 +48,7 @@ def get_groups(strategy, details, response, *args, **kwargs):
 
     permissions = details["permissions"]
     if (response['schac_home_organization'] == 'harvard-example.edu'):
-        # in dev we cannot create surfconext teams, so we fake it 
+        # in dev we cannot create surfconext teams, so we fake it
         response["edumember_is_member_of"] = ['urn:collab:group:surfteams.nl:nl:surfnet:diensten:test_team_zoekportal']
 
     community_permission = next(
@@ -69,6 +69,7 @@ def get_groups(strategy, details, response, *args, **kwargs):
     strategy.request.session["name"] = details["fullname"]
     strategy.request.session["institution_id"] = response["schac_home_organization"].replace('.', '-')
 
+
 def assign_communities(strategy, details, user, *args, **kwargs):
     user.team_set.all().delete()
     if type(details['groups']) is not list:
@@ -79,6 +80,6 @@ def assign_communities(strategy, details, user, *args, **kwargs):
     teams = []
     for community in Community.objects.filter(external_id__in=group_urns):
         teams.append(Team(user=user, community=community, team_id=community.external_id))
-    
+
     if len(teams):
         Team.objects.bulk_create(teams)
