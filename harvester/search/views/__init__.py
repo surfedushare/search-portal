@@ -1,0 +1,1 @@
+from search.views.document import ResearchProductSearchAPIView, LearningMaterialSearchAPIView

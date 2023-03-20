@@ -89,6 +89,7 @@ INSTALLED_APPS = [
 
     'core',
     'metadata',
+    'search',
     'sources',
 
     'edurep',
@@ -240,6 +241,7 @@ OPENSEARCH_ANALYSERS = {
 OPENSEARCH_ENABLE_DECOMPOUND_ANALYZERS = environment.opensearch.enable_decompound_analyzers
 OPENSEARCH_DECOMPOUND_WORD_LISTS = environment.opensearch.decompound_word_lists
 OPENSEARCH_PASSWORD = environment.secrets.opensearch.password
+OPENSEARCH_ALIAS_PREFIX = environment.opensearch.alias_prefix
 
 
 # Logging

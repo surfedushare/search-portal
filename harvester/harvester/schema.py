@@ -23,6 +23,8 @@ class HarvesterSchema(AutoSchema):
             operation["tags"] = ["Download data"]
         elif path.startswith("/extension"):
             operation["tags"] = ["Extending data"]
+        elif path.startswith("/search"):
+            operation["tags"] = ["Search"]
         elif path.startswith("/metadata"):
             operation["tags"] = ["Metadata"]
             if "tree" in path:
