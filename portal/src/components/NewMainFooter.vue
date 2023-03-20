@@ -54,6 +54,12 @@ export default {
   justify-content: space-between;
   align-items: flex-end;
   width: 100%;
+  @media @mobile {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    min-height: 250px;
+  }
 }
 
 .v-footer .links {
@@ -62,6 +68,10 @@ export default {
   align-content: flex-start;
   align-items: flex-start;
   width: 240px;
+  @media @mobile {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 
 .v-footer .links .v-btn {
@@ -77,6 +87,9 @@ export default {
 .v-footer .logos {
   display: flex;
   align-self: center;
+  @media @mobile {
+    align-self: end;
+  }
 }
 
 .v-footer .logos .surf-logo {
