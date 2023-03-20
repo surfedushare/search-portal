@@ -107,8 +107,11 @@ class Command(BaseCommand):
         raw_source = StudyVocabularyResource().get(self.domain_dictionary[key]["path"])
         raw_source.close()
         searched_source = extractor.extract(*raw_source.content)
-        vocab_frame = pd.DataFrame.from_records(searched_source).fillna("root")
+        vocab_frame = pd.DataFrame.from_records(searched_source)
+        vocab_frame = vocab_frame.dropna(subset=["language", "name"])
+        vocab_frame = vocab_frame.fillna(value="root")
         vocab_frame = vocab_frame.astype("string")
+        vocab_frame = vocab_frame.reset_index(drop=True)
         vocab_groups = vocab_frame.groupby("parent_id").groups
         root = get_or_create_metadata_value(field=field, term=self.domain_dictionary[key], parent=None)
         for sub_root in vocab_groups["root"].tolist():
