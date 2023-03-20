@@ -45,8 +45,12 @@ def store_data_permissions(strategy, details, user, *args, **kwargs):
 
 def get_groups(strategy, details, response, *args, **kwargs):
     # Cancel data processing if permission is not given
-    logger.info("SURFCONEXT RESPONSE", response)
+
     permissions = details["permissions"]
+    if (response['schac_home_organization'] == 'harvard-example.edu'):
+        # in dev we cannot create surfconext teams, so we fake it 
+        response["edumember_is_member_of"] = ['urn:collab:group:surfteams.nl:nl:surfnet:diensten:test_team_zoekportal']
+
     community_permission = next(
         (permission for permission in permissions if permission["type"] == DataGoalTypes.COMMUNITIES),
         None
@@ -59,15 +63,11 @@ def get_groups(strategy, details, response, *args, **kwargs):
     else:
         groups = []
 
+    logger.info(f"User {response['sub']} is part of groups {response['edumember_is_member_of']}")
     details["groups"] = groups
     strategy.request.session["email"] = details["email"]
     strategy.request.session["name"] = details["fullname"]
     strategy.request.session["institution_id"] = response["schac_home_organization"].replace('.', '-')
-
-    if not isinstance(groups, list):
-        capture_message(f"VootApiClient didn't return a list but returned \"{groups}\" instead.")
-        groups = []
-
 
 def assign_communities(strategy, details, user, *args, **kwargs):
     user.team_set.all().delete()
