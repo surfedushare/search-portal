@@ -1,20 +1,14 @@
-from unittest.mock import patch
-from datetime import datetime
-
-from django.test import TestCase, override_settings
-from django.core.management import call_command, CommandError
+from django.test import TestCase
+from django.core.management import call_command
 from django.contrib.auth.models import User
-from metadata.models import MetadataField, MetadataValue
+from metadata.models import MetadataValue
 
 
-@override_settings(VERSION="0.0.1")
 class TestHarvestStudyVocabulary(TestCase):
     """
     This test case represents the scenario where a harvest is started from t=0
     """
 
-    fixtures = ["initial-study-vocabulary-resources"]
-    spec_set = None
     repository = None
 
     def setUp(self):
