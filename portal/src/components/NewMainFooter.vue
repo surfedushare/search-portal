@@ -35,7 +35,7 @@ export default {
   },
   methods: {
     openUseLink(link) {
-      window.open(`${this.use_api_endpoint}${link}`, "_blank");
+      window.open(`${this.use_api_endpoint}${link}`, "_self");
     },
   },
 };
