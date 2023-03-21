@@ -1,7 +1,7 @@
 <template>
   <v-app-bar app class="bg-gray-lighter">
     <div class="wrapper mx-auto">
-      <router-link class="mt-2 mr-6" to="/">
+      <router-link class="mt-2 mr-2" to="/">
         <img class="logo" src="../assets/images/edusourceslogo.png" />
       </router-link>
 
@@ -24,7 +24,7 @@
         </div>
       </div>
 
-      <div v-if="isAuthenticated" class="user-info mr-4">
+      <div v-if="isAuthenticated" class="user-info mr-2">
         <div>{{ user.name }}</div>
         <div class="user-org">{{ user.institution_name }}</div>
       </div>
@@ -143,9 +143,9 @@ export default {
     ]),
     links() {
       return [
+        { text: this.$i18n.t("navigation.services"), href: this.use_api_endpoint, active: true },
         { text: this.$i18n.t("navigation.find-material"), to: "/", active: false },
         { text: this.$i18n.t("navigation.communities"), to: "/communitys", active: false },
-        { text: this.$i18n.t("navigation.services"), href: this.use_api_endpoint, active: true },
       ];
     },
   },
@@ -227,13 +227,14 @@ export default {
   border-radius: 24px !important;
   margin-right: 10px;
   @media @mobile {
-    margin-right: 30px;
+    margin-right: 10px;
   }
 }
 .user-info {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  min-width: 160px;
 }
 .user-org {
   color: @green;
