@@ -4,8 +4,7 @@
       <router-link class="mt-2 mr-2" to="/">
         <img class="logo" src="../assets/images/edusourceslogo.png" />
       </router-link>
-
-      <div v-if="!isAuthenticated" class="links">
+      <div v-if="$vuetify.breakpoint.mdAndUp" class="links">
         <div v-for="(link, index) in links" :key="index">
           <v-btn v-if="link.href" elevation="0" :href="link.href">
             {{ link.text }}
@@ -16,7 +15,7 @@
         </div>
       </div>
       <v-spacer></v-spacer>
-      <div v-if="!isAuthenticated" class="buttons mr-8">
+      <div v-if="!isAuthenticated && $vuetify.breakpoint.mdAndUp" class="buttons mr-8">
         <v-btn elevation="0" class="bg-yellow mr-4" @click="toInstitution()">{{ $t("navigation.upload") }}</v-btn>
         <div class="buttons">
           <v-btn outlined class="mr-4" :href="getLoginLink()">{{ $t("navigation.signin") }}</v-btn>
@@ -83,16 +82,18 @@
             <NewLanguageSwitch class="main-header__language_switch" />
             <v-divider></v-divider>
           </v-list-item>
-          <div v-for="(link, index) in links" :key="index" :class="{ active: link.active === true }">
-            <v-list-item v-if="link.href" :href="link.href">
-              <v-list-item-title>{{ link.text }}</v-list-item-title>
-              <v-divider></v-divider>
-            </v-list-item>
-            <v-list-item v-else :to="link.to">
-              <v-list-item-title>{{ link.text }}</v-list-item-title>
-              <v-divider></v-divider>
-            </v-list-item>
-          </div>
+          <template v-if="!$vuetify.breakpoint.mdAndUp">
+            <template v-for="(link, index) in links">
+              <v-list-item v-if="link.href" :key="index" :href="link.href">
+                <v-list-item-title>{{ link.text }}</v-list-item-title>
+                <v-divider></v-divider>
+              </v-list-item>
+              <v-list-item v-else :key="index + 1" :to="link.to">
+                <v-list-item-title>{{ link.text }}</v-list-item-title>
+                <v-divider></v-divider>
+              </v-list-item>
+            </template>
+          </template>
           <v-list-item v-if="isAuthenticated" @click="toInstitution()">
             <v-list-item-title>{{ $t("navigation.my-institution") }}</v-list-item-title>
             <v-divider></v-divider>
