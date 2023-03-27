@@ -1,4 +1,6 @@
+from django.conf import settings
 from django.core.validators import MinValueValidator
+from django.shortcuts import Http404
 from rest_framework.generics import GenericAPIView
 from rest_framework import serializers
 from rest_framework.permissions import AllowAny
@@ -68,10 +70,17 @@ class DocumentSearchAPIView(GenericAPIView):
     **page**: The current page number.
 
     """
-    document_type = None
-    serializer_class = DocumentSearchSerializer
+    document_type = settings.DOCUMENT_TYPE
     permission_classes = (AllowAny,)
     schema = HarvesterSchema()
+
+    def get_serializer_class(self):
+        if self.document_type == DocumentTypes.LEARNING_MATERIAL:
+            return LearningMaterialSearchSerializer
+        elif self.document_type == DocumentTypes.RESEARCH_PRODUCT:
+            return ResearchProductSearchSerializer
+        else:
+            raise AssertionError("DocumentSearchAPIView expected application to use different DOCUMENT_TYPE")
 
     def post(self, request, *args, **kwargs):
         # Validate request parameters and prepare search
@@ -91,11 +100,34 @@ class DocumentSearchAPIView(GenericAPIView):
         })
 
 
-class LearningMaterialSearchAPIView(DocumentSearchAPIView):
-    document_type = DocumentTypes.LEARNING_MATERIAL
-    serializer_class = LearningMaterialSearchSerializer
+class DocumentSearchDetailAPIView(GenericAPIView):
+    """
+    Searches for a document with the specified external_id.
+    It raises a 404 if the document is not found.
+    Otherwise it returns the document as an object.
+    """
 
+    document_type = settings.DOCUMENT_TYPE
+    permission_classes = (AllowAny,)
+    schema = HarvesterSchema()
 
-class ResearchProductSearchAPIView(DocumentSearchAPIView):
-    document_type = DocumentTypes.RESEARCH_PRODUCT
-    serializer_class = ResearchProductSearchSerializer
+    def get_serializer_class(self):
+        if self.document_type == DocumentTypes.LEARNING_MATERIAL:
+            return LearningMaterialResultSerializer
+        elif self.document_type == DocumentTypes.RESEARCH_PRODUCT:
+            return ResearchProductResultSerializer
+        else:
+            raise AssertionError("DocumentSearchDetailAPIView expected application to use different DOCUMENT_TYPE")
+
+    def get_object(self):
+        client = get_search_client(self.document_type)
+        response = client.get_documents_by_id([self.kwargs["external_id"]])
+        records = response.get("records", [])
+        if not records:
+            raise Http404()
+        document = records[0]
+        return document
+
+    def get(self, request, *args, **kwargs):
+        instance = self.get_object()
+        return Response(instance)
