@@ -1,4 +1,5 @@
 class Repositories:
+    EDUREP_JSONSEARCH = "sources.EdurepJsonSearchResource"
     EDUREP = "edurep.EdurepOAIPMH"
     SHAREKIT = "sharekit.SharekitMetadataHarvest"
     ANATOMY_TOOL = "anatomy_tool.AnatomyToolOAIPMH"
