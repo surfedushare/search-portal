@@ -1,5 +1,5 @@
 <template>
-  <section class="edusources-container main material">
+  <section class="edusources-container main material" :class="{ 'new-header': isNewHeader }">
     <Navigation :materials="materials" :material="material" />
     <div v-if="material" class="center_block material__wrapper">
       <Sidebar :material="material" :collections="collections" />
@@ -58,7 +58,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["material"]),
+    ...mapGetters(["material", "isNewHeader"]),
     communities() {
       // Get communities from collections
       const communities = this.collections.map((collection) => collection.communities).flat();

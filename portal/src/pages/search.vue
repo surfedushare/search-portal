@@ -1,5 +1,5 @@
 <template>
-  <section class="edusources-container search">
+  <section class="edusources-container main search" :class="{ 'new-header': isNewHeader }">
     <div>
       <div class="search__info">
         <div class="search__background"></div>
@@ -104,7 +104,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["materials", "materials_loading", "did_you_mean"]),
+    ...mapGetters(["materials", "materials_loading", "did_you_mean", "isNewHeader"]),
     showFilterCategories() {
       return this.isReady && this.materials && this.materials.records;
     },

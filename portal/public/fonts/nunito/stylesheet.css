@@ -2,6 +2,26 @@
 
 @font-face {
     font-family: 'nunito';
+    src: url('Nunito-Bold.ttf') format('ttf'),
+         url('nunito-bold-webfont.woff2') format('woff2'),
+         url('nunito-bold-webfont.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'nunito';
+    src: url('Nunito-ExtraBold.ttf') format('ttf'),
+         url('nunito-extrabold-webfont.woff2') format('woff2'),
+         url('nunito-extrabold-webfont.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'nunito';
     src: url('Nunito-ExtraLight.ttf') format('ttf'),
          url('nunito-extralight-webfont.woff2') format('woff2'),
          url('nunito-extralight-webfont.woff') format('woff');
@@ -32,10 +52,20 @@
 
 @font-face {
     font-family: 'nunito';
+    src: url('Nunito-Black.ttf') format('ttf'),
+         url('nunito-black-webfont.woff2') format('woff2'),
+         url('nunito-black-webfont.woff') format('woff');
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap; 
+}
+
+@font-face {
+    font-family: 'nunito';
     src: url('Nunito-SemiBold.ttf') format('ttf'),
          url('nunito-semibold-webfont.woff2') format('woff2'),
          url('nunito-semibold-webfont.woff') format('woff');
-    font-weight: 800;
+    font-weight: 600;
     font-style: normal;
     font-display: swap;
 }
