@@ -108,7 +108,9 @@ class Command(BaseCommand):
         raw_source.close()
         searched_source = extractor.extract(*raw_source.content)
         vocab_frame = pd.DataFrame.from_records(searched_source)
+        # This drops the object that indicates the context of the vocabulary.
         vocab_frame = vocab_frame.dropna(subset=["language", "name"])
+        # Nodes without parent should have root as parent.
         vocab_frame = vocab_frame.fillna(value="root")
         vocab_frame = vocab_frame.astype("string")
         vocab_frame = vocab_frame.reset_index(drop=True)

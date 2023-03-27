@@ -5,22 +5,13 @@ from metadata.models import MetadataValue
 
 
 class TestHarvestStudyVocabulary(TestCase):
-    """
-    This test case represents the scenario where a harvest is started from t=0
-    """
-
-    repository = None
-
-    def setUp(self):
-        super().setUp()
-        self.user = User.objects.create(username="supersurf")
-        self.client.force_login(self.user)
 
     def test_no_duplicates(self):
         call_command("harvest_study_vocabulary", "--vocabulary=verpleegkunde")
         call_command("harvest_study_vocabulary", "--vocabulary=verpleegkunde")
         total_objects = MetadataValue.objects.count()
-        self.assertEqual(total_objects, 390)
+        self.assertEqual(total_objects, 390,
+                         "When the command runs twice it should not duplicate values.")
 
     def test_same_number_applied_science(self):
         with self.assertNumQueries(1026):
