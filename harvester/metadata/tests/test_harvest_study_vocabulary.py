@@ -16,12 +16,15 @@ class TestHarvestStudyVocabulary(TestCase):
         self.user = User.objects.create(username="supersurf")
         self.client.force_login(self.user)
 
-    def test_no_duplicate_error(self):
+    def test_no_duplicates(self):
         call_command("harvest_study_vocabulary", "--vocabulary=verpleegkunde")
         call_command("harvest_study_vocabulary", "--vocabulary=verpleegkunde")
+        total_objects = MetadataValue.objects.count()
+        self.assertEqual(total_objects, 390)
+
 
     def test_same_number_applied_science(self):
-        with self.assertNumQueries(1032):
+        with self.assertNumQueries(1026):
             call_command("harvest_study_vocabulary", "--vocabulary=applied-science")
 
     def test_data_contains_right_values(self):
