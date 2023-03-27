@@ -1,10 +1,11 @@
 from django.test import TestCase
 from django.core.management import call_command
-from django.contrib.auth.models import User
 from metadata.models import MetadataValue
 
 
 class TestHarvestStudyVocabulary(TestCase):
+
+    fixtures = ["initial-study-vocabulary-resources"]
 
     def test_no_duplicates(self):
         call_command("harvest_study_vocabulary", "--vocabulary=verpleegkunde")
