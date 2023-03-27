@@ -20,16 +20,13 @@ from sentry_sdk.integrations.logging import ignore_logger
 
 from celery.schedules import crontab
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-# We're adding the environments directory outside of the project directory to the path
-# That way we can load the environments and re-use them in different contexts
-# Like maintenance tasks and harvesting tasks
-sys.path.append(os.path.join(BASE_DIR, "..", "environments"))
 from project import create_configuration_and_session, MODE, CONTEXT, PROJECT
 from utils.packaging import get_package_info
 from search_client.opensearch.logging import OpensearchHandler, create_opensearch_handler
+
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 # Then we read some variables from the (build) environment
 PACKAGE_INFO = get_package_info()
 GIT_COMMIT = PACKAGE_INFO.get("commit", "unknown-git-commit")
