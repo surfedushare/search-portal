@@ -31,6 +31,7 @@ class TestHarvestStudyVocabulary(TestCase):
         self.assertEqual(value.name, "Python")
         self.assertEqual(value.parent.value,
                          "http://purl.edustandaard.nl/concept/982e3b48-90b9-4fbd-9365-04289afe6929")
-        self.assertEqual(str(value.get_descendants()),
-                         "<TreeQuerySet [<MetadataValue: Biopython>, <MetadataValue: Data Cleaning with Python>, <MetadataValue: Data Visualisation with Python>, <MetadataValue: Machine Learning  with Python>, <MetadataValue: NumPy>, <MetadataValue: Pandas>, <MetadataValue: Python Basics>, <MetadataValue: SciPy>, <MetadataValue: Statistics with Python>]>")
-
+        self.assertEqual([descendant.name for descendant in value.get_descendants()],
+                         ["Biopython", "Data Cleaning with Python", "Data Visualisation with Python",
+                          "Machine Learning  with Python", "NumPy", "Pandas", "Python Basics",
+                          "SciPy", "Statistics with Python"])
