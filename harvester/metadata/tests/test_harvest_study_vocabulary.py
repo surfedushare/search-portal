@@ -22,7 +22,6 @@ class TestHarvestStudyVocabulary(TestCase):
         total_objects = MetadataValue.objects.count()
         self.assertEqual(total_objects, 390)
 
-
     def test_same_number_applied_science(self):
         with self.assertNumQueries(1026):
             call_command("harvest_study_vocabulary", "--vocabulary=applied-science")
