@@ -19,7 +19,7 @@ class HarvesterSchema(AutoSchema):
 
     def get_operation(self, path, method):
         operation = super().get_operation(path, method)
-        if path.startswith("/dataset"):
+        if path.startswith("/dataset") or path.startswith("/document"):
             operation["tags"] = ["Download data"]
         elif path.startswith("/extension"):
             operation["tags"] = ["Extending data"]
