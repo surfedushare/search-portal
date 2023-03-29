@@ -5,10 +5,11 @@ from search import views
 
 app_name = 'search'
 public_api_patterns = [
-    path(r'search/documents', views.DocumentSearchAPIView.as_view(), name="search-documents"),
+    path(r'search/documents/', views.DocumentSearchAPIView.as_view(), name="search-documents"),
+    path(r'find/documents/', views.DocumentSearchDetailsAPIView.as_view(), name="find-document-details"),
     path(
-        r'search/documents/<str:external_id>', views.DocumentSearchDetailAPIView.as_view(),
-        name="search-documents-detail"
+        r'find/documents/<str:external_id>/', views.DocumentSearchDetailAPIView.as_view(),
+        name="find-document-detail"
     ),
 ]
 urlpatterns = public_api_patterns

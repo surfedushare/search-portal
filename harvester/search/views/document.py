@@ -5,6 +5,7 @@ from rest_framework.generics import GenericAPIView
 from rest_framework import serializers
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
+from rest_framework.exceptions import ValidationError
 
 from search_client import DocumentTypes
 from search_client.serializers import LearningMaterialResultSerializer, ResearchProductResultSerializer
@@ -22,9 +23,11 @@ class DocumentSearchFilterSerializer(serializers.Serializer):
 class DocumentSearchSerializer(serializers.Serializer):
 
     search_text = serializers.CharField(required=True, allow_blank=True, write_only=True)
+    filters = DocumentSearchFilterSerializer(many=True, write_only=True, default=[])
+
     page = serializers.IntegerField(required=False, default=1, validators=[MinValueValidator(1)])
     page_size = serializers.IntegerField(required=False, default=10, validators=[MinValueValidator(0)])
-    filters = DocumentSearchFilterSerializer(many=True, write_only=True, default=[])
+
     records_total = serializers.IntegerField(read_only=True, source="recordcount")
 
 
@@ -39,7 +42,7 @@ class ResearchProductSearchSerializer(DocumentSearchSerializer):
 class DocumentSearchAPIView(GenericAPIView):
     """
     The main search endpoint.
-    Specify the search query in the ``search_text`` property of the body to do a simple search.
+    Specify the search query in the **search_text** property of the body to do a simple search.
     All other properties are optional and are described below
 
     ## Request body
@@ -63,7 +66,7 @@ class DocumentSearchAPIView(GenericAPIView):
 
     **results**: An array containing the search results.
 
-    **records_total**: Count of all available results
+    **results_total**: Count of all available results
 
     **page_size**: Number of results to return per page.
 
@@ -92,8 +95,8 @@ class DocumentSearchAPIView(GenericAPIView):
         client = get_search_client(self.document_type)
         response = client.search(**data)
         return Response({
-            "records": response["records"],
-            "records_total": response["recordcount"],
+            "results": response["records"],
+            "results_total": response["recordcount"],
             "did_you_mean": response["did_you_mean"],
             "page": data["page"],
             "page_size": data["page_size"]
@@ -131,3 +134,60 @@ class DocumentSearchDetailAPIView(GenericAPIView):
     def get(self, request, *args, **kwargs):
         instance = self.get_object()
         return Response(instance)
+
+
+class LearningMaterialDetailsSerializer(serializers.Serializer):
+    external_ids = serializers.ListField(child=serializers.CharField(), write_only=True)
+    results = LearningMaterialResultSerializer(many=True, read_only=True)
+    records_total = serializers.IntegerField(read_only=True)
+
+
+class ResearchProductDetailsSerializer(serializers.Serializer):
+    external_ids = serializers.ListField(child=serializers.CharField(), write_only=True)
+    results = ResearchProductResultSerializer(many=True, read_only=True)
+    records_total = serializers.IntegerField(read_only=True)
+
+
+class DocumentSearchDetailsAPIView(GenericAPIView):
+    """
+    Searches for documents with the specified external ids.
+
+    ## Request body
+
+    **external_ids**: A list of external ids to find documents for
+
+    ## Response body
+
+    **results**: The list of documents that match the external ids
+
+    **results_total**: The total amount of found documents. This could be less than the amount of given external ids
+    if some of the external ids weren't found.
+
+    """
+
+    document_type = settings.DOCUMENT_TYPE
+    permission_classes = (AllowAny,)
+    schema = HarvesterSchema()
+    max_page_size = 100
+
+    def get_serializer_class(self):
+        if self.document_type == DocumentTypes.LEARNING_MATERIAL:
+            return LearningMaterialDetailsSerializer
+        elif self.document_type == DocumentTypes.RESEARCH_PRODUCT:
+            return ResearchProductDetailsSerializer
+        else:
+            raise AssertionError("DocumentSearchDetailAPIView expected application to use different DOCUMENT_TYPE")
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=self.request.data)
+        serializer.is_valid(raise_exception=True)
+        external_ids = serializer.validated_data["external_ids"]
+        if len(external_ids) > self.max_page_size:
+            raise ValidationError(detail=f"Can't process more than {self.max_page_size} external ids at a time")
+        client = get_search_client(self.document_type)
+        response = client.get_documents_by_id(external_ids, page_size=self.max_page_size)
+        records = response.get("records", [])
+        return Response({
+            "results": records,
+            "results_total": len(records)
+        })

@@ -1,1 +1,1 @@
-from search.views.document import DocumentSearchAPIView, DocumentSearchDetailAPIView
+from search.views.document import DocumentSearchAPIView, DocumentSearchDetailAPIView, DocumentSearchDetailsAPIView
