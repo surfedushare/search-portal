@@ -25,6 +25,20 @@ class HarvesterSchema(AutoSchema):
             operation["tags"] = ["Extending data"]
         elif path.startswith("/search") or path.startswith("/find"):
             operation["tags"] = ["Search"]
+            if "search/documents" in path:
+                operation["parameters"] += [
+                    {
+                        "name": "include_filter_counts",
+                        "in": "query",
+                        "required": False,
+                        "description": "When set to 1 the response will include the counts of documents "
+                                       "per combination of metadata field and metadata value "
+                                       "in the filter_counts property",
+                        'schema': {
+                            'type': 'number',
+                        }
+                    }
+                ]
         elif path.startswith("/metadata"):
             operation["tags"] = ["Metadata"]
             if "tree" in path:

@@ -30,6 +30,15 @@ class DocumentSearchSerializer(serializers.Serializer):
 
     records_total = serializers.IntegerField(read_only=True, source="recordcount")
 
+    def validate_filters(self, filters):
+        filter_fields = self.context.get("filter_fields", None)
+        if not filter_fields:
+            return filters
+        for metadata_filter in filters:
+            field_id = metadata_filter.get("external_id", None)
+            if field_id not in filter_fields:
+                raise ValidationError(detail=f"Invalid external_id for metadata field in filter '{field_id}'")
+
 
 class LearningMaterialSearchSerializer(DocumentSearchSerializer):
     results = LearningMaterialResultSerializer(many=True, read_only=True)
@@ -85,12 +94,19 @@ class DocumentSearchAPIView(GenericAPIView):
         else:
             raise AssertionError("DocumentSearchAPIView expected application to use different DOCUMENT_TYPE")
 
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["filter_fields"] = MetadataField.objects.exclude(is_manual=True).values_list("name", flat=True)
+        return context
+
     def post(self, request, *args, **kwargs):
         # Validate request parameters and prepare search
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
-        data["drilldown_names"] = MetadataField.objects.exclude(is_manual=True).values_list("name", flat=True)
+        include_filter_counts = request.GET.get("include_filter_counts", None)
+        if include_filter_counts == "1":
+            data["drilldown_names"] = serializer.context["filter_fields"]
         # Execute search and return results
         client = get_search_client(self.document_type)
         response = client.search(**data)
@@ -99,7 +115,8 @@ class DocumentSearchAPIView(GenericAPIView):
             "results_total": response["recordcount"],
             "did_you_mean": response["did_you_mean"],
             "page": data["page"],
-            "page_size": data["page_size"]
+            "page_size": data["page_size"],
+            "filter_counts": response["drilldowns"] if include_filter_counts == "1" else None
         })
 
 
