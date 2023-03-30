@@ -51,6 +51,41 @@ class HarvesterSchema(AutoSchema):
                         }
                     }
                 ]
+        elif path.startswith("/suggestions"):
+            operation["tags"] = ["Suggestions"]
+            if "similarity" in path:
+                operation["parameters"] += [
+                    {
+                        "name": "external_id",
+                        "in": "query",
+                        "required": True,
+                        "description": "The external_id of the document you want similar documents for.",
+                        'schema': {
+                            'type': 'string',
+                        }
+                    },
+                    {
+                        "name": "language",
+                        "in": "query",
+                        "required": True,
+                        "description": "The language of the document you want similar documents for.",
+                        'schema': {
+                            'type': 'string',
+                        }
+                    }
+                ]
+            if "author" in path:
+                operation["parameters"] += [
+                    {
+                        "name": "author_name",
+                        "in": "query",
+                        "required": True,
+                        "description": "The name of the author you want documents for.",
+                        'schema': {
+                            'type': 'string',
+                        }
+                    }
+                ]
         elif path.startswith("/metadata"):
             operation["tags"] = ["Metadata"]
             if "tree" in path:

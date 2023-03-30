@@ -12,5 +12,7 @@ public_api_patterns = [
         r'find/documents/<str:external_id>/', views.DocumentSearchDetailAPIView.as_view(),
         name="find-document-detail"
     ),
+    path(r'suggestions/similarity/', views.SimilarityAPIView.as_view()),
+    path(r'suggestions/author/', views.AuthorSuggestionsAPIView.as_view()),
 ]
 urlpatterns = public_api_patterns
