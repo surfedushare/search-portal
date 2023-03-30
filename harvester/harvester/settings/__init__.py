@@ -4,8 +4,8 @@
 # These environments get loaded through the invoke library.
 import sys
 import os
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.append(os.path.join(BASE_DIR, "..", "..", "environments"))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(os.path.join(BASE_DIR, "..", "environments"))
 from project import PROJECT
 
 # We could specify the settings file with DJANGO_SETTINGS_MODULE environment variable,
