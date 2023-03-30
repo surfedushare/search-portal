@@ -31,4 +31,4 @@ public_api_patterns = [
     ),
     path('document/metadata/', views.MetadataDocumentListView.as_view(), name="metadata-documents"),
 ]
-urlpatterns = public_api_patterns + router.urls
+urlpatterns = public_api_patterns + router.urls + deprecated_api_patterns
