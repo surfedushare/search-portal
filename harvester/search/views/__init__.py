@@ -1,1 +1,2 @@
 from search.views.document import DocumentSearchAPIView, DocumentSearchDetailAPIView, DocumentSearchDetailsAPIView
+from search.views.autocomplete import AutocompleteAPIView

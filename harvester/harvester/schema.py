@@ -39,6 +39,18 @@ class HarvesterSchema(AutoSchema):
                         }
                     }
                 ]
+            if "search/autocomplete" in path:
+                operation["parameters"] += [
+                    {
+                        "name": "query",
+                        "in": "query",
+                        "required": True,
+                        "description": "The search query you want to autocomplete for.",
+                        'schema': {
+                            'type': 'string',
+                        }
+                    }
+                ]
         elif path.startswith("/metadata"):
             operation["tags"] = ["Metadata"]
             if "tree" in path:
