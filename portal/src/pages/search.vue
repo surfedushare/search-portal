@@ -132,12 +132,12 @@ export default {
       this.executeSearch(changed);
     },
     executeSearch(updateUrl) {
-      this.search.page = 1;
       this.$store.dispatch("searchMaterials", this.search).then((results) => {
         this.$log.siteSearch(this.$route.query, results.records_total);
       });
 
       if (updateUrl) {
+        this.search.page = 1;
         this.$router.push(generateSearchMaterialsQuery(this.search, this.$route.name));
       }
     },
