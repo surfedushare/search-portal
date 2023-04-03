@@ -102,10 +102,9 @@ class EdurepMetadataExtraction(ExtractProcessor):
     @classmethod
     def get_copyright(cls, node):
         copyright = node["@type"]["lom:copyrightAndOtherRestrictions"]
-        if copyright is None:
-            return "yes"
-        if copyright == "yes":
-            copyright = cls.parse_copyright_description(cls.get_copyright_description(node))
+        if copyright is not None:
+            return copyright
+        copyright = cls.parse_copyright_description(cls.get_copyright_description(node))
         return copyright or "yes"
 
     @classmethod
