@@ -1,15 +1,30 @@
 import re
 from mimetypes import guess_type
 from hashlib import sha1
-
+from core.constants import HIGHER_EDUCATION_LEVELS
 from django.conf import settings
-
+from dateutil.parser import parse as date_parser
 from datagrowth.processors import ExtractProcessor
+from django.utils.text import slugify
+
+
+FILE_TYPE_TO_MIME_TYPE = {
+    "TEXT": "application/pdf",
+    "VIDEO": "video/mp4",
+    "AUDIO": "audio/mp3",
+    "IMAGE": "image/jpeg",
+    "DOCUMENT": "application/x-Wikiwijs-Arrangement",
+    "WEBSITE": "text/html",
+    "NOT_SET": None
+}
 
 
 class EdurepMetadataExtraction(ExtractProcessor):
 
     youtube_regex = re.compile(r".*(youtube\.com|youtu\.be).*", re.IGNORECASE)
+    cc_url_regex = re.compile(r"^https?://creativecommons\.org/(?P<type>\w+)/(?P<license>[a-z\-]+)/(?P<version>\d\.\d)",
+                              re.IGNORECASE)
+    cc_code_regex = re.compile(r"^cc([ \-][a-z]{2})+$", re.IGNORECASE)
 
     @classmethod
     def get_record_state(cls, node):
@@ -20,33 +35,6 @@ class EdurepMetadataExtraction(ExtractProcessor):
     #############################
 
     @staticmethod
-    def _parse_electronic_version(electronic_version):
-        if "file" in electronic_version:
-            url = electronic_version["file"]["url"]
-            file_name = electronic_version["file"]["fileName"]
-            mime_type = electronic_version["file"]["mimeType"]
-        elif "link" in electronic_version:
-            url = electronic_version["link"]
-            file_name = None
-            mime_type = "text/html"
-        else:
-            return
-        access_type = electronic_version.get("accessType", {})
-        access_rights = "ClosedAccess"
-        if access_type.get("uri", "").endswith("/open"):
-            access_rights = "OpenAccess"
-        elif access_type.get("uri", "").endswith("/restricted"):
-            access_rights = "RestrictedAccess"
-        return {
-            "title": file_name,
-            "url": url,
-            "mime_type": mime_type,
-            "hash": sha1(url.encode("utf-8")).hexdigest(),
-            "copyright": None,
-            "access_rights": access_rights
-        }
-
-    @staticmethod
     def _serialize_access_rights(access_rights):
         access_rights = access_rights.replace("Access", "")
         access_rights = access_rights.lower()
@@ -55,17 +43,20 @@ class EdurepMetadataExtraction(ExtractProcessor):
 
     @classmethod
     def get_files(cls, node):
-        electronic_versions = node.get("electronicVersions", []) + node.get("additionalFiles", [])
-        if not electronic_versions:
+        if not node:
             return []
-        return [
-            cls._parse_electronic_version(electronic_version)
-            for electronic_version in electronic_versions if cls._parse_electronic_version(electronic_version)
-        ]
+        return {
+            "title": node["schema:name"]["@value"],
+            "url": node["schema:url"],
+            "mime_type": FILE_TYPE_TO_MIME_TYPE.get(node["schema:encodingFormat"]),
+            "hash": sha1(node["schema:url"].encode("utf-8")).hexdigest(),
+            "copyright": node["schema:license"],
+            "access_rights": node["dcterms:accessRights"]
+        }
 
     @classmethod
     def get_language(cls, node):
-        language = node["language"]["term"]["en_GB"]
+        language = node["schema:identifier"]["schema:inLanguage"]
         if language == "Dutch":
             return "nl"
         elif language == "English":
@@ -101,11 +92,37 @@ class EdurepMetadataExtraction(ExtractProcessor):
         return settings.MIME_TYPE_TO_TECHNICAL_TYPE.get(mime_type, "unknown")
 
     @classmethod
+    def parse_copyright_description(cls, description):
+        if description is None:
+            return
+        url_match = cls.cc_url_regex.match(description)
+        if url_match is None:
+            code_match = cls.cc_code_regex.match(description)
+            return slugify(description.lower()) if code_match else None
+        license = url_match.group("license").lower()
+        if license == "mark":
+            license = "pdm"
+        elif license == "zero":
+            license = "cc0"
+        else:
+            license = "cc-" + license
+        return slugify(f"{license}-{url_match.group('version')}")
+
+    @classmethod
     def get_copyright(cls, node):
-        files = cls.get_files(node)
-        if not len(files):
-            return "closed-access"
-        return cls._serialize_access_rights(files[0]["access_rights"])
+        copyright = node["@type"]["lom:copyrightAndOtherRestrictions"]
+        if copyright is None:
+            return "yes"
+        if copyright == "yes":
+            copyright = cls.parse_copyright_description(cls.get_copyright_description(node))
+        return copyright or "yes"
+
+    @classmethod
+    def get_copyright_description(cls, node):
+        license = node["schema:license"]
+        if not license:
+            return
+        return license.text.strip() if license else None
 
     @classmethod
     def get_from_youtube(cls, node):
@@ -117,19 +134,11 @@ class EdurepMetadataExtraction(ExtractProcessor):
     @classmethod
     def get_authors(cls, node):
         authors = []
-        for person in node["contributors"]:
-            name = person.get('name', {})
-            match name:
-                case {"firstName": first_name}:
-                    full_name = f"{first_name} {name['lastName']}"
-                case {"lastName": last_name}:
-                    full_name = last_name
-                case _:
-                    full_name = None
+        for person in node["dcterms:creator"]:
             authors.append({
-                "name": full_name,
+                "name": person,
                 "email": None,
-                "external_id": person["pureId"],
+                "external_id": None,
                 "dai": None,
                 "orcid": None,
                 "isni": None
@@ -137,13 +146,56 @@ class EdurepMetadataExtraction(ExtractProcessor):
         return authors
 
     @classmethod
+    def get_educational_levels(cls, node):
+        blocks = node["schema:educationalLevel"]
+        educational_levels = []
+        for block in blocks:
+            for item in block["schema:name"]:
+                if item["@value"] in HIGHER_EDUCATION_LEVELS.keys():
+                    educational_levels.append(item["@value"])
+        return educational_levels
+
+    @classmethod
+    def get_lowest_educational_level(cls, node):
+        educational_levels = cls.get_educational_levels(node)
+        current_numeric_level = 3 if len(educational_levels) else -1
+        for education_level in educational_levels:
+            for higher_education_level, numeric_level in HIGHER_EDUCATION_LEVELS.items():
+                if not education_level.startswith(higher_education_level):
+                    continue
+                # One of the records education levels matches a higher education level.
+                # We re-assign current level and stop processing this education level,
+                # as it shouldn't match multiple higher education levels
+                current_numeric_level = min(current_numeric_level, numeric_level)
+                break
+            else:
+                # No higher education level found inside current education level.
+                # Dealing with an "other" means a lower education level than we're interested in.
+                # So this record has the lowest possible level. We're done processing this seed.
+                current_numeric_level = 0
+                break
+        return current_numeric_level
+
+    @classmethod
     def get_provider(cls, node):
+        provider_name = None
+        publishers = node["dcterms:publisher"]
+        if len(publishers):
+            provider_name = publishers[0]
         return {
             "ror": None,
             "external_id": None,
-            "slug": "edurep",
-            "name": "Edurep"
+            "slug": None,
+            "name": provider_name
         }
+
+    @classmethod
+    def get_keywords(cls, node):
+        keyword_dict = node["schema:keywords"]
+        return[
+            keyword["@value"]
+            for keyword in keyword_dict
+        ]
 
     @classmethod
     def get_organizations(cls, node):
@@ -156,8 +208,23 @@ class EdurepMetadataExtraction(ExtractProcessor):
         }
 
     @classmethod
-    def get_publishers(cls, node):
-        return ["Edurep"]
+    def get_material_types(cls, node):
+        material_types = node["schema:learningResourceType"]
+        if not material_types:
+            return []
+        return [
+            material_type["schema:termCode"].text.strip()
+            for material_type in material_types
+        ]
+
+
+    @classmethod
+    def get_publisher_year(cls, node):
+        date = node["schema:publisherDate"]
+        if date is None:
+            return
+        datetime = date_parser(date)
+        return datetime.year
 
     @classmethod
     def get_is_restricted(cls, node):
@@ -176,54 +243,44 @@ class EdurepMetadataExtraction(ExtractProcessor):
             case "ClosedAccess", _:
                 return False
 
-    @classmethod
-    def get_doi(cls, node):
-        if "electronicVersions" not in node:
-            return None
-        doi_version = next(
-            (electronic_version for electronic_version in node["electronicVersions"] if "doi" in electronic_version),
-            None
-        )
-        return doi_version["doi"] if doi_version else None
-
 
 EDUREP_EXTRACTION_OBJECTIVE = {
     # Essential NPPO properties
     "url": EdurepMetadataExtraction.get_url,
     "files": EdurepMetadataExtraction.get_files,
     "copyright": EdurepMetadataExtraction.get_copyright,
-    "title": "$.title.value",
-    "language": EdurepMetadataExtraction.get_language,
-    "keywords": "$.keywordGroups.0.keywords.0.freeKeywords",
-    "description": "$.abstract.en_GB",
+    "title": "$.schema:name.@value",
+    "language": "$.schema:identifier.schema:inLanguage",
+    "keywords": EdurepMetadataExtraction.get_keywords,
+    "description": "$.schema:description.@value",
     "mime_type": EdurepMetadataExtraction.get_mime_type,
     "authors": EdurepMetadataExtraction.get_authors,
     "organizations": EdurepMetadataExtraction.get_organizations,
-    "publishers": EdurepMetadataExtraction.get_publishers,
-    "publisher_date": lambda node: None,
-    "publisher_year": "$.publicationStatuses.0.publicationDate.year",
+    "publishers": "$.dcterms:publisher",
+    "publisher_date": "$.schema:datePublished",
+    "publisher_year": EdurepMetadataExtraction.get_publisher_year,
 
     # Non-essential NPPO properties
     "technical_type": EdurepMetadataExtraction.get_technical_type,
     "from_youtube": EdurepMetadataExtraction.get_from_youtube,
     "is_restricted": EdurepMetadataExtraction.get_is_restricted,
     "analysis_allowed": EdurepMetadataExtraction.get_analysis_allowed,
-    "research_object_type": "$.type.term.en_GB",
+    "research_object_type": lambda node: [],
     "research_themes": lambda node: [],
     "parties": lambda node: [],
-    "doi": EdurepMetadataExtraction.get_doi,
+    "doi": lambda node: [],
 
     # Non-essential Edusources properties (for compatibility reasons)
-    "material_types": lambda node: None,
-    "aggregation_level": lambda node: None,
-    "lom_educational_levels": lambda node: [],
+    "material_types": EdurepMetadataExtraction.get_material_types,
+    "aggregation_level": "$.lom:aggregationLevel",
+    "lom_educational_levels": EdurepMetadataExtraction.get_educational_levels,
     "studies": lambda node: [],
     "ideas": lambda node: [],
     "is_part_of": lambda node: [],
     "has_parts": lambda node: [],
-    "copyright_description": lambda node: None,
+    "copyright_description": EdurepMetadataExtraction.get_copyright_description,
     "learning_material_disciplines": lambda node: [],
     "consortium": lambda node: None,
     "lom_educational_level": lambda node: None,
-    "lowest_educational_level": lambda node: 2,
+    "lowest_educational_level": EdurepMetadataExtraction.get_lowest_educational_level
 }
