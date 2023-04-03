@@ -82,7 +82,7 @@ class MetadataValueSerializer(serializers.ModelSerializer):
         children = sorted(obj.get_children(), key=lambda child: child.frequency, reverse=True)
         max_children = self.context["request"].GET.get("max_children", "")
         max_children = int(max_children) if max_children else None
-        return MetadataValueSerializer(children, many=True).data[:max_children]
+        return MetadataValueSerializer(children, many=True, context=self.context).data[:max_children]
 
     def get_children_count(self, obj):
         return len(obj.get_children())
