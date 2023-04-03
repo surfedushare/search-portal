@@ -1,4 +1,4 @@
-from .document import DocumentView, DocumentContentView
+from .document import RawDocumentListView, RawDocumentDetailView, MetadataDocumentListView, MetadataDocumentDetailView
 from .collection import CollectionView, CollectionContentView
 from .dataset import DatasetListView, DatasetDetailView, DatasetDocumentsView, DatasetMetadataDocumentsView
 from .extension import ExtensionListView, ExtensionDetailView

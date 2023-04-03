@@ -45,7 +45,7 @@ class TestCleanData(TestCase):
             deleted_at=make_aware(datetime(year=1970, month=1, day=1))
         )
 
-    @patch("core.models.search.index.get_search_client", return_value=search_client)
+    @patch("core.models.search.index.get_opensearch_client", return_value=search_client)
     def test_clean_data(self, get_search_client):
         get_search_client.reset_mock()
         call_command("clean_data")
@@ -85,7 +85,7 @@ class TestCleanData(TestCase):
         self.assertEqual(HttpTikaResource.objects.filter(id__in=new_tika_ids).count(), len(new_tika_ids),
                          "New HttpTikaResource without Document should remain, because they are new")
 
-    @patch("core.models.search.index.get_search_client", return_value=search_client)
+    @patch("core.models.search.index.get_opensearch_client", return_value=search_client)
     def test_clean_data_missing_resources(self, get_search_client):
         # We'll remove all resources. This should not interfere with deletion of other data
         HttpTikaResource.objects.all().delete()

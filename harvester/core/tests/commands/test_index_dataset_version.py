@@ -63,7 +63,7 @@ class TestIndexDatasetVersion(OpenSearchClientTestCase):
     fixtures = ["datasets-history"]
     search_client = get_search_client_mock()
 
-    @patch("core.models.search.index.get_search_client", return_value=search_client)
+    @patch("core.models.search.index.get_opensearch_client", return_value=search_client)
     @patch("core.models.search.index.streaming_bulk")
     @patch("core.logging.HarvestLogger.info")
     def test_index(self, info_logger, streaming_bulk, get_search_client):
@@ -146,7 +146,7 @@ class TestIndexDatasetVersionWithHistory(OpenSearchClientTestCase):
     fixtures = ["datasets-history", "index-history"]
     search_client = get_search_client_mock(has_history=True)
 
-    @patch("core.models.search.index.get_search_client", return_value=search_client)
+    @patch("core.models.search.index.get_opensearch_client", return_value=search_client)
     @patch("core.models.search.index.streaming_bulk")
     @patch("core.logging.HarvestLogger.info")
     def test_index(self, info_logger, streaming_bulk, get_search_client):
@@ -215,7 +215,7 @@ class TestIndexDatasetVersionWithHistory(OpenSearchClientTestCase):
         dataset_version = DatasetVersion.objects.filter(is_current=True).last()
         self.assertEqual(dataset_version.id, 1)
 
-    @patch("core.models.search.index.get_search_client", return_value=search_client)
+    @patch("core.models.search.index.get_opensearch_client", return_value=search_client)
     @patch("core.models.search.index.streaming_bulk")
     @override_settings(VERSION="0.0.2")
     def test_index_specific_version(self, streaming_bulk, get_search_client):
@@ -282,7 +282,7 @@ class TestIndexDatasetVersionWithHistory(OpenSearchClientTestCase):
         dataset_version = DatasetVersion.objects.filter(is_current=True).last()
         self.assertEqual(dataset_version.id, 1)
 
-    @patch("core.models.search.index.get_search_client", return_value=search_client)
+    @patch("core.models.search.index.get_opensearch_client", return_value=search_client)
     @patch("core.models.search.index.streaming_bulk")
     @patch("core.logging.HarvestLogger.info")
     @override_settings(VERSION="0.0.1")
@@ -374,7 +374,7 @@ class TestIndexDatasetVersionFallback(OpenSearchClientTestCase):
         for doc in cls.new_version.document_set.all()[:6]:
             doc.delete()
 
-    @patch("core.models.search.index.get_search_client", return_value=search_client)
+    @patch("core.models.search.index.get_opensearch_client", return_value=search_client)
     @patch("core.models.search.index.streaming_bulk")
     @patch("core.logging.HarvestLogger.info")
     def test_index(self, info_logger, streaming_bulk, get_search_client):

@@ -23,6 +23,7 @@ from rest_framework.schemas import get_schema_view
 from core import views as core_views
 from core.urls import public_api_patterns as core_public
 from metadata.urls import public_api_patterns as metadata_public
+from search.urls import public_api_patterns as search_public
 from sharekit import views as sharekit_views
 
 
@@ -35,7 +36,7 @@ Or you have to send an Authorization header with a value of "Token <your-api-tok
 schema_view = get_schema_view(
     title="Harvester API",
     description=api_description,
-    patterns=core_public + metadata_public,
+    patterns=core_public + metadata_public + search_public,
     url="/api/v1/"
 )
 swagger_view = TemplateView.as_view(
@@ -49,6 +50,7 @@ api_urlpatterns = [
     path('docs/', swagger_view, name='docs'),
     path('', include('core.urls')),
     path('', include('metadata.urls')),
+    path('', include('search.urls')),
 ]
 
 urlpatterns = [
