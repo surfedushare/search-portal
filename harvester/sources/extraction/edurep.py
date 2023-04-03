@@ -55,15 +55,6 @@ class EdurepMetadataExtraction(ExtractProcessor):
         }
 
     @classmethod
-    def get_language(cls, node):
-        language = node["schema:identifier"]["schema:inLanguage"]
-        if language == "Dutch":
-            return "nl"
-        elif language == "English":
-            return "en"
-        return "unk"
-
-    @classmethod
     def get_url(cls, node):
         files = cls.get_files(node)
         if not files:
@@ -216,7 +207,6 @@ class EdurepMetadataExtraction(ExtractProcessor):
             material_type["schema:termCode"].text.strip()
             for material_type in material_types
         ]
-
 
     @classmethod
     def get_publisher_year(cls, node):
