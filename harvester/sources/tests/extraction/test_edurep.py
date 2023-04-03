@@ -5,7 +5,7 @@ from django.utils.timezone import make_aware
 
 from harvester.utils.extraction import get_harvest_seeds
 from core.constants import Repositories
-from sources.factories.edurep.extraction import EdurepPureResourceFactory, SET_SPECIFICATION
+from sources.factories.edurep.extraction import EdurepJsonSearchResourceFactory, SET_SPECIFICATION
 
 
 class TestGetHarvestSeedsEdurep(TestCase):
@@ -16,7 +16,7 @@ class TestGetHarvestSeedsEdurep(TestCase):
     def setUpClass(cls):
         super().setUpClass()
         cls.begin_of_time = make_aware(datetime(year=1970, month=1, day=1))
-        EdurepPureResourceFactory.create_common_responses()
+        EdurepJsonSearchResourceFactory.create_common_responses()
         cls.seeds = get_harvest_seeds(Repositories.EDUREP_JSONSEARCH, SET_SPECIFICATION, cls.begin_of_time)
 
     def test_get_id(self):
