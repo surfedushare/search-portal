@@ -2,9 +2,10 @@ from django.db import models
 
 from datagrowth.configuration import create_config
 from datagrowth.processors import ExtractProcessor
-
 from core.models import HarvestHttpResource
 from sources.extraction.edurep import EdurepMetadataExtraction, EDUREP_EXTRACTION_OBJECTIVE
+
+
 class EdurepJsonSearchResourceManager(models.Manager):
 
     def extract_seeds(self, latest_update):
