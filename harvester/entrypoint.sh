@@ -5,14 +5,13 @@
 set -e
 
 
-# Handles editable Python packages
-# Convenient when having to update Datagrowth for this project
-if [ "$APPLICATION_MODE" == "localhost" ]  && [ -d "/usr/src/datagrowth" ] && \
-    [ $(pip show datagrowth | grep "Location:" | awk -F "/" '{print $NF}') == "site-packages" ]
+# Installs local search-client repo during development when available
+if [ "$POL_DJANGO_DEBUG" == "1" ]  && [ -e "/usr/src/search_client/setup.py" ] && \
+    [ $(pip show search_client | grep "Location:" | awk -F "/" '{print $NF}') == "site-packages" ]
 then
-    echo "Replacing datagrowth PyPi installation with editable version"
-    pip uninstall -y datagrowth
-    pip install -e /usr/src/datagrowth
+    echo "Replacing search_client installation with editable version"
+    pip uninstall -y search_client
+    pip install -e /usr/src/search_client
 fi
 
 

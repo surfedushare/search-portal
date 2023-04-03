@@ -53,6 +53,7 @@ services:
       - ./harvester:/usr/src/app
       - ./media:/usr/src/media
       - ./environments/${APPLICATION_PROJECT}/localhost/invoke.yml:/usr/src/environments/localhost/invoke.yml
+      - ../search-client:/usr/src/search_client
     depends_on:
       - postgres
 

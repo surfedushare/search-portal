@@ -9,7 +9,7 @@ from admin_confirm.admin import confirm_action
 from datagrowth.admin import DataStorageAdmin, DocumentAdmin as DatagrowthDocumentAdmin
 from core.admin.harvest import HarvestAdminInline
 from core.admin.filters import TrashListFilter
-from core.utils.search import get_search_client
+from search.clients import get_opensearch_client
 from core.tasks.commands import promote_dataset_version
 
 
@@ -28,7 +28,7 @@ class DatasetVersionAdmin(AdminConfirmMixin, admin.ModelAdmin):
         return obj.document_set.filter(properties__state="active", dataset_version=obj).count()
 
     def index_count(self, obj):
-        es_client = get_search_client()
+        es_client = get_opensearch_client()
         indices = [index.remote_name for index in obj.indices.all()]
         try:
             counts = es_client.count(index=",".join(indices))

@@ -30,7 +30,7 @@ search_client_mock.search = MagicMock(return_value={
 
 class TestMetadataFieldManager(TestCase):
 
-    @patch("metadata.models.field.get_search_client", return_value=search_client_mock)
+    @patch("metadata.models.field.get_opensearch_client", return_value=search_client_mock)
     def test_fetch_value_frequencies(self, client_mock):
         frequencies = MetadataField.objects.fetch_value_frequencies()
         # Check dummy return values
