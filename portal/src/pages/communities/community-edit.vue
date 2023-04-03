@@ -1,5 +1,5 @@
 <template>
-  <section class="edusources-container main communities">
+  <section class="edusources-container main communities" :class="{ 'new-header': isNewHeader }">
     <div v-if="notFound">
       <error status-code="404" message-key="community-not-found" />
     </div>
@@ -149,6 +149,7 @@ export default {
       "isAuthenticated",
       "user",
       "userCommunities",
+      "isNewHeader",
     ]),
     isPublished: {
       get() {

@@ -1,0 +1,1 @@
+[{"model": "waffle.flag", "pk": 1, "fields": {"name": "new-header", "everyone": true, "percent": null, "testing": false, "superusers": true, "staff": false, "authenticated": false, "languages": "", "rollout": false, "note": "", "created": "2023-03-10T16:17:07Z", "modified": "2023-03-10T16:17:27.856Z", "groups": [], "users": []}}]

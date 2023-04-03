@@ -29,7 +29,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(os.path.join(BASE_DIR, "..", "environments"))
 from project import create_configuration_and_session, MODE, CONTEXT, PROJECT
 from utils.packaging import get_package_info
-from utils.logging import OpensearchHandler, create_opensearch_handler
+from search_client.opensearch.logging import OpensearchHandler, create_opensearch_handler
 # Then we read some variables from the (build) environment
 PACKAGE_INFO = get_package_info()
 GIT_COMMIT = PACKAGE_INFO.get("commit", "unknown-git-commit")
@@ -230,16 +230,15 @@ REST_FRAMEWORK = {
 
 # OpenSearch (AWS ElasticSearch)
 
-OPENSEARCH_HOST = environment.open_search.host
-OPENSEARCH_PROTOCOL = environment.open_search.protocol
-OPENSEARCH_VERIFY_CERTS = environment.open_search.verify_certs  # ignored when protocol != https
+OPENSEARCH_HOST = environment.opensearch.host
+OPENSEARCH_VERIFY_CERTS = environment.opensearch.verify_certs  # ignored when protocol != https
 OPENSEARCH_ANALYSERS = {
     'en': 'english',
     'nl': 'dutch',
     'unk': 'standard'
 }
-OPENSEARCH_ENABLE_DECOMPOUND_ANALYZERS = environment.open_search.enable_decompound_analyzers
-OPENSEARCH_DECOMPOUND_WORD_LISTS = environment.open_search.decompound_word_lists
+OPENSEARCH_ENABLE_DECOMPOUND_ANALYZERS = environment.opensearch.enable_decompound_analyzers
+OPENSEARCH_DECOMPOUND_WORD_LISTS = environment.opensearch.decompound_word_lists
 OPENSEARCH_PASSWORD = environment.secrets.opensearch.password
 
 
@@ -273,37 +272,40 @@ LOGGING = {
             'formatter': 'standard'
         },
         'search_harvest': create_opensearch_handler(
+            OPENSEARCH_HOST,
             'harvest-logs',
             OpensearchHandler.IndexNameFrequency.WEEKLY,
-            environment,
+            environment.container.id,
             OPENSEARCH_PASSWORD
         ),
         'search_documents': create_opensearch_handler(
+            OPENSEARCH_HOST,
             'document-logs',
             OpensearchHandler.IndexNameFrequency.YEARLY,
-            environment,
+            environment.container.id,
             OPENSEARCH_PASSWORD
         ),
         'search_results': create_opensearch_handler(
+            OPENSEARCH_HOST,
             'harvest-results',
             OpensearchHandler.IndexNameFrequency.YEARLY,
-            environment,
+            environment.container.id,
             OPENSEARCH_PASSWORD
         ),
     },
     'loggers': {
         'harvester': {
-            'handlers': ['search_harvest'] if environment.django.logging.is_open_search else ['console'],
+            'handlers': ['search_harvest'] if environment.django.logging.is_opensearch else ['console'],
             'level': _log_level,
             'propagate': True,
         },
         'documents': {
-            'handlers': ['search_documents'] if environment.django.logging.is_open_search else ['console'],
+            'handlers': ['search_documents'] if environment.django.logging.is_opensearch else ['console'],
             'level': _log_level,
             'propagate': True,
         },
         'results': {
-            'handlers': ['search_results'] if environment.django.logging.is_open_search else ['console'],
+            'handlers': ['search_results'] if environment.django.logging.is_opensearch else ['console'],
             'level': _log_level,
             'propagate': True,
         },

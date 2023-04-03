@@ -6,6 +6,7 @@ django:
   fixtures:
     - "surf/apps/locale/fixtures/locales-edusources.json"
     - "surf/vendor/surfconext/fixtures/privacy_statements.json"
+    - "surf/apps/core/fixtures/initial.json"
   matomo_id: null
   administrative_emails: false
   harvester_api: "http://harvester.pol/api/v1/"
@@ -18,9 +19,11 @@ postgres:
   application_user: "edushare"
 
 surfconext:
-  oidc_endpoint: "https://connect.surfconext.nl"
-  voot_api_endpoint: "https://voot.surfconext.nl"
-  client_id: "acc.surfedushare.nl"
+  oidc_endpoint: "https://connect.test.surfconext.nl"
+  voot_api_endpoint: "https://voot.test.surfconext.nl"
+  client_id: "dev.use.edusources.nl"
+  use_api_endpoint: "https://dev.use.edusources.nl"
+  login_redirect: null
 
 aws:
   image_upload_bucket: "search-portal-media-uploads-dev"

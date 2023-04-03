@@ -1,8 +1,13 @@
 import os
 import json
+from collections import defaultdict
+from invoke import task, Exit
+from opensearchpy import OpenSearch
+from opensearchpy.helpers import streaming_bulk
 
-from invoke.tasks import task
-from commands.opensearch.utils import get_search_client
+from commands.opensearch.utils import get_remote_search_client
+from search_client.constants import LANGUAGES, DocumentTypes
+from search_client.opensearch.configuration import create_open_search_index_configuration
 
 
 @task(help={
@@ -58,11 +63,11 @@ def push_decompound_dictionary(ctx, decompound_file_path):
     # And last but not least we associate the package with the ES domain
     ctx.run(
         f"{profile_env} aws es associate-package "
-        f"--package-id={package_id} --domain-name={ctx.config.open_search.domain_name}",
+        f"--package-id={package_id} --domain-name={ctx.config.opensearch.domain_name}",
         echo=True, pty=True
     )
     print("AWS ES dictionary package processed.")
-    print("Do not forget to set the package identifier under the open_search.decompound_word_lists configuration")
+    print("Do not forget to set the package identifier under the opensearch.decompound_word_lists configuration")
 
 
 @task
@@ -70,7 +75,7 @@ def push_indices_template(ctx):
     """
     Creates or updates index templates to create indices with correct settings
     """
-    client = get_search_client(ctx)
+    client = get_remote_search_client(ctx)
     client.indices.put_template("basic-settings", body={
         "index_patterns": [
             "harvest-logs*", "document-logs*", "service-logs*", "search-results*", "harvest-results*", "api"
@@ -80,3 +85,31 @@ def push_indices_template(ctx):
             "number_of_replicas": 0
         }
     })
+
+
+@task
+def recreate_test_indices(ctx):
+    if ctx.config.aws.is_aws:
+        raise Exit("Refusing the recreate indices on AWS environments with this development command")
+    client = OpenSearch(ctx.config.opensearch.host)
+    with open(os.path.join("commands", "opensearch", "data", "test.json")) as json_file:
+        documents = json.load(json_file)
+    documents_by_language = defaultdict(list)
+    for doc in documents:
+        language = doc["language"] if doc["language"] in LANGUAGES else "unk"
+        documents_by_language[language].append(doc)
+    for language in LANGUAGES:
+        index = f"{ctx.config.opensearch.alias_prefix}-{language}"
+        if client.indices.exists(index):
+            print(f"Deleting index {index}")
+            client.indices.delete(index=index)
+        print(f"Creating index {index}")
+        client.indices.create(
+            index=index,
+            body=create_open_search_index_configuration(language, DocumentTypes.LEARNING_MATERIAL)
+        )
+        print("Document count:", len(documents_by_language[language]))
+        for is_ok, result in streaming_bulk(client, documents_by_language[language], index=index, chunk_size=100,
+                                            yield_ok=False, raise_on_error=True, request_timeout=60):
+            if not is_ok:
+                print(result)

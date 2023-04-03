@@ -42,10 +42,22 @@ async function authenticate() {
   return store.dispatch("getUser");
 }
 
+async function featureFlags() {
+  return store.dispatch("getFeatureFlags");
+}
+
+async function config() {
+  return store.dispatch("getConfig");
+}
+
 async function mountApp() {
   await loadLanguages();
 
   await authenticate();
+
+  await featureFlags();
+
+  await config();
 
   new Vue({
     router,

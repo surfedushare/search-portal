@@ -27,6 +27,7 @@ from django.contrib.auth import views as auth_views
 from django.views.generic import TemplateView
 from rest_framework.schemas import get_schema_view
 
+
 from surf.sitemap import MainSitemap, MaterialsSitemap
 from surf.routers import CustomRouter
 from surf.apps.materials.views import (
@@ -50,11 +51,10 @@ from surf.apps.users.views import (
     UserDetailsAPIView,
     ObtainTokenAPIView
 )
-from surf.apps.core.views import ContactAPIView, health_check, robots_txt
+from surf.apps.core.views import ConfigAPIView, ContactAPIView, health_check, robots_txt
 from surf.apps.communities.views import CommunityViewSet
 from surf.apps.stats.views import StatsViewSet, StatsView
 from surf.apps.locale.views import get_localisation_strings
-
 
 admin.site.site_header = 'Surf'
 admin.site.site_title = 'Surf'
@@ -63,7 +63,7 @@ admin.site.index_title = 'Surf'
 public_api_patterns = [
     url(r'^search/filter-categories/', FilterCategoryView.as_view()),
     url(r'^search/autocomplete/', KeywordsAPIView.as_view()),
-    url(r'^search/', MaterialSearchAPIView.as_view()),
+    url(r'^search/', MaterialSearchAPIView.as_view(), kwargs={"limit_filter_categories": "1"}),
     url(r'^documents/stats', StatsView.as_view()),
     url(r'^suggestions/similarity/', SimilarityAPIView.as_view()),
     url(r'^suggestions/author/', AuthorSuggestionsAPIView.as_view()),
@@ -90,6 +90,8 @@ router.register(r'stats', StatsViewSet, basename="stats")
 apipatterns = public_api_patterns + router.urls + [
     path('openapi', schema_view, name='openapi-schema'),
     path('docs/', swagger_view, name='docs'),
+    url(r'^', include('waffle.urls')),
+    url(r'^config/?$', ConfigAPIView.config, name="config"),
     url(r'^users/me/', UserDetailsAPIView.as_view()),
     url(r'^users/delete-account/', DeleteAccountAPIView.as_view()),
     url(r'^users/obtain-token/', ObtainTokenAPIView.as_view()),

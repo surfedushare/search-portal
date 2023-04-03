@@ -2,7 +2,8 @@ from invoke import Collection
 
 from environments.project import create_configuration_and_session
 from commands.postgres.invoke import setup_postgres_localhost
-from commands.opensearch.tasks import create_decompound_dictionary, push_decompound_dictionary, push_indices_template
+from commands.opensearch.tasks import (create_decompound_dictionary, push_decompound_dictionary, push_indices_template,
+                                       recreate_test_indices)
 from commands.aws.ecs import cleanup_ecs_artifacts
 from commands.aws.repository import sync_repository_state
 from commands.deploy import (prepare_builds, build, push, deploy, migrate, promote, print_available_images,
@@ -17,7 +18,7 @@ from commands.services.harvester.invoke import (load_data, harvest, clean_data, 
 
 service_environment, _ = create_configuration_and_session(service="service")
 service_collection = Collection("srv", setup_postgres_localhost, import_snapshot, deploy, sync_upload_media,
-                                make_translations)
+                                make_translations, recreate_test_indices)
 service_collection.configure(service_environment)
 aws_collection = Collection("aws", build, push, migrate, promote, print_available_images,
                             sync_repository_state, publish_runner_image, cleanup_ecs_artifacts, publish_tika_image)

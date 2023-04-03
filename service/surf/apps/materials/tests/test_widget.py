@@ -1,22 +1,21 @@
-from unittest import skipIf
 from unittest.mock import patch
 import json
 from datetime import datetime
 from bs4 import BeautifulSoup
 
-from django.conf import settings
+from django.test import override_settings
 from django.urls import reverse
 
+from search_client.factories.learning_material import generate_nl_material
 from e2e_tests.base import BaseOpenSearchTestCase
-
 from e2e_tests.helpers import get_metadata_tree_mock
-from e2e_tests.mock import generate_nl_material
-from surf.vendor.search.api import SearchApiClient
 
 
-@skipIf(settings.PROJECT == "nppo", "Frontend not enabled for NPPO")
 @patch("surf.apps.filters.metadata.requests.get", new=get_metadata_tree_mock)
+@override_settings(OPENSEARCH_ALIAS_PREFIX="widget")
 class TestWidget(BaseOpenSearchTestCase):
+
+    alias_prefix = "widget"
 
     def assert_widget_response(self, response, expected_count):
         # Basic assertions
@@ -67,33 +66,32 @@ class TestWidget(BaseOpenSearchTestCase):
         ]
 
         cls.base_url = reverse("portal-widget")
-        cls.instance = SearchApiClient()
         cls.search.index(
-            index=settings.OPENSEARCH_NL_INDEX,
+            index=cls.get_alias("nl"),
             body=generate_nl_material(educational_levels=["HBO"], source="surfsharekit",
                                       studies=math_and_education_studies),
         )
         cls.search.index(
             id="abc",
-            index=settings.OPENSEARCH_NL_INDEX,
+            index=cls.get_alias("nl"),
             body=generate_nl_material(educational_levels=["HBO"], source="surfsharekit",
                                       studies=math_and_education_studies, external_id="abc",
                                       title="De wiskunde van Pythagoras", description="Groots zijn zijn getallen")
         )
         cls.search.index(
-            index=settings.OPENSEARCH_NL_INDEX,
+            index=cls.get_alias("nl"),
             body=generate_nl_material(educational_levels=["HBO"], source="surfsharekit",
                                       copyright="cc-by-40", topic="biology", publisher_date="2018-04-16T22:35:09+02:00",
                                       studies=biology_and_education_studies),
         )
         cls.search.index(
-            index=settings.OPENSEARCH_NL_INDEX,
+            index=cls.get_alias("nl"),
             body=generate_nl_material(educational_levels=["HBO"], source="surfsharekit",
                                       topic="biology", publisher_date="2019-04-16T22:35:09+02:00",
                                       studies=biology_and_education_studies),
         )
         cls.search.index(
-            index=settings.OPENSEARCH_NL_INDEX,
+            index=cls.get_alias("nl"),
             body=generate_nl_material(educational_levels=["HBO"], technical_type="video", source="surfsharekit",
                                       topic="biology", studies=biology_studies),
             refresh=True  # always put refresh on the last material
