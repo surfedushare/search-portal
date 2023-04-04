@@ -15,6 +15,5 @@ class ConfigAPIView(APIView):
     @permission_classes([AllowAny])
     @schema(None)
     def config(request):
-        print(settings)
         data = {"use_api_endpoint": settings.USE_API_ENDPOINT}
         return Response(data, status.HTTP_200_OK)
