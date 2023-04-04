@@ -61,9 +61,10 @@ def get_groups(strategy, details, response, *args, **kwargs):
     if response.get("edumember_is_member_of"):
         groups = response["edumember_is_member_of"]
     else:
+        logger.warning(f"User {response['sub']} has no edumember_is_member_of")
         groups = []
 
-    logger.info(f"User {response['sub']} is part of groups {response['edumember_is_member_of']}")
+    logger.info(f"User {response['sub']} is part of groups {groups}")
     details["groups"] = groups
     strategy.request.session["email"] = details["email"]
     strategy.request.session["name"] = details["fullname"]
