@@ -28,7 +28,7 @@ class DocumentSearchSerializer(serializers.Serializer):
     page = serializers.IntegerField(required=False, default=1, validators=[MinValueValidator(1)])
     page_size = serializers.IntegerField(required=False, default=10, validators=[MinValueValidator(0)])
 
-    records_total = serializers.IntegerField(read_only=True, source="recordcount")
+    results_total = serializers.DictField(read_only=True)
 
     def validate_filters(self, filters):
         filter_fields = self.context.get("filter_fields", None)
@@ -75,7 +75,9 @@ class DocumentSearchAPIView(GenericAPIView):
 
     **results**: An array containing the search results.
 
-    **results_total**: Count of all available results
+    **results_total**: Object with information about the total amount of found documents.
+    The "value" key gives the found documents count. The "is_precise" key is true when the value is exact
+    or false when it indicates the lower bound.
 
     **page_size**: Number of results to return per page.
 
@@ -111,8 +113,8 @@ class DocumentSearchAPIView(GenericAPIView):
         client = get_search_client(self.document_type)
         response = client.search(**data)
         return Response({
-            "results": response["records"],
-            "results_total": response["recordcount"],
+            "results": response["results"],
+            "results_total": response["results_total"],
             "did_you_mean": response["did_you_mean"],
             "page": data["page"],
             "page_size": data["page_size"],
@@ -177,9 +179,10 @@ class DocumentSearchDetailsAPIView(GenericAPIView):
 
     **results**: The list of documents that match the external ids
 
-    **results_total**: The total amount of found documents. This could be less than the amount of given external ids
-    if some of the external ids weren't found.
-
+    **results_total**: Object with information about the total amount of found documents.
+    The "value" key gives the found documents count. This could be less than the amount of given external ids
+    if some of the external ids weren't found. The "is_precise" key is true when the value is exact
+    or false when it indicates the lower bound.
     """
 
     document_type = settings.DOCUMENT_TYPE
@@ -203,8 +206,11 @@ class DocumentSearchDetailsAPIView(GenericAPIView):
             raise ValidationError(detail=f"Can't process more than {self.max_page_size} external ids at a time")
         client = get_search_client(self.document_type)
         response = client.get_documents_by_id(external_ids, page_size=self.max_page_size)
-        records = response.get("records", [])
+        results = response.get("results", [])
         return Response({
-            "results": records,
-            "results_total": len(records)
+            "results": results,
+            "results_total": {
+                "value": len(results),
+                "is_precise": True
+            }
         })
