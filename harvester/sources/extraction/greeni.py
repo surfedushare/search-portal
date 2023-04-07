@@ -13,7 +13,7 @@ SET_SPEC_TO_PROVIDER = {
         "ror": None,
         "external_id": None,
         "slug": "PUBVHL",
-        "type": "institute"
+        "name": "Hogeschool Van Hall Larenstein"
     }
 }
 
