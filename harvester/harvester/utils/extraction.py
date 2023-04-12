@@ -12,10 +12,10 @@ def prepare_seed(seed):
     seed["language"] = {"metadata": language} if language else None
     if seed["state"] == "deleted":
         return
-    if settings.PROJECT == "nppo" and \
+    if not settings.ALLOW_CLOSED_ACCESS_DOCUMENTS and \
             (not seed["copyright"] or seed["copyright"] in ["yes", "closed-access", "unknown"]):
         seed["state"] = "inactive"
-    if seed["lowest_educational_level"] < 2 and settings.PROJECT == "edusources":  # lower level than HO
+    if seed["lowest_educational_level"] < settings.LOWEST_EDUCATIONAL_LEVEL:
         seed["state"] = "inactive"
     if "SURF edusources test" in seed["publishers"] and settings.ENVIRONMENT == "production":
         seed["state"] = "skipped"

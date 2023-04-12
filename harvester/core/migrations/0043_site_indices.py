@@ -7,7 +7,7 @@ from django.contrib.sites.models import Site
 
 
 def rename_site(apps, schema_editor):
-    if settings.PROJECT == "nppo":
+    if settings.PROJECT in ["nppo", "publinova"]:
         main_name = "Publinova"
         main_domain = "harvester.publinova.nl"
     else:
