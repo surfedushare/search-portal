@@ -1,5 +1,5 @@
 # Process management
-argh==0.26.2
+argh==0.28.1
 watchdog==2.2.1
 
 # Harvester Celery
