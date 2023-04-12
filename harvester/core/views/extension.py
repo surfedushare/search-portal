@@ -8,7 +8,7 @@ from datagrowth.datatypes.views import DocumentBaseSerializer
 from harvester.schema import HarvesterSchema
 from core.models import Extension, Document
 
-from project.serializers import PersonSerializer, OrganisationSerializer, ProjectSerializer, LabelSerializer
+from search_client.serializers import PersonSerializer, OrganisationSerializer, ProjectSerializer, LabelSerializer
 
 
 class ExtensionPropertiesSerializer(serializers.Serializer):
