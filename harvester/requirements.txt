@@ -20,7 +20,7 @@ requests-aws4auth==1.0
 django-storages==1.12.3
 
 # Tools
-ipython==8.10.0
+ipython==8.12.0
 tqdm==4.64.1
 invoke==1.7.0
 ipdb==0.13.13
