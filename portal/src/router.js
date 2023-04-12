@@ -227,7 +227,7 @@ export default new Router({
                 next(to.query.continue || "/");
               })
               .catch((error) => {
-                $log.warn("Unable to login due to error during store \"login\" dispatch");
+                $log.warn("Unable to login due to error during store 'login' dispatch");
                 $log.error(error);
                 next("/");
               });

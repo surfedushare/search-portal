@@ -2,7 +2,7 @@ from django.apps import apps
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.permissions import AllowAny
 
-from surf.vendor.search.api import SearchApiClient
+from surf.apps.core.search import get_search_client
 from surf.apps.core.schema import SearchSchema
 from surf.apps.materials.serializers import SimilaritySerializer, AuthorSuggestionSerializer
 from surf.apps.materials.utils import add_extra_parameters_to_materials
@@ -28,7 +28,7 @@ class SimilarityAPIView(RetrieveAPIView):
         serializer.is_valid(raise_exception=True)
         external_id = serializer.validated_data["external_id"]
         language = serializer.validated_data["language"]
-        client = SearchApiClient()
+        client = get_search_client()
         result = client.more_like_this(external_id, language)
         result["results"] = add_extra_parameters_to_materials(filters_app.metadata, result["results"])
         return result
@@ -51,7 +51,7 @@ class AuthorSuggestionsAPIView(RetrieveAPIView):
         serializer = self.get_serializer(data=self.request.GET)
         serializer.is_valid(raise_exception=True)
         author_name = serializer.validated_data["author_name"]
-        client = SearchApiClient()
+        client = get_search_client()
         result = client.author_suggestions(author_name)
         result["results"] = add_extra_parameters_to_materials(filters_app.metadata, result["results"])
         return result

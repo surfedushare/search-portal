@@ -13,8 +13,8 @@ class DocumentSerializer(DocumentBaseSerializer):
 
     def get_properties(self, document):
         properties = document.properties
-        properties["owner"] = next(iter(properties["authors"]), None)
-        properties["contact"] = next(iter(properties["authors"]), None)
+        properties["owners"] = [next(iter(properties["authors"]), None)]
+        properties["contacts"] = [next(iter(properties["authors"]), None)]
         return properties
 
     class Meta:

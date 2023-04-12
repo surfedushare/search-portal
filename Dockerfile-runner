@@ -29,7 +29,6 @@ RUN npm ci
 
 # Python setup
 RUN pip3 install -U --no-cache-dir --user pip
-RUN pip3 install setuptools==58
 RUN pip3 install wheel
 
 # Python dependencies

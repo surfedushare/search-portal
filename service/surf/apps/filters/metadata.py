@@ -16,13 +16,19 @@ class MetadataTree(object):
         if warm_up_cache:
             self._warm_up_cache = self.translations  # result should be ignored as it only fills the cache
 
-    @cached_property
-    def tree(self):
-        url = f"{self.harvester_url}metadata/tree/?site_id={settings.SITE_ID}"
+    def _fetch(self, url):
         response = requests.get(url, headers={"Authorization": f"Token {self.api_token}"})
         if response.status_code != requests.status_codes.codes.ok:
             raise ValueError(f"Failed request: {response.status_code}")
         return response.json()
+
+    @cached_property
+    def tree(self):
+        return self._fetch(f"{self.harvester_url}metadata/tree/?site_id={settings.SITE_ID}")
+
+    @cached_property
+    def partial_tree(self):
+        return self._fetch(f"{self.harvester_url}metadata/tree/?site_id={settings.SITE_ID}&max_children=20")
 
     @cached_property
     def cache(self):

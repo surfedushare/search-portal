@@ -1,5 +1,5 @@
 <template>
-  <section class="edusources-container main">
+  <section class="edusources-container main" :class="{ 'new-header': isNewHeader }">
     <div v-if="!communityData.translation && isReady">
       <error status-code="404" message-key="community-not-found" />
     </div>
@@ -36,7 +36,7 @@ export default {
   },
   mixins: [PageMixin],
   computed: {
-    ...mapGetters(["user"]),
+    ...mapGetters(["user", "isNewHeader"]),
     communityData() {
       return {
         collections: this.$store.getters.getPublicCollections(this.user),

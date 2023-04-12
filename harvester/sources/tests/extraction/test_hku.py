@@ -22,36 +22,39 @@ class TestGetHarvestSeedsHku(TestCase):
     def test_get_record_state(self):
         seeds = self.seeds
         self.assertEqual(seeds[0]["state"], "active")
-        self.assertEqual(seeds[10]["state"], "deleted")
+        self.assertEqual(seeds[8]["state"], "deleted")
 
     def test_get_id(self):
         seeds = self.seeds
-        self.assertEqual(seeds[0]["external_id"], "hku:product:6247569")
+        self.assertEqual(seeds[0]["external_id"], "hku:product:5951952")
 
     def test_get_files(self):
         seeds = self.seeds
         self.assertEqual(seeds[0]["files"], [
             {
+                "title": "HKU_lectoraat_Play_Design_Development_Nuffic_Living_Lab_model_2014.mp4",
+                "url": "https://octo.hku.nl/octo/repository/getfile?id=xRjq_aC4sKU",
                 "mime_type": "application/pdf",
-                "url": "https://octo.hku.nl/octo/repository/getfile?id=zZQC1ZBu8c4",
-                "hash": "9ac373e877133f0c00173bd02d82b1861c9934a2",
-                "title": "Budapest2005.pdf",
-                "copyright": "cc-by-nc-40",
+                "hash": "3bb6b2c5cb318b7daa677e51095084c45209ae2f",
+                "copyright": "cc-by-nc-nd-40",
                 "access_rights": "OpenAccess"
             }
+
         ])
+        self.assertEqual(len(seeds), 9, "Expected documents without URL to get excluded")
         all_seeds = get_harvest_seeds(Repositories.HKU, SET_SPECIFICATION, self.begin_of_time, include_no_url=True)
-        self.assertEqual(all_seeds[21]["files"], [])
+        self.assertEqual(len(all_seeds), 10)
+        self.assertEqual(all_seeds[7]["files"], [], "Expected no files to show as an empty list")
 
     def test_get_copyright(self):
         seeds = self.seeds
-        self.assertEqual(seeds[0]["copyright"], "cc-by-nc-40")
+        self.assertEqual(seeds[0]["copyright"], "cc-by-nc-nd-40")
 
     def test_get_url(self):
         seeds = self.seeds
         self.assertEqual(
             seeds[0]["url"],
-            "https://octo.hku.nl/octo/repository/getfile?id=zZQC1ZBu8c4"
+            "https://octo.hku.nl/octo/repository/getfile?id=xRjq_aC4sKU"
         )
 
     def test_get_mime_type(self):
@@ -61,48 +64,48 @@ class TestGetHarvestSeedsHku(TestCase):
     def test_get_language(self):
         seeds = self.seeds
         self.assertEqual(seeds[0]["language"], {"metadata": "en"})
-        self.assertEqual(seeds[10]["language"], {"metadata": "nl"})
+        self.assertEqual(seeds[4]["language"], {"metadata": "nl"})
 
     def test_get_title(self):
         seeds = self.seeds
-        self.assertEqual(seeds[0]["title"], "Methodological Mapping")
+        self.assertEqual(seeds[0]["title"], "Nuffic Living Lab: a trailer for an international collaboration model")
 
     def test_get_description(self):
         seeds = self.seeds
-        self.assertTrue(seeds[0]["description"].startswith("This symposium was brought to life"))
+        self.assertTrue(seeds[0]["description"].startswith("Based upon years of experience of working in quadruple"))
 
     def test_get_keywords(self):
         seeds = self.seeds
         self.assertEqual(seeds[0]["keywords"], [])
         self.assertEqual(
-            seeds[2]["keywords"],
+            seeds[1]["keywords"],
             [
-                "crossovers", "didactische methoden", "makerschap", "performance", "touch", "interaction",
-                "artistic research", "performance", "scenography", "fine arts"
+                "HKU", "Play Design and Development", "Applied Games", "Serious Games", "Gamification", "Game Design",
+                "Architecture", "Vitrivius", "Game Development", "Design Principles", "Mental Healthcare", "Moodbot"
             ]
         )
 
     def test_authors_property(self):
         seeds = self.seeds
-        self.assertEqual(seeds[0]['authors'], [
-            {
-                'name': 'Henk Slager', 'email': "henk.slager@hku.nl", 'external_id': None,
-                'dai': None, 'orcid': None, 'isni': None
-            },
-        ])
+        self.assertEqual(seeds[0]['authors'], [], "Expected documents without persons to have no authors")
         self.assertEqual(seeds[1]['authors'], [
             {
-                'name': 'Henk Slager', 'email': None, 'external_id': None,
-                'dai': None, 'orcid': None, 'isni': None
+                "name": "Liesbet van Roes", "email": None, "external_id": "hku:person:6699976",
+                "dai": None, "orcid": None, "isni": None
             },
-        ])
-        self.assertEqual(seeds[43]['authors'], [
             {
-                'name': 'Eva den Heijer', 'email': "eva.denheijer@hku.nl", 'external_id': "hku:person:5952259",
-                'dai': None, 'orcid': None, 'isni': None
-            },
+                "name": "Mic Haring", "email": "mic.haring@hku.nl", "external_id": "hku:person:6699827",
+                "dai": None, "orcid": None, "isni": None
+            }
+        ])
+        self.assertEqual(seeds[2]['authors'], [
+            {
+                "name": "Ketels", "email": "n.ketels@hku.nl", "external_id": "hku:person:6699884",
+                "dai": None, "orcid": None, "isni": None
+            }
+
         ])
 
     def test_publisher_year(self):
         seeds = self.seeds
-        self.assertEqual(seeds[0]["publisher_year"], 2005)
+        self.assertEqual(seeds[0]["publisher_year"], 2014)

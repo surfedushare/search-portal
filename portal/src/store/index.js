@@ -7,7 +7,9 @@ import headerMenu from "./modules/header-menu";
 import materials from "./modules/materials";
 import messages from "./modules/messages";
 import statistic from "./modules/statistic";
+import featureFlags from "./modules/feature-flags";
 import user from "./modules/user";
+import config from "./modules/config";
 
 Vue.use(Vuex);
 
@@ -21,6 +23,8 @@ const store = new Vuex.Store({
     statistic,
     headerMenu,
     messages,
+    featureFlags,
+    config,
   },
 });
 

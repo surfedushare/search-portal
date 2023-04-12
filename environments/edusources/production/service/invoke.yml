@@ -21,6 +21,8 @@ surfconext:
   oidc_endpoint: "https://connect.surfconext.nl"
   voot_api_endpoint: "https://voot.surfconext.nl"
   client_id: "zoekportaal.surf.nl"
+  use_api_endpoint: "https://use.edusources.nl"
+  login_redirect: null
 
 aws:
   image_upload_bucket: "search-portal-media-uploads-prod"
