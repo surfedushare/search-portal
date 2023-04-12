@@ -50,7 +50,7 @@ class SharekitMetadataHarvest(HarvestHttpResource):
 
     def parameters(self, **kwargs):
         parameters = copy(self.PARAMETERS)
-        if settings.PROJECT == "nppo":
+        if not settings.ALLOW_CLOSED_ACCESS_DOCUMENTS:
             parameters["filter[termsOfUse][NEQ]"] = "alle-rechten-voorbehouden"
         return parameters
 

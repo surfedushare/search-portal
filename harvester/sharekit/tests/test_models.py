@@ -72,7 +72,7 @@ class TestSharekitMetadataHarvest(TestCase):
     def test_parameters(self):
         instance = SharekitMetadataHarvestFactory()
         self.assertEqual(instance.parameters(), instance.PARAMETERS)
-        with override_settings(PROJECT="nppo"):
+        with override_settings(ALLOW_CLOSED_ACCESS_DOCUMENTS=False):
             instance = SharekitMetadataHarvestFactory()
             self.assertEqual(instance.parameters(), {
                 "filter[termsOfUse][NEQ]": "alle-rechten-voorbehouden",
