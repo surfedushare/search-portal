@@ -8,7 +8,7 @@ django:
     - "surf/vendor/surfconext/fixtures/privacy_statements.json"
   matomo_id: 63
   administrative_emails: false
-  harvester_api: "http://harvester.pol/api/v1/"
+  harvester_api: "https://harvester.acc.surfedushare.nl/api/v1/"
   sentry:
     dsn: "https://21fab3e788584cbe999f20ea1bb7e2df@sentry.io/2964956"
 
