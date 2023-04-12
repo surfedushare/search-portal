@@ -10,14 +10,11 @@ from metadata.models import MetadataField, MetadataFieldSerializer, MetadataValu
 @method_decorator(gzip_page, name="dispatch")
 class MetadataTreeView(generics.ListAPIView):
     """
-    The metadata tree is used for filtering with the full text search endpoint (part of the search service).
+    The metadata tree is used for filtering with the full text search endpoint.
     This endpoint returns all available metadata values.
-    Usually a call to the search endpoint is all you need
-    as that will also return all metadata values as "filter categories",
-    but here we'll explain about the metadata structure in a bit more detail.
 
     There are two types of nodes in the metadata tree.
-    The root metadata nodes do not have a parent.
+    The root metadata nodes have a **field** value of null.
     These nodes are all returned in the main array of the response and they represent fields that you can filter on.
 
     Other nodes are returned as the children of the "field" nodes. The values of these nodes can be filtered on.
@@ -32,8 +29,9 @@ class MetadataTreeView(generics.ListAPIView):
 
     The response contains a list of metadata nodes. Each metadata node contains the following properties:
 
+    **field**: The metadata field this node belongs to or null if the node is itself a metadata field.
+
     **parent**: The id of a parent node or null.
-    Mainly useful to detect if a node is a "field" node or not.
 
     **translation**: The translated display name of the metadata. Formerly the title_translations.
 
