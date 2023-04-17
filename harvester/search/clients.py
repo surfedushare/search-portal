@@ -5,7 +5,8 @@ from django.conf import settings
 from search_client import SearchClient
 
 
-def get_search_client(document_type, alias_prefix=None):
+def get_search_client(document_type=None, alias_prefix=None):
+    document_type = document_type or settings.DOCUMENT_TYPE
     kwargs = {}
     if "amazonaws.com" in settings.OPENSEARCH_HOST:
         kwargs["basic_auth"] = ("supersurf", settings.OPENSEARCH_PASSWORD,)
