@@ -38,7 +38,7 @@ COPY harvester/requirements.txt /usr/src/app/
 COPY harvester/dependencies.txt /usr/src/app/
 RUN pip install -U --no-cache-dir --user pip
 RUN pip install wheel
-RUN pip install --no-cache-dir --user uwsgi==2.0.20
+RUN pip install --no-cache-dir --user uwsgi==2.0.21
 RUN pip install --no-cache-dir --user -r requirements.txt
 RUN pip install --no-cache-dir --user git+https://github.com/surfedushare/search-client.git@v0.3.1
 
