@@ -1,0 +1,10 @@
+aws:
+  harvest_content_bucket: "surfpol-harvester-content-dev"  # needs renaming
+
+opensearch:
+  alias_prefix: "publinova"
+
+django:
+  fixtures:
+    - "core/fixtures/initial-nppo.json"  # needs renaming
+    - "metadata/fixtures/initial-metadata-nppo.json"

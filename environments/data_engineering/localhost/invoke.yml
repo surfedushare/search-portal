@@ -1,0 +1,77 @@
+# NB: This file is committed in a public repo. DO NOT COMMIT REAL SECRETS!
+# It uses low security passwords and secrets for a local setup
+# Make sure your local setup is shielded from the internet
+
+# NB: When making changes restart your container or development server to load the update
+
+service:
+  name: "harvester"  # might go when we strip service out of the repo
+
+env: "localhost"  # needs to move under "service"
+
+django:
+  debug: true
+  protocol: "http"
+  directory: "harvester"  # part of "service"
+  domain: "localhost"
+  logging:
+    level: "DEBUG"
+    is_opensearch: false
+  send_admin_notifications: false
+  sentry:
+    dsn: null
+
+  # This should all be "harvester"
+  data_retention:
+    purge_after:
+      days: 14
+    keep_versions: 3
+  repositories:
+    edurep: "https://staging.edurep.kennisnet.nl"
+    sharekit: "https://api.acc.surfsharekit.nl"
+    han: null
+    hva: null
+    hanze: null
+
+postgres:
+  host: "postgres"
+  port: 5432
+  # from here we want project specific settings
+  database: "harvester"
+  user: "harvester"
+  application_user: "harvester"
+
+redis:
+  host: "redis:6379"
+
+opensearch:
+  host: "http://opensearch:9200"
+  verify_certs: true  # ignored as long as protocol is http
+  enable_decompound_analyzers: true
+  alias_prefix: "test"
+  decompound_word_lists:
+    dutch: "decompound_word_list.nl.txt"
+  domain_name: null
+
+sharekit:
+  webhook_allowed_ips:
+    - "20.56.15.206"
+    - "20.56.8.62"
+    - "127.0.0.1"
+
+aws:
+  is_aws: false
+  load_secrets: false
+
+secrets:
+  postgres:
+    password: "qwerty"
+    application_password: "qwerty"
+  opensearch:
+    password: "qwerty"
+  django:
+    secret_key: "development-secret-key--do-not-use"
+    admin_password: "qwerty"
+  harvester:
+    api_key: "123abc"
+    webhook_secret: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
