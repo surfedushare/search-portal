@@ -1,6 +1,7 @@
 from invoke import Collection
 
-from environments.project import create_configuration_and_session
+from environments.project import create_configuration_and_session as service_configuration_and_session
+from environments.data_engineering.configuration import create_configuration_and_session
 from commands.postgres.invoke import setup_postgres_localhost
 from commands.opensearch.tasks import (create_decompound_dictionary, push_decompound_dictionary, push_indices_template,
                                        recreate_test_indices)
@@ -16,7 +17,7 @@ from commands.services.harvester.invoke import (load_data, harvest, clean_data, 
                                                 sync_metadata)
 
 
-service_environment, _ = create_configuration_and_session(service="service")
+service_environment, _ = service_configuration_and_session(service="service")
 service_collection = Collection("srv", setup_postgres_localhost, import_snapshot, deploy, sync_upload_media,
                                 make_translations, recreate_test_indices)
 service_collection.configure(service_environment)
@@ -26,7 +27,7 @@ aws_collection.configure(service_environment)
 test_collection.configure(service_environment)
 
 
-harvester_environment, _ = create_configuration_and_session(service="harvester")
+harvester_environment, _ = create_configuration_and_session()
 harvester_collection = Collection("hrv", setup_postgres_localhost, harvest, clean_data, load_data, deploy,
                                   index_dataset_version, dump_data, sync_harvest_content, promote_dataset_version,
                                   create_decompound_dictionary, push_decompound_dictionary, generate_previews,
