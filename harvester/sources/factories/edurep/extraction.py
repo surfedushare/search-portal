@@ -1,12 +1,9 @@
 import os
 import factory
 from datetime import datetime
-
 from django.conf import settings
 from django.utils.timezone import make_aware
-
 from sources.models import EdurepJsonSearchResource
-
 
 SLUG = "edurep"
 SET_SPECIFICATION = "edurep"
@@ -60,3 +57,4 @@ class EdurepJsonSearchResourceFactory(factory.django.DjangoModelFactory):
     def create_common_responses(cls):
         cls.create(number=0)
         cls.create(number=1)
+
