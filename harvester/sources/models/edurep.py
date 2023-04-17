@@ -8,8 +8,9 @@ from sources.extraction.edurep import EdurepMetadataExtraction, EDUREP_EXTRACTIO
 
 class EdurepJsonSearchResourceManager(models.Manager):
 
-    def extract_seeds(self, latest_update):
+    def extract_seeds(self, set_specification, latest_update):
         queryset = self.get_queryset().filter(
+            set_specification=set_specification,
             since__date__gte=latest_update.date(),
             status=200,
             is_extracted=False
@@ -17,7 +18,7 @@ class EdurepJsonSearchResourceManager(models.Manager):
 
         metadata_objective = {
             "@": "$.items",
-            "external_id": "$.uuid",
+            "external_id": "$.@id",
             "state": EdurepMetadataExtraction.get_record_state
         }
         metadata_objective.update(EDUREP_EXTRACTION_OBJECTIVE)
@@ -41,6 +42,9 @@ class EdurepJsonSearchResourceManager(models.Manager):
 
 class EdurepJsonSearchResource(HarvestHttpResource):
 
+    objects = EdurepJsonSearchResourceManager()
+
+    uri = models.CharField(max_length=512, db_index=True, default=None)
     URI_TEMPLATE = "https://wszoeken.edurep.kennisnet.nl/jsonsearch?" \
                     "query=%2A%20AND%20about.repository%20exact%20" \
                     + "{}" + \
