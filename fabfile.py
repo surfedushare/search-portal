@@ -1,5 +1,4 @@
 from invoke import Collection
-from invoke.config import Config
 from fabric import Config
 from environments.project import create_configuration_and_session as service_configuration_and_session
 from environments.data_engineering.configuration import create_configuration_and_session

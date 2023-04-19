@@ -1,5 +1,10 @@
 aws:
-  harvest_content_bucket: "surfpol-harvester-content-dev"  # needs renaming
+  harvest_content_bucket: "surfpol-harvester-content-dev"  # TODO: needs renaming
+
+postgres:
+  database: "harvester_publinova"
+  user: "harvester_publinova"
+  application_user: "harvester_publinova"
 
 opensearch:
   alias_prefix: "publinova"

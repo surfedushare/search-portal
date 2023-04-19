@@ -1,6 +1,11 @@
 aws:
   harvest_content_bucket: "surfpol-harvester-content-dev"
 
+postgres:
+  database: "harvester_edusources"
+  user: "harvester_edusources"
+  application_user: "harvester_edusources"
+
 opensearch:
   alias_prefix: "edusources"
 
