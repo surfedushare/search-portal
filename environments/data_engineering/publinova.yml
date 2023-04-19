@@ -10,6 +10,7 @@ opensearch:
   alias_prefix: "publinova"
 
 django:
+  domain: "harvester.dev.publinova.nl"
   fixtures:
-    - "core/fixtures/initial-nppo.json"  # needs renaming
-    - "metadata/fixtures/initial-metadata-nppo.json"
+    - "core/fixtures/initial-publinova.json"
+    - "metadata/fixtures/initial-metadata-publinova.json"
