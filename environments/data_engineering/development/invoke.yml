@@ -33,10 +33,6 @@ django:
 postgres:
   host: "surfpol-edushare.c85na2fjlzol.eu-central-1.rds.amazonaws.com"
   port: 5432
-  # from here we want project specific settings
-  database: "harvester"
-  user: "harvester"
-  application_user: "harvester"
 
 redis:
   host: "harvester.2w7uxm.0001.euc1.cache.amazonaws.com:6379"

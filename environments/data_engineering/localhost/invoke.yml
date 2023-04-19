@@ -36,10 +36,6 @@ django:
 postgres:
   host: "postgres"
   port: 5432
-  # from here we want project specific settings
-  database: "harvester"
-  user: "harvester"
-  application_user: "harvester"
 
 redis:
   host: "redis:6379"

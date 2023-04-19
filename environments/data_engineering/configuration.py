@@ -57,8 +57,8 @@ for key in invalid_keys:
 class POLConfig(Config):
     env_prefix = PREFIX
 
-    def load_user(self, merge=True):
-        self._load_file(prefix="user", absolute=True, merge=merge)
+    def load_project(self, merge=True):
+        self._load_file(prefix="project", absolute=True, merge=merge)
 
 
 def build_configuration_defaults(environment):
@@ -111,7 +111,7 @@ def build_configuration_defaults(environment):
     return defaults
 
 
-def create_configuration(mode, context="container"):
+def create_configuration(mode=None, context="container"):
     """
     We're using invoke Config as base for our configuration:
     http://docs.pyinvoke.org/en/stable/concepts/configuration.html#config-hierarchy.
@@ -126,19 +126,20 @@ def create_configuration(mode, context="container"):
     :param context: the context you want a configuration for (host or container)
     :return: invoke configuration
     """
+    mode = mode or MODE
     configuration_directory = os.path.join(ENVIRONMENTS, "data_engineering")
     config = POLConfig(
         defaults=build_configuration_defaults(mode),
-        project_location=os.path.join(configuration_directory, mode) + os.path.sep,
-        runtime_path=os.path.join(configuration_directory, f"{PROJECT}.yml"),
+        system_prefix=os.path.join(configuration_directory, mode) + os.path.sep,
         lazy=True
     )
-    if context == "container":
-        config._user_path = os.path.join(configuration_directory, f"superuser.invoke.yml")
+    config._project_path = os.path.join(configuration_directory, f"{PROJECT}.yml")
+    if context != "container":
+        config.set_runtime_path(os.path.join(configuration_directory, mode, f"superuser.invoke.yml"))
     config.load_system()
+    config.load_user()
     config.load_project()
     config.load_runtime()
-    config.load_user()
     config.load_shell_env()
     return config
 
