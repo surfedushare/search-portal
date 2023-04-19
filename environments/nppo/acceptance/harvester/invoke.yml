@@ -5,8 +5,8 @@ django:
   domain: "harvester.acc.publinova.nl"
   directory: "harvester"
   fixtures:
-    - "core/fixtures/initial-nppo.json"
-    - "metadata/fixtures/initial-metadata-nppo.json"
+    - "core/fixtures/initial-publinova.json"
+    - "metadata/fixtures/initial-metadata-publinova.json"
   data_retention:
     purge_after:
       days: 5
