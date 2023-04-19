@@ -1,5 +1,4 @@
-from invoke import Responder
-from fabric import task
+from invoke import Responder, task
 
 from commands.postgres.sql import setup_database_statements
 from commands.postgres.sql import insert_django_user_statement
