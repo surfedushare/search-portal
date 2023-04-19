@@ -10,6 +10,7 @@ opensearch:
   alias_prefix: "edusources"
 
 django:
+  domain: "harvester.dev.surfedushare.nl"
   fixtures:
     - "core/fixtures/initial-edusources.json"
     - "metadata/fixtures/initial-metadata-edusources.json"

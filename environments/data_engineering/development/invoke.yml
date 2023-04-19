@@ -7,16 +7,15 @@ service:
 env: "development"  # needs to move under "service"
 
 django:
-  debug: false
+  debug: true
   protocol: "https"
   directory: "harvester"  # part of "service"
-  domain: "harvester.dev.surfedushare.nl"  # needs to move to "publinova" and "edusources"
   logging:
     level: "DEBUG"
     is_opensearch: true
   send_admin_notifications: false
   sentry:
-    dsn: "https://365ba37a8b544e3199ab60d53920613f@o356528.ingest.sentry.io/5318021"  # update to something separate
+    dsn: "https://365ba37a8b544e3199ab60d53920613f@o356528.ingest.sentry.io/5318021"
 
   # This should all be "harvester"
   data_retention:
