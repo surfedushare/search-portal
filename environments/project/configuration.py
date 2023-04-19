@@ -23,6 +23,8 @@ CONTEXT = os.environ.get("APPLICATION_CONTEXT", "container")
 PROJECT = os.environ.get("APPLICATION_PROJECT", "edusources")
 if PROJECT == "publinova":
     PROJECT = "nppo"
+if PROJECT == "nppo" and MODE == "development":
+    MODE = "acceptance"
 ECS_CONTAINER_METADATA_URI = os.environ.get("ECS_CONTAINER_METADATA_URI", None)
 
 PREFIX = "POL"
