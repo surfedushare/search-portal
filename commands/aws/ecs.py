@@ -117,7 +117,7 @@ def _cleanup_ecs_task_registrations(ctx, ecs_client):
 
 def _cleanup_ecr_images(ctx, ecr_client, version_cutoff):
     next_token = None
-    production_account = "322480324822" if ctx.config.project.prefix != "nppo" else "870512711545"
+    production_account = ctx.config.aws.production.account
     environments = ENVIRONMENT_NAMES_TO_CODES.values()
     images = {
         repository: defaultdict(list)
