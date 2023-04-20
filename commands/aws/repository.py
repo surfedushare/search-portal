@@ -16,11 +16,13 @@ def sync_repository_state(ctx, push=False, no_profile=False, bucket_prefix=None)
     APPLICATION_MODE needs to be production in order to run this command.
     """
     if push and ctx.config.service.env != "production":
-        Exit("Can't push to environment other than production")
+        raise Exit("Can't push to environment other than production")
     elif push:
-        sure = input("You are about to overwrite production configuration with your local configuration. Are you sure?")
+        sure = input(
+            "You are about to overwrite production configuration with your local configuration. Are you sure? "
+        )
         if sure.lower() not in ["y", "yes"]:
-            Exit("Aborted push of local configuration files to production")
+            raise Exit("Aborted push of local configuration files to production")
     profile = f"AWS_PROFILE={ctx.config.aws.production.profile_name}" if not no_profile else ""
 
     local_directory = "."
