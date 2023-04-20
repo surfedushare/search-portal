@@ -7,7 +7,6 @@ from invoke.exceptions import Exit
 from git import Repo
 
 from commands import TARGETS
-from environments.project import REPOSITORY_AWS_PROFILE
 from commands.aws import ENVIRONMENT_NAMES_TO_CODES
 
 
@@ -20,7 +19,7 @@ def aws_docker_login(ctx):
     command = f"aws ecr get-login-password --region eu-central-1 | " \
               f"docker login --username AWS --password-stdin {ctx.config.aws.production.repository}"
     if os.environ.get("AWS_PROFILE", None):
-        command = f"AWS_PROFILE={REPOSITORY_AWS_PROFILE} " + command
+        command = f"AWS_PROFILE={ctx.config.aws.production.profile_name} " + command
         ctx.run(command)
     ctx.run(command, echo=True)
 

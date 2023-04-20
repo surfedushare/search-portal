@@ -2,8 +2,6 @@ import os
 
 from invoke import task, Exit
 
-from environments.project import REPOSITORY_AWS_PROFILE
-
 
 @task(name="sync_repository_state", help={
     "push": "Specify this flag to push your local files to production instead of pulling them",
@@ -23,10 +21,10 @@ def sync_repository_state(ctx, push=False, no_profile=False, bucket_prefix=None)
         sure = input("You are about to overwrite production configuration with your local configuration. Are you sure?")
         if sure.lower() not in ["y", "yes"]:
             Exit("Aborted push of local configuration files to production")
-    profile = f"AWS_PROFILE={REPOSITORY_AWS_PROFILE}" if not no_profile else ""
+    profile = f"AWS_PROFILE={ctx.config.aws.production.profile_name}" if not no_profile else ""
 
     local_directory = "."
-    bucket_prefix = bucket_prefix or REPOSITORY_AWS_PROFILE
+    bucket_prefix = bucket_prefix or ctx.config.aws.production.profile_name
     repository_state_bucket = f"s3://{bucket_prefix}-repository-state"
     source = repository_state_bucket if not push else local_directory
     destination = local_directory if not push else repository_state_bucket
