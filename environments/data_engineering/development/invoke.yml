@@ -3,8 +3,7 @@
 
 service:
   name: "harvester"  # might go when we strip service out of the repo
-
-env: "development"  # needs to move under "service"
+  env: "development"
 
 django:
   debug: true
@@ -17,7 +16,7 @@ django:
   sentry:
     dsn: "https://365ba37a8b544e3199ab60d53920613f@o356528.ingest.sentry.io/5318021"
 
-  # This should all be "harvester"
+harvester:
   data_retention:
     purge_after:
       days: 14
