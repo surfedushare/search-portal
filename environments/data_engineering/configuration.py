@@ -37,11 +37,6 @@ ECS_CONTAINER_METADATA_URI = os.environ.get("ECS_CONTAINER_METADATA_URI", None)
 PREFIX = "POL"
 ENVIRONMENTS = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# TODO: move these into the invoke.yml file
-REPOSITORY = "017973353230.dkr.ecr.eu-central-1.amazonaws.com"
-REPOSITORY_AWS_PROFILE = "pol-prod"
-FARGATE_CLUSTER_NAME = "data-engineering"
-
 
 # Now we'll delete any items that are POL variables, but with empty values
 # Use a value of "0" for a Boolean instead of an empty string
@@ -66,15 +61,20 @@ def build_configuration_defaults(environment):
     account_id = ENVIRONMENT_NAMES_TO_ACCOUNT_IDS[environment]
     # Formatting configuration templates with prefix and account_id
     defaults = {
+        "project": {
+            "name": PROJECT
+        },
         "service": {
             "env": environment,
         },
         "aws": {
             "account": account_id,
             "environment_code": environment_code,
+            "cluster_name": "data-engineering",
             "production": {
                 "account": "017973353230",
-                "profile_name": "pol-prod"
+                "profile_name": "pol-prod",
+                "repository": "017973353230.dkr.ecr.eu-central-1.amazonaws.com"
             }
         },
         "secrets": dict()
@@ -135,7 +135,7 @@ def create_configuration(mode=None, context="container"):
     )
     config._project_path = os.path.join(configuration_directory, f"{PROJECT}.yml")
     if context != "container":
-        config.set_runtime_path(os.path.join(configuration_directory, mode, f"superuser.invoke.yml"))
+        config.set_runtime_path(os.path.join(configuration_directory, mode, "superuser.invoke.yml"))
     config.load_system()
     config.load_user()
     config.load_project()

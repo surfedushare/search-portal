@@ -5,9 +5,8 @@
 # NB: When making changes restart your container or development server to load the update
 
 service:
-  name: "harvester"  # might go when we strip service out of the repo
-
-env: "localhost"  # needs to move under "service"
+  name: "harvester"
+  env: "localhost"
 
 django:
   debug: true
@@ -21,7 +20,7 @@ django:
   sentry:
     dsn: null
 
-  # This should all be "harvester"
+harvester:
   data_retention:
     purge_after:
       days: 14
