@@ -50,7 +50,7 @@ def sync_upload_media(ctx, source="production", path="communities"):
     Performs a sync between the upload media buckets of two environments.
     APPLICATION_MODE determines the destination environment.
     """
-    if ctx.config.env == "production":
+    if ctx.config.service.env == "production":
         raise Exit("Cowardly refusing to use production as a destination environment")
 
     local_directory = "media"

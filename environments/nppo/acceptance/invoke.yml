@@ -1,7 +1,8 @@
 # NB: This file is committed in a public repo. DO NOT COMMIT REAL SECRETS!
 # It uses AWS Secret Manager to lookup any secrets at application bootstrap
 
-env: "acceptance"
+service:
+  env: "acceptance"
 
 django:
   debug: false

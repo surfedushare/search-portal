@@ -98,7 +98,7 @@ def _cleanup_ecs_task_registrations(ctx, ecs_client):
             is_valid_task_definition = next(
                 (
                     container for container in task_definition_details["taskDefinition"]["containerDefinitions"]
-                    if container["image"].endswith(ENVIRONMENT_NAMES_TO_CODES[ctx.config.env])
+                    if container["image"].endswith(ENVIRONMENT_NAMES_TO_CODES[ctx.config.service.env])
                 ),
                 False
             )
@@ -191,6 +191,6 @@ def cleanup_ecs_artifacts(ctx, mode, version_cutoff=None):
     session = boto3.Session(profile_name=ctx.config.aws.profile_name, region_name="eu-central-1")
     ecs_client = session.client('ecs')
     _cleanup_ecs_task_registrations(ctx, ecs_client)
-    if ctx.config.env == "production":
+    if ctx.config.service.env == "production":
         ecr_client = boto3.client('ecr')
         _cleanup_ecr_images(ctx, ecr_client, version_cutoff)

@@ -8,7 +8,7 @@ from environments.project.configuration import create_configuration
 
 def run_harvester_task(ctx, mode, command, **kwargs):
     # On localhost we call the command directly and exit
-    if ctx.config.env == "localhost":
+    if ctx.config.service.env == "localhost":
         with ctx.cd(HARVESTER_DIR):
             ctx.run(" ".join(command), echo=True)
         return
@@ -28,7 +28,7 @@ def load_data(ctx, mode, source, dataset, download_edurep=False):
     """
     Loads the production database and sets up Open Search data on localhost or an AWS cluster
     """
-    if ctx.config.env == "production":
+    if ctx.config.service.env == "production":
         raise Exit("Cowardly refusing to use production as a destination environment")
 
     command = ["python", "manage.py", "load_harvester_data", dataset, f"--harvest-source={source}", "--index"]
@@ -81,7 +81,7 @@ def sync_preview_media(ctx, source="production"):
     Performs a sync between the preview media buckets of two environments.
     APPLICATION_MODE determines the destination environment.
     """
-    if ctx.config.env == "production":
+    if ctx.config.service.env == "production":
         raise Exit("Cowardly refusing to use production as a destination environment")
 
     local_directory = os.path.join("media", "harvester")
@@ -90,7 +90,8 @@ def sync_preview_media(ctx, source="production"):
     source = "s3://" + source if source is not None else local_directory
     destination = ctx.config.aws.harvest_content_bucket
     destination = "s3://" + destination if destination is not None else local_directory
-    profile_name = ctx.config.aws.profile_name if not ctx.config.env == "localhost" else source_config.aws.profile_name
+    profile_name = ctx.config.aws.profile_name if not ctx.config.service.env == "localhost" else \
+        source_config.aws.profile_name
     for path in ["thumbnails", os.path.join("core", "previews")]:
         source_path = os.path.join(source, path)
         destination_path = os.path.join(destination, path)

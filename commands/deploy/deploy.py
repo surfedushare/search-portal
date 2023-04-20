@@ -40,7 +40,7 @@ def deploy(ctx, mode):
     ecs_client = session.client('ecs')
 
     if target == "harvester":
-        print("Deploying celery:", ctx.config.env)
+        print("Deploying celery:", ctx.config.service.env)
         ecs_client.update_service(
             cluster=FARGATE_CLUSTER_NAME,
             service="celery",
@@ -49,7 +49,7 @@ def deploy(ctx, mode):
         )
         print("Waiting for Celery to finish ... do not interrupt")
         await_steady_fargate_services(ecs_client, ["celery"])
-        print("Deploying harvester:", ctx.config.env)
+        print("Deploying harvester:", ctx.config.service.env)
         ecs_client.update_service(
             cluster=FARGATE_CLUSTER_NAME,
             service="harvester",
@@ -57,7 +57,7 @@ def deploy(ctx, mode):
             forceNewDeployment=True,
         )
     elif target == "service":
-        print("Deploying search-portal:", ctx.config.env)
+        print("Deploying search-portal:", ctx.config.service.env)
         ecs_client.update_service(
             cluster=FARGATE_CLUSTER_NAME,
             service="search-portal",
