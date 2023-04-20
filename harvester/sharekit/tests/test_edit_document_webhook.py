@@ -55,7 +55,7 @@ class TestEditDocumentWebhook(TestCase):
         self.assertEqual(invalid_secret_response.reason_phrase, "Webhook not allowed in this environment")
 
     def test_invalid_ip(self):
-        invalid_ip_response = self.call_webhook(self.webhook_url, ip="127.0.0.1")
+        invalid_ip_response = self.call_webhook(self.webhook_url, ip="127.6.6.6")
         self.assertEqual(invalid_ip_response.status_code, 403)
         self.assertEqual(invalid_ip_response.reason_phrase, "Webhook not allowed from source")
 
