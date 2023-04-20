@@ -1,34 +1,20 @@
 [
 {
     "model": "core.dataset",
-    "pk": 24,
+    "pk": 28,
     "fields": {
-        "created_at": "2021-04-14T13:54:20.740Z",
-        "modified_at": "2021-04-14T14:13:24.052Z",
-        "name": "alpha",
+        "created_at": "2023-04-20T07:43:18.520Z",
+        "modified_at": "2023-04-20T07:43:18.520Z",
+        "name": "delta",
         "identifier": null,
         "referee": null,
-        "is_active": true
+        "is_active": true,
+        "is_latest": true
     }
 },
 {
     "model": "core.harvestsource",
-    "pk": 1,
-    "fields": {
-        "name": "Edurep Delen",
-        "repository": "edurep.EdurepOAIPMH",
-        "spec": "edurep_delen",
-        "delete_policy": "transient",
-        "purge_interval": {
-            "days": 30
-        },
-        "created_at": "2019-12-06T10:58:40.757Z",
-        "modified_at": "2019-12-19T15:00:18.560Z"
-    }
-},
-{
-    "model": "core.harvestsource",
-    "pk": 2,
+    "pk": 9,
     "fields": {
         "name": "Library 4 Learning",
         "repository": "edurep.EdurepOAIPMH",
@@ -37,13 +23,13 @@
         "purge_interval": {
             "days": 30
         },
-        "created_at": "2021-04-14T13:54:20.742Z",
-        "modified_at": "2021-04-14T13:54:20.742Z"
+        "created_at": "2023-04-20T07:43:18.532Z",
+        "modified_at": "2023-04-20T07:43:18.532Z"
     }
 },
 {
     "model": "core.harvestsource",
-    "pk": 3,
+    "pk": 19,
     "fields": {
         "name": "Wikiwijs Maken",
         "repository": "edurep.EdurepOAIPMH",
@@ -52,98 +38,146 @@
         "purge_interval": {
             "days": 30
         },
-        "created_at": "2021-04-14T13:54:20.742Z",
-        "modified_at": "2021-04-14T13:54:20.742Z"
+        "created_at": "2023-04-20T07:43:18.533Z",
+        "modified_at": "2023-04-20T07:43:18.533Z"
     }
 },
 {
     "model": "core.harvestsource",
-    "pk": 4,
+    "pk": 34,
     "fields": {
         "name": "Sharekit",
         "repository": "sharekit.SharekitMetadataHarvest",
         "spec": "edusources",
-        "delete_policy": "no",
+        "delete_policy": "transient",
         "purge_interval": {
-            "days": 30
+            "days": 90
         },
-        "created_at": "2021-04-14T13:54:20.742Z",
-        "modified_at": "2021-04-14T14:13:21.119Z"
+        "created_at": "2023-04-20T07:43:18.533Z",
+        "modified_at": "2023-04-20T07:43:18.533Z"
     }
 },
 {
     "model": "core.harvestsource",
-    "pk": 5,
+    "pk": 35,
     "fields": {
         "name": "Sharekit (restricted)",
         "repository": "sharekit.SharekitMetadataHarvest",
         "spec": "edusourcesprivate",
+        "delete_policy": "transient",
+        "purge_interval": {
+            "days": 90
+        },
+        "created_at": "2023-04-20T07:43:18.533Z",
+        "modified_at": "2023-04-20T07:43:18.533Z"
+    }
+},
+{
+    "model": "core.harvestsource",
+    "pk": 36,
+    "fields": {
+        "name": "Wikiwijs Delen",
+        "repository": "edurep.EdurepOAIPMH",
+        "spec": "WikiwijsDelen",
+        "delete_policy": "transient",
+        "purge_interval": {
+            "days": 30
+        },
+        "created_at": "2023-04-20T07:43:18.533Z",
+        "modified_at": "2023-04-20T07:43:18.533Z"
+    }
+},
+{
+    "model": "core.harvestsource",
+    "pk": 37,
+    "fields": {
+        "name": "Anatomy Tool",
+        "repository": "anatomy_tool.AnatomyToolOAIPMH",
+        "spec": "anatomy_tool",
         "delete_policy": "no",
         "purge_interval": {
             "days": 30
         },
-        "created_at": "2021-04-14T13:54:20.742Z",
-        "modified_at": "2021-04-14T13:54:20.742Z"
+        "created_at": "2023-04-20T07:43:18.533Z",
+        "modified_at": "2023-04-20T07:43:18.533Z"
     }
 },
 {
     "model": "core.harvest",
-    "pk": 42,
+    "pk": 104,
     "fields": {
-        "source": 1,
-        "dataset": 24,
+        "source": 19,
+        "dataset": 28,
         "latest_update_at": "1970-01-01T00:00:00Z",
-        "harvested_at": null,
-        "purge_after": null,
-        "stage": "New"
+        "harvested_at": "2023-04-01T01:01:48.405Z",
+        "purge_after": "2023-05-01T01:01:26.046Z",
+        "stage": "New",
+        "is_syncing": false
     }
 },
 {
     "model": "core.harvest",
-    "pk": 46,
+    "pk": 105,
     "fields": {
-        "source": 2,
-        "dataset": 24,
+        "source": 36,
+        "dataset": 28,
         "latest_update_at": "1970-01-01T00:00:00Z",
-        "harvested_at": null,
-        "purge_after": null,
-        "stage": "New"
+        "harvested_at": "2023-04-01T01:01:48.405Z",
+        "purge_after": "2023-05-01T01:01:26.046Z",
+        "stage": "New",
+        "is_syncing": false
     }
 },
 {
     "model": "core.harvest",
-    "pk": 90,
+    "pk": 106,
     "fields": {
-        "source": 3,
-        "dataset": 24,
+        "source": 9,
+        "dataset": 28,
         "latest_update_at": "1970-01-01T00:00:00Z",
-        "harvested_at": null,
-        "purge_after": null,
-        "stage": "New"
+        "harvested_at": "2023-04-01T01:01:48.405Z",
+        "purge_after": "2023-05-01T01:01:26.046Z",
+        "stage": "New",
+        "is_syncing": false
     }
 },
 {
     "model": "core.harvest",
-    "pk": 91,
+    "pk": 107,
     "fields": {
-        "source": 4,
-        "dataset": 24,
+        "source": 37,
+        "dataset": 28,
         "latest_update_at": "1970-01-01T00:00:00Z",
-        "harvested_at": null,
-        "purge_after": null,
-        "stage": "New"
+        "harvested_at": "2023-04-01T01:01:48.405Z",
+        "purge_after": "2023-05-01T01:01:26.046Z",
+        "stage": "New",
+        "is_syncing": false
     }
 },
 {
     "model": "core.harvest",
-    "pk": 92,
+    "pk": 108,
     "fields": {
-        "source": 5,
-        "dataset": 24,
+        "source": 34,
+        "dataset": 28,
         "latest_update_at": "1970-01-01T00:00:00Z",
-        "harvested_at": null,
-        "purge_after": null,
-        "stage": "New"
+        "harvested_at": "2023-04-01T01:01:48.405Z",
+        "purge_after": "2023-05-01T01:01:26.046Z",
+        "stage": "New",
+        "is_syncing": false
+    }
+},
+{
+    "model": "core.harvest",
+    "pk": 109,
+    "fields": {
+        "source": 35,
+        "dataset": 28,
+        "latest_update_at": "1970-01-01T00:00:00Z",
+        "harvested_at": "2023-04-01T01:01:48.405Z",
+        "purge_after": "2023-05-01T01:01:26.046Z",
+        "stage": "New",
+        "is_syncing": false
     }
 }
 ]
