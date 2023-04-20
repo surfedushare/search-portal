@@ -15,7 +15,7 @@ def _translate_metadata_value_mock(field, value):
 @patch("metadata.tasks._translate_metadata_value", new=_translate_metadata_value_mock)
 class TestSyncMetadata(TestCase):
 
-    fixtures = ["initial-metadata-edusources"]
+    fixtures = ["test-metadata-edusources"]
     fetch_value_frequencies_target = "metadata.models.field.MetadataFieldManager.fetch_value_frequencies"
 
     def assert_metadata_value(self, field, value, frequency, is_update=True, is_deleted=False, is_insert=False,
