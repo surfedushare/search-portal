@@ -37,7 +37,7 @@ def deploy(ctx, mode):
     print(f"Starting AWS session for: {mode}")
     session = boto3.Session(profile_name=ctx.config.aws.profile_name, region_name="eu-central-1")
     ecs_client = session.client('ecs')
-    cluster_name = ctx.config.aws.cluser_name
+    cluster_name = ctx.config.aws.cluster_name
 
     if target == "harvester":
         print("Deploying celery:", ctx.config.service.env)
