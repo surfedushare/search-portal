@@ -7,6 +7,10 @@ django:
   fixtures:
     - "core/fixtures/initial-edusources.json"
     - "metadata/fixtures/test-metadata-edusources.json"
+  sentry:
+    dsn: "https://365ba37a8b544e3199ab60d53920613f@o356528.ingest.sentry.io/5318021"
+
+harvester:
   data_retention:
     purge_after:
       days: 14
@@ -17,8 +21,6 @@ django:
     han: null
     hva: null
     hanze: null
-  sentry:
-    dsn: "https://365ba37a8b544e3199ab60d53920613f@o356528.ingest.sentry.io/5318021"
 
 postgres:
   database: "harvester"

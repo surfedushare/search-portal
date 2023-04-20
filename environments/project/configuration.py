@@ -29,6 +29,12 @@ ECS_CONTAINER_METADATA_URI = os.environ.get("ECS_CONTAINER_METADATA_URI", None)
 
 PREFIX = "POL"
 ENVIRONMENTS = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+ENVIRONMENT_NAMES_TO_CODES = {
+    "localhost": "dev",
+    "development": "dev",
+    "acceptance": "acc",
+    "production": "prod"
+}
 
 
 # Some dynamic configuration depends on the project and we load that module here
@@ -54,6 +60,33 @@ class POLConfig(Config):
     env_prefix = PREFIX
 
 
+def build_configuration_defaults(environment):
+    environment_code = ENVIRONMENT_NAMES_TO_CODES[environment]
+    production_account_id = REPOSITORY.split(".")[0]
+    return {
+        "project": {
+            "name": PROJECT
+        },
+        "service": {
+            "env": environment,
+            "deploy": {
+                "tags": {
+                    "central": environment_code
+                }
+            }
+        },
+        "aws": {
+            "environment_code": environment_code,
+            "cluster_name": FARGATE_CLUSTER_NAME,
+            "production": {
+                "account": production_account_id,
+                "profile_name": REPOSITORY_AWS_PROFILE,
+                "repository": REPOSITORY
+            }
+        },
+    }
+
+
 def create_configuration(mode, service=None, context="container", config_class=POLConfig):
     """
     We're using invoke Config as base for our configuration:
@@ -71,6 +104,7 @@ def create_configuration(mode, service=None, context="container", config_class=P
     """
     mode_environment = os.path.join(ENVIRONMENTS, PROJECT, mode)
     config = config_class(
+        defaults=build_configuration_defaults(mode),
         system_prefix=mode_environment + os.path.sep,
         runtime_path=os.path.join(mode_environment, "superuser.invoke.yml") if context != "container" else None,
         project_location=os.path.join(mode_environment, service) if service else None,

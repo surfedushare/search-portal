@@ -30,7 +30,7 @@ def harvester(ctx):
 @task
 def run(ctx):
     tests = [service, harvester]
-    if ctx.config.project.prefix == "pol":
+    if ctx.config.project.name == "edusources":
         tests.append(e2e)
     for test in tests:
         test(ctx)

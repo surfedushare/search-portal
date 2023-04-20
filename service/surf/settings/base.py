@@ -356,7 +356,7 @@ if not DEBUG:
     sentry_sdk.init(
         before_send=strip_sensitive_data,
         dsn=environment.django.sentry.dsn,
-        environment=environment.env,
+        environment=environment.service.env,
         integrations=[DjangoIntegration()]
     )
 

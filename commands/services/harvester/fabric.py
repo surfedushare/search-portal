@@ -9,7 +9,9 @@ def connect_with_shell(conn):
     """
     if conn.host != conn.config.aws.bastion:
         raise Exit(f"Did not expect the host {conn.host} while the bastion is {conn.config.aws.bastion}")
-    print(f"Starting Python shell with Django models loaded connected to {conn.config.env} and remote Open Search")
+    print(
+        f"Starting Python shell with Django models loaded connected to {conn.config.service.env} and remote Open Search"
+    )
     with conn.forward_local(local_port=5433, remote_host=conn.config.postgres.host, remote_port=5432):
         conn.local(
             f"cd {conn.config.django.directory} && "

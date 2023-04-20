@@ -4,9 +4,8 @@ import boto3
 from collections import defaultdict
 from math import ceil
 
-from environments.project import MODE, FARGATE_CLUSTER_NAME
+from environments.project import MODE
 from commands import TARGETS
-from commands.aws import ENVIRONMENT_NAMES_TO_CODES
 
 
 def run_task(ctx, target, mode, command, environment=None, extra_workers=False, is_harvester_command=False):
@@ -62,7 +61,7 @@ def run_task(ctx, target, mode, command, environment=None, extra_workers=False, 
     print(f"Target/mode: {target}/{mode}")
     print(f"Executing: {command}")
     ecs_client.run_task(
-        cluster=FARGATE_CLUSTER_NAME,
+        cluster=ctx.config.aws.cluster_name,
         taskDefinition=target_info["name"] if not is_harvester_command else "harvester-command",
         launchType="FARGATE",
         enableExecuteCommand=True,
@@ -98,7 +97,7 @@ def _cleanup_ecs_task_registrations(ctx, ecs_client):
             is_valid_task_definition = next(
                 (
                     container for container in task_definition_details["taskDefinition"]["containerDefinitions"]
-                    if container["image"].endswith(ENVIRONMENT_NAMES_TO_CODES[ctx.config.env])
+                    if container["image"].endswith(ctx.config.aws.environment_code)
                 ),
                 False
             )
@@ -117,8 +116,8 @@ def _cleanup_ecs_task_registrations(ctx, ecs_client):
 
 def _cleanup_ecr_images(ctx, ecr_client, version_cutoff):
     next_token = None
-    production_account = "322480324822" if ctx.config.project.prefix != "nppo" else "870512711545"
-    environments = ENVIRONMENT_NAMES_TO_CODES.values()
+    production_account = ctx.config.aws.production.account
+    environments = ["prod", "acc", "dev"]
     images = {
         repository: defaultdict(list)
         for repository in ["harvester", "harvester-nginx", "search-portal", "search-portal-nginx"]
@@ -191,6 +190,6 @@ def cleanup_ecs_artifacts(ctx, mode, version_cutoff=None):
     session = boto3.Session(profile_name=ctx.config.aws.profile_name, region_name="eu-central-1")
     ecs_client = session.client('ecs')
     _cleanup_ecs_task_registrations(ctx, ecs_client)
-    if ctx.config.env == "production":
-        ecr_client = boto3.client('ecr')
+    if ctx.config.service.env == "production":
+        ecr_client = session.client('ecr')
         _cleanup_ecr_images(ctx, ecr_client, version_cutoff)

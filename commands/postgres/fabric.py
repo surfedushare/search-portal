@@ -11,7 +11,7 @@ def setup_postgres_remote(conn):
     """
     if conn.host != conn.config.aws.bastion:
         raise Exit(f"Did not expect the host {conn.host} while the bastion is {conn.config.aws.bastion}")
-    if conn.config.env == "production":
+    if conn.config.service.env == "production":
         raise Exit("Cowardly refusing to recreate the production database")
     # Setup auto-responder
     postgres_user = conn.config.postgres.user
