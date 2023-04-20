@@ -69,6 +69,11 @@ def build_configuration_defaults(environment):
         },
         "service": {
             "env": environment,
+            "deploy": {
+                "tags": {
+                    "central": environment_code
+                }
+            }
         },
         "aws": {
             "environment_code": environment_code,

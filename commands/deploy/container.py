@@ -162,13 +162,18 @@ def push(ctx, target, commit=None, docker_login=False, push_latest=False):
         ctx.run(f"docker push {repository}/{name}-nginx:{tag}", echo=True, pty=True)
 
 
-@task(help={
-    "target": "Name of the project you want to promote: service or harvester",
-    "commit": "The commit hash that the image to be promoted is tagged with",
-    "docker_login": "Specify this flag to login to AWS registry. Needed only once per session",
-    "version": "Which version to promote. Defaults to version specified in package.py."
-})
-def promote(ctx, target, commit=None, docker_login=False, version=None):
+@task(
+    help={
+        "target": "Name of the project you want to promote: service or harvester",
+        "commit": "The commit hash that the image to be promoted is tagged with",
+        "docker_login": "Specify this flag to login to AWS registry. Needed only once per session",
+        "version": "Which version to promote. Defaults to version specified in package.py.",
+        "exclude": "List deploy targets that you want to exclude from this deploy like: "
+                   "edusources, publinova or central",
+    },
+    iterable=["exclude"]
+)
+def promote(ctx, target, commit=None, docker_login=False, version=None, exclude=None):
     """
     Pushes a previously made Docker image to the AWS container registry, that's shared between environments
     """
@@ -189,7 +194,12 @@ def promote(ctx, target, commit=None, docker_login=False, version=None):
     # Prepare promote
     repository = ctx.config.aws.production.repository
     version = version or target_info["version"]
-    promote_tags = [ctx.config.aws.environment_code, version]
+    deploy_tags = dict(**ctx.config.service.deploy.tags)
+    for exclusion in exclude:
+        deploy_tags.pop(exclusion, None)
+    if not deploy_tags:
+        raise Exit("Not a single deploy target selected")
+    promote_tags = list(deploy_tags.values()) + [version]
     source_tag = version if is_version_promotion else commit
 
     # Login with Docker on AWS
