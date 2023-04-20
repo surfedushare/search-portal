@@ -7,7 +7,7 @@ from invoke.exceptions import Exit
 from git import Repo
 
 from commands import TARGETS
-from environments.project import REPOSITORY, REPOSITORY_AWS_PROFILE
+from environments.project import REPOSITORY_AWS_PROFILE
 from commands.aws import ENVIRONMENT_NAMES_TO_CODES
 
 
@@ -18,7 +18,7 @@ def get_commit_hash():
 
 def aws_docker_login(ctx):
     command = f"aws ecr get-login-password --region eu-central-1 | " \
-              f"docker login --username AWS --password-stdin {REPOSITORY}"
+              f"docker login --username AWS --password-stdin {ctx.config.aws.production.repository}"
     if os.environ.get("AWS_PROFILE", None):
         command = f"AWS_PROFILE={REPOSITORY_AWS_PROFILE} " + command
         ctx.run(command)
@@ -61,8 +61,8 @@ def publish_runner_image(ctx, docker_login=False):
     if docker_login:
         aws_docker_login(ctx)
 
-    ctx.run(f"docker tag gitlab-runner:latest {REPOSITORY}/gitlab-runner:latest", echo=True)
-    ctx.run(f"docker push {REPOSITORY}/gitlab-runner:latest", echo=True, pty=True)
+    ctx.run(f"docker tag gitlab-runner:latest {ctx.config.aws.production.repository}/gitlab-runner:latest", echo=True)
+    ctx.run(f"docker push {ctx.config.aws.production.repository}/gitlab-runner:latest", echo=True, pty=True)
 
 
 @task(help={
@@ -79,8 +79,8 @@ def publish_tika_image(ctx, docker_login=False):
     if docker_login:
         aws_docker_login(ctx)
 
-    ctx.run(f"docker tag harvester-tika:latest {REPOSITORY}/harvester-tika:latest", echo=True)
-    ctx.run(f"docker push {REPOSITORY}/harvester-tika:latest", echo=True, pty=True)
+    ctx.run(f"docker tag harvester-tika:latest {ctx.config.aws.production.repository}/harvester-tika:latest", echo=True)
+    ctx.run(f"docker push {ctx.config.aws.production.repository}/harvester-tika:latest", echo=True, pty=True)
 
 
 @task(help={
@@ -133,6 +133,7 @@ def push(ctx, target, commit=None, docker_login=False, push_latest=False):
     Pushes a previously made Docker image to the AWS container registry, that's shared between environments
     """
     commit = commit or get_commit_hash()
+    repository = ctx.config.aws.production.repository
 
     # Check the input for validity
     if target not in TARGETS:
@@ -147,7 +148,7 @@ def push(ctx, target, commit=None, docker_login=False, push_latest=False):
 
     # Check if commit tag already exists in registry
     push_commit_tag = True
-    inspection = ctx.run(f"docker manifest inspect {REPOSITORY}/{name}:{commit}", warn=True)
+    inspection = ctx.run(f"docker manifest inspect {repository}/{name}:{commit}", warn=True)
     if inspection.exited == 0:
         print("Can't push commit tag that already has an image in the registry. Skipping.")
         push_commit_tag = False
@@ -157,10 +158,10 @@ def push(ctx, target, commit=None, docker_login=False, push_latest=False):
     if push_latest:
         tags.append("latest")
     for tag in tags:
-        ctx.run(f"docker tag {name}:{commit} {REPOSITORY}/{name}:{tag}", echo=True)
-        ctx.run(f"docker push {REPOSITORY}/{name}:{tag}", echo=True, pty=True)
-        ctx.run(f"docker tag {name}-nginx:{commit} {REPOSITORY}/{name}-nginx:{tag}", echo=True)
-        ctx.run(f"docker push {REPOSITORY}/{name}-nginx:{tag}", echo=True, pty=True)
+        ctx.run(f"docker tag {name}:{commit} {repository}/{name}:{tag}", echo=True)
+        ctx.run(f"docker push {repository}/{name}:{tag}", echo=True, pty=True)
+        ctx.run(f"docker tag {name}-nginx:{commit} {repository}/{name}-nginx:{tag}", echo=True)
+        ctx.run(f"docker push {repository}/{name}-nginx:{tag}", echo=True, pty=True)
 
 
 @task(help={
@@ -188,6 +189,7 @@ def promote(ctx, target, commit=None, docker_login=False, version=None):
     is_version_promotion = bool(version)
 
     # Prepare promote
+    repository = ctx.config.aws.production.repository
     version = version or target_info["version"]
     promote_tags = [ENVIRONMENT_NAMES_TO_CODES[ctx.config.service.env], version]
     source_tag = version if is_version_promotion else commit
@@ -197,7 +199,7 @@ def promote(ctx, target, commit=None, docker_login=False, version=None):
         aws_docker_login(ctx)
 
     # Check if version tag already exists in registry
-    inspection = ctx.run(f"docker manifest inspect {REPOSITORY}/{name}:{version}", warn=True)
+    inspection = ctx.run(f"docker manifest inspect {repository}/{name}:{version}", warn=True)
     version_exists = inspection.exited == 0
     if version_exists:
         print("Skipping version tagging, because version already exists in registry")
@@ -208,15 +210,15 @@ def promote(ctx, target, commit=None, docker_login=False, version=None):
     print("Tags added by promotion:", promote_tags)
 
     # Pull the source images
-    ctx.run(f"docker pull {REPOSITORY}/{name}:{source_tag}", echo=True, pty=True)
-    ctx.run(f"docker pull {REPOSITORY}/{name}-nginx:{source_tag}", echo=True, pty=True)
+    ctx.run(f"docker pull {repository}/{name}:{source_tag}", echo=True, pty=True)
+    ctx.run(f"docker pull {repository}/{name}-nginx:{source_tag}", echo=True, pty=True)
 
     # Tagging and pushing of our image and nginx image with relevant tags
     for promote_tag in promote_tags:
-        ctx.run(f"docker tag {REPOSITORY}/{name}:{source_tag} {REPOSITORY}/{name}:{promote_tag}", echo=True)
-        ctx.run(f"docker push {REPOSITORY}/{name}:{promote_tag}", echo=True, pty=True)
-        ctx.run(f"docker tag {REPOSITORY}/{name}-nginx:{source_tag} {REPOSITORY}/{name}-nginx:{promote_tag}", echo=True)
-        ctx.run(f"docker push {REPOSITORY}/{name}-nginx:{promote_tag}", echo=True, pty=True)
+        ctx.run(f"docker tag {repository}/{name}:{source_tag} {repository}/{name}:{promote_tag}", echo=True)
+        ctx.run(f"docker push {repository}/{name}:{promote_tag}", echo=True, pty=True)
+        ctx.run(f"docker tag {repository}/{name}-nginx:{source_tag} {repository}/{name}-nginx:{promote_tag}", echo=True)
+        ctx.run(f"docker push {repository}/{name}-nginx:{promote_tag}", echo=True, pty=True)
 
 
 @task(help={
