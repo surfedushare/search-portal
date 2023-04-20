@@ -6,7 +6,6 @@ from math import ceil
 
 from environments.project import MODE
 from commands import TARGETS
-from commands.aws import ENVIRONMENT_NAMES_TO_CODES
 
 
 def run_task(ctx, target, mode, command, environment=None, extra_workers=False, is_harvester_command=False):
@@ -98,7 +97,7 @@ def _cleanup_ecs_task_registrations(ctx, ecs_client):
             is_valid_task_definition = next(
                 (
                     container for container in task_definition_details["taskDefinition"]["containerDefinitions"]
-                    if container["image"].endswith(ENVIRONMENT_NAMES_TO_CODES[ctx.config.service.env])
+                    if container["image"].endswith(ctx.config.aws.environment_code)
                 ),
                 False
             )
@@ -118,7 +117,7 @@ def _cleanup_ecs_task_registrations(ctx, ecs_client):
 def _cleanup_ecr_images(ctx, ecr_client, version_cutoff):
     next_token = None
     production_account = ctx.config.aws.production.account
-    environments = ENVIRONMENT_NAMES_TO_CODES.values()
+    environments = ["prod", "acc", "dev"]
     images = {
         repository: defaultdict(list)
         for repository in ["harvester", "harvester-nginx", "search-portal", "search-portal-nginx"]

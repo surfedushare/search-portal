@@ -7,7 +7,6 @@ from invoke.exceptions import Exit
 from git import Repo
 
 from commands import TARGETS
-from commands.aws import ENVIRONMENT_NAMES_TO_CODES
 
 
 def get_commit_hash():
@@ -178,8 +177,8 @@ def promote(ctx, target, commit=None, docker_login=False, version=None):
         raise Exit(f"Unknown target: {target}", code=1)
     if commit and version:
         raise Exit("Can't promote a version and commit at the same time.")
-    if ctx.config.service.env not in ENVIRONMENT_NAMES_TO_CODES:
-        raise Exit(f"Can't promote for {ctx.config.service.env} environment")
+    if ctx.config.service.env == "localhost":
+        raise Exit("Can't promote for localhost environment")
 
     # Load info variables
     target_info = TARGETS[target]
@@ -190,7 +189,7 @@ def promote(ctx, target, commit=None, docker_login=False, version=None):
     # Prepare promote
     repository = ctx.config.aws.production.repository
     version = version or target_info["version"]
-    promote_tags = [ENVIRONMENT_NAMES_TO_CODES[ctx.config.service.env], version]
+    promote_tags = [ctx.config.aws.environment_code, version]
     source_tag = version if is_version_promotion else commit
 
     # Login with Docker on AWS
