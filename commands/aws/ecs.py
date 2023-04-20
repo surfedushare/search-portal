@@ -191,5 +191,5 @@ def cleanup_ecs_artifacts(ctx, mode, version_cutoff=None):
     ecs_client = session.client('ecs')
     _cleanup_ecs_task_registrations(ctx, ecs_client)
     if ctx.config.service.env == "production":
-        ecr_client = boto3.client('ecr')
+        ecr_client = session.client('ecr')
         _cleanup_ecr_images(ctx, ecr_client, version_cutoff)
