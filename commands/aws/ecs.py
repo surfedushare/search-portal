@@ -4,7 +4,7 @@ import boto3
 from collections import defaultdict
 from math import ceil
 
-from environments.project import MODE, FARGATE_CLUSTER_NAME
+from environments.project import MODE
 from commands import TARGETS
 from commands.aws import ENVIRONMENT_NAMES_TO_CODES
 
@@ -62,7 +62,7 @@ def run_task(ctx, target, mode, command, environment=None, extra_workers=False, 
     print(f"Target/mode: {target}/{mode}")
     print(f"Executing: {command}")
     ecs_client.run_task(
-        cluster=FARGATE_CLUSTER_NAME,
+        cluster=ctx.config.aws.cluster_name,
         taskDefinition=target_info["name"] if not is_harvester_command else "harvester-command",
         launchType="FARGATE",
         enableExecuteCommand=True,
