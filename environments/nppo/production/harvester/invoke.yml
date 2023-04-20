@@ -7,6 +7,10 @@ django:
   fixtures:
     - "core/fixtures/initial-publinova.json"
     - "metadata/fixtures/initial-metadata-publinova.json"
+  sentry:
+    dsn: "https://13ca8b29c8384e57b7294280117728f1@o1143393.ingest.sentry.io/6208201"
+
+harvester:
   data_retention:
     purge_after:
       days: 5
@@ -17,8 +21,6 @@ django:
     han: "https://repository.han.nl"
     hva: "https://pure.hva.nl"
     hanze: "https://hanze.azure-api.net"
-  sentry:
-    dsn: "https://13ca8b29c8384e57b7294280117728f1@o1143393.ingest.sentry.io/6208201"
 
 postgres:
   database: "harvester"

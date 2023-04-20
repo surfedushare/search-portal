@@ -489,8 +489,8 @@ if DEBUG:
 
 DATAGROWTH_DATA_DIR = os.path.join(BASE_DIR, "..", "data", "harvester")
 DATAGROWTH_BIN_DIR = os.path.join(BASE_DIR, "harvester", "bin")
-DATA_RETENTION_PURGE_AFTER = environment.django.data_retention.purge_after or {}
-DATA_RETENTION_KEEP_VERSIONS = environment.django.data_retention.keep_versions
+DATA_RETENTION_PURGE_AFTER = environment.harvester.data_retention.purge_after or {}
+DATA_RETENTION_KEEP_VERSIONS = environment.harvester.data_retention.keep_versions
 
 
 # Internal credentials
@@ -501,13 +501,13 @@ HARVESTER_WEBHOOK_SECRET = environment.secrets.harvester.webhook_secret
 # Sharekit
 
 SHAREKIT_API_KEY = environment.secrets.sharekit.api_key
-SHAREKIT_BASE_URL = environment.django.repositories.sharekit
+SHAREKIT_BASE_URL = environment.harvester.repositories.sharekit
 SHAREKIT_WEBHOOK_ALLOWED_IPS = environment.sharekit.webhook_allowed_ips
 
 
 # Edurep & Eduterm
 
-EDUREP_BASE_URL = environment.django.repositories.edurep
+EDUREP_BASE_URL = environment.harvester.repositories.edurep
 EDUTERM_API_KEY = environment.secrets.eduterm.api_key
 
 
@@ -551,11 +551,11 @@ TEAMS_HARVESTER_WEBHOOK = environment.secrets.teams_webhooks.harvester
 
 SOURCES = {
     "han": {
-        "endpoint": environment.django.repositories.han,
+        "endpoint": environment.harvester.repositories.han,
         "api_key": None
     },
     "hva": {
-        "endpoint": environment.django.repositories.hva,
+        "endpoint": environment.harvester.repositories.hva,
         "api_key": environment.secrets.hva.api_key
     },
     "hku": {
@@ -571,7 +571,7 @@ SOURCES = {
         "api_key": environment.secrets.buas.api_key
     },
     "hanze": {
-        "endpoint": environment.django.repositories.hanze,
+        "endpoint": environment.harvester.repositories.hanze,
         "api_key": environment.secrets.hanze.api_key
     },
 }
