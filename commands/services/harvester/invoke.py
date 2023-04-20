@@ -85,7 +85,7 @@ def sync_preview_media(ctx, source="production"):
         raise Exit("Cowardly refusing to use production as a destination environment")
 
     local_directory = os.path.join("media", "harvester")
-    source_config = create_configuration(source, service="service", context="host")
+    source_config = create_configuration(source, service="harvester", context="host")
     source = source_config.aws.harvest_content_bucket
     source = "s3://" + source if source is not None else local_directory
     destination = ctx.config.aws.harvest_content_bucket
