@@ -25,7 +25,7 @@ django:
   data_retention:
     purge_after:
       days: 14
-    keep_versions: 3
+    keep_versions: 1
   repositories:
     edurep: "https://staging.edurep.kennisnet.nl"
     sharekit: "https://api.acc.surfsharekit.nl"
