@@ -50,7 +50,7 @@ AWS_SECRET_CONFIGURATIONS = {
         "admin_password": "arn:aws:secretsmanager:eu-central-1:{}:secret:harvester/django",
     },
     "sharekit": {
-        "api_key": "arn:aws:secretsmanager:eu-central-1:{}:secret:harvester/sharekit-credentials",
+        "api_key": "arn:aws:secretsmanager:eu-central-1:{}:secret:credentials/sharekit",
     },
     "harvester": {
         "api_key": "arn:aws:secretsmanager:eu-central-1:{}:secret:harvester/credentials",
@@ -69,12 +69,12 @@ AWS_SECRET_CONFIGURATIONS = {
         "harvester": "arn:aws:secretsmanager:eu-central-1:{}:secret:harvester/teams-webhooks",
     },
     "hanze": {
-        "api_key": None,
+        "api_key": "arn:aws:secretsmanager:eu-central-1:{}:secret:credentials/hanze",
     },
     "hva": {
-        "api_key": None,
+        "api_key": "arn:aws:secretsmanager:eu-central-1:{}:secret:credentials/hva",
     },
     "buas": {
-        "api_key": None,
+        "api_key": "arn:aws:secretsmanager:eu-central-1:{}:secret:credentials/buas",
     },
 }
