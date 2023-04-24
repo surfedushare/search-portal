@@ -1,14 +1,9 @@
 # NB: This file is committed in a public repo. DO NOT COMMIT REAL SECRETS!
 # It uses AWS Secret Manager to lookup any secrets at application bootstrap
 
-service:
-  name: "harvester"  # might go when we strip service out of the repo
-  env: "development"
-
 django:
   debug: true
   protocol: "https"
-  directory: "harvester"  # part of "service"
   logging:
     level: "DEBUG"
     is_opensearch: true
@@ -24,9 +19,9 @@ harvester:
   repositories:
     edurep: "https://staging.edurep.kennisnet.nl"
     sharekit: "https://api.acc.surfsharekit.nl"
-    han: null
-    hva: null
-    hanze: null
+    han: "https://repository.han.nl"
+    hva: "https://accpure.hva.nl"
+    hanze: "https://hanzetest.azure-api.net"
 
 postgres:
   host: "surfpol-edushare.c85na2fjlzol.eu-central-1.rds.amazonaws.com"
