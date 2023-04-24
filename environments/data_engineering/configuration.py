@@ -32,6 +32,7 @@ MODE = os.environ.get("APPLICATION_MODE", "production")
 MODE_PREFIX = "prod" if MODE == "production" else MODE[:3]
 CONTEXT = os.environ.get("APPLICATION_CONTEXT", "container")
 PROJECT = os.environ.get("APPLICATION_PROJECT", "edusources")
+TEAM = os.environ.get("APPLICATION_TEAM", "web")
 ECS_CONTAINER_METADATA_URI = os.environ.get("ECS_CONTAINER_METADATA_URI", None)
 
 PREFIX = "POL"
