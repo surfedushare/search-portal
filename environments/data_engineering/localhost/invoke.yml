@@ -4,14 +4,9 @@
 
 # NB: When making changes restart your container or development server to load the update
 
-service:
-  name: "harvester"
-  env: "localhost"
-
 django:
   debug: true
   protocol: "http"
-  directory: "harvester"  # part of "service"
   domain: "localhost"
   logging:
     level: "DEBUG"
@@ -28,9 +23,9 @@ harvester:
   repositories:
     edurep: "https://staging.edurep.kennisnet.nl"
     sharekit: "https://api.acc.surfsharekit.nl"
-    han: null
-    hva: null
-    hanze: null
+    han: "https://repository.han.nl"
+    hva: "https://accpure.hva.nl"
+    hanze: "https://hanzetest.azure-api.net"
 
 postgres:
   host: "postgres"

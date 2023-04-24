@@ -66,6 +66,15 @@ def build_configuration_defaults(environment):
         },
         "service": {
             "env": environment,
+            "name": "harvester",
+            "directory": "harvester",
+            "deploy": {
+                "tags": {
+                    "central": f"{environment_code}-central",
+                    "edusources": f"{environment_code}-edusources",
+                    "publinova": f"{environment_code}-publinova"
+                }
+            }
         },
         "aws": {
             "account": account_id,
