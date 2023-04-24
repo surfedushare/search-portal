@@ -46,7 +46,7 @@ def setup_postgres_remote(conn):
             )
         # Migrate the application
         conn.local(
-            f"cd {conn.config.django.directory} && "
+            f"cd {conn.config.service.directory} && "
             f"AWS_PROFILE={conn.config.aws.profile_name} "
             f"POL_POSTGRES_HOST=localhost "
             f"POL_POSTGRES_PORT=1111 "
@@ -69,7 +69,7 @@ def setup_postgres_remote(conn):
         # Load data fixtures to get the project going
         for fixture in conn.config.django.fixtures:
             conn.local(
-                f"cd {conn.config.django.directory} && "
+                f"cd {conn.config.service.directory} && "
                 f"AWS_PROFILE={conn.config.aws.profile_name} "
                 f"POL_POSTGRES_HOST=localhost "
                 f"POL_POSTGRES_PORT=1111 "

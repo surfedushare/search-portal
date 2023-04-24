@@ -41,7 +41,7 @@ def setup_postgres_localhost(ctx, host="localhost"):
         )
     # Migrate the application
     ctx.run(
-        f"cd {ctx.config.django.directory} && python manage.py migrate",
+        f"cd {ctx.config.service.directory} && python manage.py migrate",
         echo=True, pty=True
     )
     # Create generic superuser named supersurf and site objects
@@ -60,6 +60,6 @@ def setup_postgres_localhost(ctx, host="localhost"):
     # Load data fixtures to get the project going
     for fixture in ctx.config.django.fixtures:
         ctx.run(
-            f"cd {ctx.config.django.directory} && python manage.py loaddata {fixture}",
+            f"cd {ctx.config.service.directory} && python manage.py loaddata {fixture}",
             echo=True, pty=True
         )

@@ -1,9 +1,9 @@
 service:
   name: "harvester"
+  directory: "harvester"
 
 django:
   domain: "harvester.acc.surfedushare.nl"
-  directory: "harvester"
   fixtures:
     - "core/fixtures/initial-edusources.json"
     - "metadata/fixtures/test-metadata-edusources.json"

@@ -1,8 +1,8 @@
 service:
   name: "harvester"
+  directory: "harvester"
 
 django:
-  directory: "harvester"
   fixtures:
     - "core/fixtures/datasets-history.json"
     - "core/fixtures/initial-edusources.json"

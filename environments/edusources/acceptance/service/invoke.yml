@@ -1,8 +1,8 @@
 service:
   name: "service"
+  directory: "service"
 
 django:
-  directory: "service"
   fixtures:
     - "surf/apps/locale/fixtures/locales-edusources.json"
     - "surf/vendor/surfconext/fixtures/privacy_statements.json"

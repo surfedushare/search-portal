@@ -1,9 +1,9 @@
 service:
   name: "service"
+  directory: "service"
 
 django:
   domain: "search.publinova.nl"
-  directory: "service"
   fixtures:
     - "surf/apps/locale/fixtures/locales-nppo.json"
   matomo_id: null

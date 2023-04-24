@@ -1,9 +1,9 @@
 service:
   name: "harvester"
+  directory: "harvester"
 
 django:
   domain: "harvester.publinova.nl"
-  directory: "harvester"
   fixtures:
     - "core/fixtures/initial-publinova.json"
     - "metadata/fixtures/initial-metadata-publinova.json"
