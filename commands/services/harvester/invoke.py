@@ -3,7 +3,7 @@ from invoke import task, Exit
 
 from commands import HARVESTER_DIR
 from commands.aws.ecs import run_task
-from environments.project.configuration import create_configuration
+from environments.data_engineering.configuration import create_configuration
 
 
 def run_harvester_task(ctx, mode, command, **kwargs):
@@ -85,7 +85,7 @@ def sync_preview_media(ctx, source="production"):
         raise Exit("Cowardly refusing to use production as a destination environment")
 
     local_directory = os.path.join("media", "harvester")
-    source_config = create_configuration(source, service="harvester", context="host")
+    source_config = create_configuration(source, context="host")
     source = source_config.aws.harvest_content_bucket
     source = "s3://" + source if source is not None else local_directory
     destination = ctx.config.aws.harvest_content_bucket
