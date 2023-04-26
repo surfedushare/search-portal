@@ -40,22 +40,19 @@ def deploy(ctx, mode):
     cluster_name = ctx.config.aws.cluster_name
 
     if target == "harvester":
-        print("Deploying celery:", ctx.config.service.env)
-        ecs_client.update_service(
-            cluster=cluster_name,
-            service="celery",
-            taskDefinition="celery",
-            forceNewDeployment=True,
-        )
-        print("Waiting for Celery to finish ... do not interrupt")
-        await_steady_fargate_services(ecs_client, cluster_name, ["celery"])
-        print("Deploying harvester:", ctx.config.service.env)
-        ecs_client.update_service(
-            cluster=cluster_name,
-            service="harvester",
-            taskDefinition="harvester",
-            forceNewDeployment=True,
-        )
+        deploys = []
+        for family in ctx.config.aws.task_definition_families:
+            if "command" in family or family == "search-portal":
+                continue
+            print("Deploying:", family)
+            ecs_client.update_service(
+                cluster=cluster_name,
+                service=family,
+                taskDefinition=family,
+                forceNewDeployment=True,
+            )
+        print("Waiting for deploys to finish ...")
+        await_steady_fargate_services(ecs_client, cluster_name, deploys)
     elif target == "service":
         print("Deploying search-portal:", ctx.config.service.env)
         ecs_client.update_service(
