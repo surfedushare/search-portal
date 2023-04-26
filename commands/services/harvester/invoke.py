@@ -2,19 +2,55 @@ import os
 from invoke import task, Exit
 
 from commands import HARVESTER_DIR
-from commands.aws.ecs import run_task
+from commands.aws.ecs import run_data_engineering_task
 from environments.data_engineering.configuration import create_configuration
 
 
-def run_harvester_task(ctx, mode, command, **kwargs):
+def run_harvester_task(ctx, mode, command, environment=None):
     # On localhost we call the command directly and exit
     if ctx.config.service.env == "localhost":
         with ctx.cd(HARVESTER_DIR):
             ctx.run(" ".join(command), echo=True)
         return
-
+    # For remotes we need to determine which target(s) we want to run commands for
+    target_input = input("Which projects do you want to run this command for (e)dusources, (p)ublinova or (b)oth? ")
+    targets = []
+    match target_input:
+        case "e":
+            targets.append("edusources")
+        case "p":
+            targets.append("publinova")
+        case "b":
+            targets += ["edusources", "publinova"]
+        case _:
+            raise Exit("Aborted running harvester command, because of invalid target input", code=1)
     # On AWS we trigger a harvester task on the container cluster to run the command for us
-    run_task(ctx, "harvester", mode, command, is_harvester_command=True, **kwargs)
+    for target in targets:
+        run_data_engineering_task(ctx, target, mode, command, environment)
+
+
+@task(
+    name="migrate",
+    help={
+        "mode": "Mode you want to migrate: development, acceptance or production. Must match APPLICATION_MODE"
+    }
+)
+def harvester_migrate(ctx, mode):
+    """
+    Executes migration task on container cluster for development, acceptance or production environment on AWS
+    """
+    command = ["python", "manage.py", "migrate"]
+    environment = [
+        {
+            "name": "POL_POSTGRES_USER",
+            "value": f"{ctx.config.postgres.user}"
+        },
+        {
+            "name": "POL_SECRETS_POSTGRES_PASSWORD",
+            "value": f"{ctx.config.aws.postgres_password_arn}"
+        },
+    ]
+    run_harvester_task(ctx, mode, command, environment)
 
 
 @task(help={
@@ -59,7 +95,7 @@ def harvest(ctx, mode, reset=False, no_promote=False):
     if no_promote:
         command += ["--no-promote"]
 
-    run_harvester_task(ctx, mode, command, extra_workers=reset)
+    run_harvester_task(ctx, mode, command)
 
 
 @task(help={
@@ -69,8 +105,7 @@ def harvest(ctx, mode, reset=False, no_promote=False):
 })
 def generate_previews(ctx, mode, dataset):
     command = ["python", "manage.py", "generate_previews", f"--dataset={dataset}"]
-
-    run_harvester_task(ctx, mode, command, extra_workers=True)
+    run_harvester_task(ctx, mode, command)
 
 
 @task(name="sync_preview_media", help={
