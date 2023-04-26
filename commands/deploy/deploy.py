@@ -39,8 +39,8 @@ def deploy(ctx, mode):
     ecs_client = session.client('ecs')
     cluster_name = ctx.config.aws.cluster_name
 
+    deploys = []
     if target == "harvester":
-        deploys = []
         for family in ctx.config.aws.task_definition_families:
             if "command" in family or family == "search-portal":
                 continue
@@ -51,8 +51,7 @@ def deploy(ctx, mode):
                 taskDefinition=family,
                 forceNewDeployment=True,
             )
-        print("Waiting for deploys to finish ...")
-        await_steady_fargate_services(ecs_client, cluster_name, deploys)
+            deploys.append(family)
     elif target == "service":
         print("Deploying search-portal:", ctx.config.service.env)
         ecs_client.update_service(
@@ -61,7 +60,8 @@ def deploy(ctx, mode):
             taskDefinition="search-portal",
             forceNewDeployment=True,
         )
+        deploys.append(target_info["name"])
 
-    print("Waiting for deploy to finish ...")
-    await_steady_fargate_services(ecs_client, cluster_name, [target_info["name"]])
+    print("Waiting for deploy(s) to finish ...")
+    await_steady_fargate_services(ecs_client, cluster_name, [])
     print("Done deploying")
