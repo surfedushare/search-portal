@@ -81,8 +81,10 @@ def build_configuration_defaults(environment):
             "production": {
                 "account": production_account_id,
                 "profile_name": REPOSITORY_AWS_PROFILE,
-                "repository": REPOSITORY
-            }
+                "registry": REPOSITORY
+            },
+            "repositories": ["harvester", "harvester-nginx", "search-portal", "search-portal-nginx"],
+            "task_definition_families": ["harvester", "search-portal", "celery", "harvester-command"]
         },
     }
 

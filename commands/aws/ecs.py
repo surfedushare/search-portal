@@ -89,7 +89,7 @@ def run_task(ctx, target, mode, command, environment=None, extra_workers=False, 
 
 def _cleanup_ecs_task_registrations(ctx, ecs_client):
     next_token = None
-    families = iter(["harvester", "search-portal", "celery", "harvester-command"])
+    families = iter(ctx.config.aws.task_definition_families)
     family = next(families)
     print("Starting cleanup of task registrations for:", family)
     while True:
@@ -109,7 +109,7 @@ def _cleanup_ecs_task_registrations(ctx, ecs_client):
             is_valid_task_definition = next(
                 (
                     container for container in task_definition_details["taskDefinition"]["containerDefinitions"]
-                    if container["image"].endswith(ctx.config.aws.environment_code)
+                    if ctx.config.aws.environment_code in container["image"].split("/")[1]
                 ),
                 False
             )
@@ -132,7 +132,7 @@ def _cleanup_ecr_images(ctx, ecr_client, version_cutoff):
     environments = ["prod", "acc", "dev"]
     images = {
         repository: defaultdict(list)
-        for repository in ["harvester", "harvester-nginx", "search-portal", "search-portal-nginx"]
+        for repository in ctx.config.aws.repositories
     }
     repositories = iter(images.keys())
     repository = next(repositories)
@@ -172,15 +172,18 @@ def _cleanup_ecr_images(ctx, ecr_client, version_cutoff):
             if not version_cutoff:  # all other images remain unless a version_cutoff has been specified
                 continue
             for tag in tags:
-                if tag in environments:  # always skip any promoted images
+                is_promoted = next((env for env in environments if env in tag and len(tag) < 40), False)
+                if is_promoted:
                     print("Skipping delete of image digest for environment:", tag)
                     break
                 elif "." in tag:
                     raw_version = tag.split(".")
                     major_minor_version = float(".".join(raw_version[:2]))
-                    if major_minor_version < version_cutoff:
-                        print("Deleting image digest with version:", tag)
+                    if major_minor_version > version_cutoff:
+                        print("Skipping delete of image digest with version:", tag)
+                        break
             else:
+                print("Deleting image digest:", digest)
                 delete_digests.append({"imageDigest": digest})
         for offset in range(ceil(len(delete_digests)/100)):
             ecr_client.batch_delete_image(
@@ -188,6 +191,7 @@ def _cleanup_ecr_images(ctx, ecr_client, version_cutoff):
                 repositoryName=repository,
                 imageIds=list(delete_digests[offset:offset+100])
             )
+            sleep(1)
 
 
 @task(help={

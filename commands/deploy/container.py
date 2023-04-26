@@ -16,7 +16,7 @@ def get_commit_hash():
 
 def aws_docker_login(ctx):
     command = f"aws ecr get-login-password --region eu-central-1 | " \
-              f"docker login --username AWS --password-stdin {ctx.config.aws.production.repository}"
+              f"docker login --username AWS --password-stdin {ctx.config.aws.production.registry}"
     if os.environ.get("AWS_PROFILE", None):
         command = f"AWS_PROFILE={ctx.config.aws.production.profile_name} " + command
         ctx.run(command)
@@ -59,8 +59,8 @@ def publish_runner_image(ctx, docker_login=False):
     if docker_login:
         aws_docker_login(ctx)
 
-    ctx.run(f"docker tag gitlab-runner:latest {ctx.config.aws.production.repository}/gitlab-runner:latest", echo=True)
-    ctx.run(f"docker push {ctx.config.aws.production.repository}/gitlab-runner:latest", echo=True, pty=True)
+    ctx.run(f"docker tag gitlab-runner:latest {ctx.config.aws.production.registry}/gitlab-runner:latest", echo=True)
+    ctx.run(f"docker push {ctx.config.aws.production.registry}/gitlab-runner:latest", echo=True, pty=True)
 
 
 @task(help={
@@ -77,8 +77,8 @@ def publish_tika_image(ctx, docker_login=False):
     if docker_login:
         aws_docker_login(ctx)
 
-    ctx.run(f"docker tag harvester-tika:latest {ctx.config.aws.production.repository}/harvester-tika:latest", echo=True)
-    ctx.run(f"docker push {ctx.config.aws.production.repository}/harvester-tika:latest", echo=True, pty=True)
+    ctx.run(f"docker tag harvester-tika:latest {ctx.config.aws.production.registry}/harvester-tika:latest", echo=True)
+    ctx.run(f"docker push {ctx.config.aws.production.registry}/harvester-tika:latest", echo=True, pty=True)
 
 
 @task(help={
@@ -131,7 +131,7 @@ def push(ctx, target, commit=None, docker_login=False, push_latest=False):
     Pushes a previously made Docker image to the AWS container registry, that's shared between environments
     """
     commit = commit or get_commit_hash()
-    repository = ctx.config.aws.production.repository
+    repository = ctx.config.aws.production.registry
 
     # Check the input for validity
     if target not in TARGETS:
@@ -192,7 +192,7 @@ def promote(ctx, target, commit=None, docker_login=False, version=None, exclude=
     is_version_promotion = bool(version)
 
     # Prepare promote
-    repository = ctx.config.aws.production.repository
+    repository = ctx.config.aws.production.registry
     version = version or target_info["version"]
     deploy_tags = dict(**ctx.config.service.deploy.tags)
     for exclusion in exclude:
