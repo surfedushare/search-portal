@@ -84,7 +84,7 @@ def build_configuration_defaults(environment):
             "production": {
                 "account": "017973353230",
                 "profile_name": "pol-prod",
-                "repository": "017973353230.dkr.ecr.eu-central-1.amazonaws.com"
+                "registry": "017973353230.dkr.ecr.eu-central-1.amazonaws.com"
             },
             "repositories": ["harvester", "harvester-nginx"],
             "task_definition_families": ["web", "celery", "central", "command-edusources", "command-publinova"]
