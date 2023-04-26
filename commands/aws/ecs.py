@@ -87,6 +87,32 @@ def run_task(ctx, target, mode, command, environment=None, extra_workers=False, 
     )
 
 
+def run_data_engineering_task(ctx, target, mode, command, environment=None):
+    """
+    Executes any (Django) command on (data engineering) cluster for development, acceptance or production environment
+    """
+    if mode != MODE:
+        raise Exit(f"Expected mode to match APPLICATION_MODE value but found: {mode}", code=1)
+
+    environment = environment or []
+
+    # Setup the AWS SDK
+    print(f"Starting AWS session for: {mode}")
+    session = boto3.Session(profile_name=ctx.config.aws.profile_name, region_name="eu-central-1")
+    ecs_client = session.client('ecs')
+
+    print(f"Target/mode: {target}/{mode}")
+    print(f"Executing: {command}")
+    superuser_task_role = ctx.config.aws.superuser_task_role_arn
+    ecs_client.run_task(
+        cluster=ctx.config.aws.cluster_name,
+        taskDefinition=f"command-{target}",
+        launchType="FARGATE",
+        overrides=_get_superuser_command_override(superuser_task_role, f"command-{target}", command, environment),
+        networkConfiguration=get_private_network_configuration(session)
+    )
+
+
 def _cleanup_ecs_task_registrations(ctx, ecs_client):
     next_token = None
     families = iter(ctx.config.aws.task_definition_families)
