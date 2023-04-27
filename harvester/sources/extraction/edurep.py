@@ -246,13 +246,13 @@ class EdurepMetadataExtraction(ExtractProcessor):
             date = node.get("schema:publisherDate", None)
         if date is None:
             return None
-        return date_parser(date)
+        return date
 
     @classmethod
     def get_publisher_year(cls, node):
 
         datetime = cls.get_publisher_date(node)
-        return datetime.year
+        return date_parser(datetime).year
 
     @classmethod
     def get_is_restricted(cls, node):
