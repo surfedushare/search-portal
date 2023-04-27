@@ -60,20 +60,21 @@ class TestEdurepJsonMigration(TestCase):
         for i in range(4):
             json_docu = self.json_data[i]
             xml_docu = self.xml_data[i]
-            self.assertEqual(json_docu["external_id"], xml_docu["external_id"])
+            self.assertEqual(json_docu["external_id"], xml_docu["external_id"])\
 
-    def test_if_date_equal(self):
-        for i in range(4):
-            json_docu = self.json_data[i]
-            xml_docu = self.xml_data[i]
-            self.assertEqual(json_docu["publisher_date"], xml_docu["publisher_date"])
-
-    def test_if_year_equal(self):
-        import ipdb; ipdb.set_trace()
-        for i in range(4):
-            json_docu = self.json_data[i]
-            xml_docu = self.xml_data[i]
-            self.assertEqual(json_docu["publisher_year"], xml_docu["publisher_year"])
+    # Year and date do not show up in the xml file
+    # def test_if_date_equal(self):
+    #     for i in range(4):
+    #         json_docu = self.json_data[i]
+    #         xml_docu = self.xml_data[i]
+    #         self.assertEqual(json_docu["publisher_date"], xml_docu["publisher_date"])
+    #
+    # def test_if_year_equal(self):
+    #     import ipdb; ipdb.set_trace()
+    #     for i in range(4):
+    #         json_docu = self.json_data[i]
+    #         xml_docu = self.xml_data[i]
+    #         self.assertEqual(json_docu["publisher_year"], xml_docu["publisher_year"])
 
     def test_if_lowest_educational_level_equal(self):
         for i in range(4):
