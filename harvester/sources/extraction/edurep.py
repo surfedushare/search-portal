@@ -45,38 +45,58 @@ class EdurepMetadataExtraction(ExtractProcessor):
     def get_files(cls, node):
         if not node:
             return []
-        return {
+        # This whole method is complete crap,
+        # it needs to be replaced as soon as edurep makes some data consistency promises.
+        mime_type = FILE_TYPE_TO_MIME_TYPE.get(node["schema:encodingFormat"][0]) \
+            if isinstance(node["schema:encodingFormat"], list) \
+            else FILE_TYPE_TO_MIME_TYPE.get(node["schema:encodingFormat"])
+
+        if isinstance(node["schema:url"], list):
+            documents = []
+            for url in node["schema:url"]:
+                documents.append(
+                    {
+                        "title": node["schema:name"]["@value"],
+                        "url": url,
+                        "mime_type": mime_type,
+                        "hash": sha1(url.encode("utf-8")).hexdigest(),
+                        "copyright": node.get("schema:license", None),
+                        "access_rights": node["dcterms:accessRights"]
+                    }
+                )
+            return documents
+        return [{
             "title": node["schema:name"]["@value"],
             "url": node["schema:url"],
-            "mime_type": FILE_TYPE_TO_MIME_TYPE.get(node["schema:encodingFormat"]),
+            "mime_type": mime_type,
             "hash": sha1(node["schema:url"].encode("utf-8")).hexdigest(),
             "copyright": node.get("schema:license", None),
             "access_rights": node["dcterms:accessRights"]
-        }
+        }]
 
     @classmethod
     def get_url(cls, node):
         files = cls.get_files(node)
         if not files:
             return node.get("portalUrl", None)
-        return files.get("url", None).strip()
+        return files[0].get("url", None).strip()
 
     @classmethod
     def get_mime_type(cls, node):
         files = cls.get_files(node)
         if not files:
             return
-        return files.get("mime_type", None)
+        return files[0].get("mime_type", None)
 
     @classmethod
     def get_technical_type(cls, node):
         files = cls.get_files(node)
         if not files:
             return
-        technical_type = settings.MIME_TYPE_TO_TECHNICAL_TYPE.get(files["mime_type"], None)
+        technical_type = settings.MIME_TYPE_TO_TECHNICAL_TYPE.get(files[0]["mime_type"], None)
         if technical_type:
             return technical_type
-        file_url = files["url"]
+        file_url = files[0]["url"]
         if not file_url:
             return
         mime_type, encoding = guess_type(file_url)
@@ -124,7 +144,7 @@ class EdurepMetadataExtraction(ExtractProcessor):
     @classmethod
     def get_authors(cls, node):
         authors = []
-        for person in node["dcterms:creator"]:
+        for person in node.get("dcterms:creator", []):
             authors.append({
                 "name": person,
                 "email": None,
@@ -139,11 +159,10 @@ class EdurepMetadataExtraction(ExtractProcessor):
     def get_educational_levels(cls, node):
         blocks = node["schema:educationalLevel"]
         educational_levels = []
+        blocks = blocks if isinstance(blocks, list) else [blocks]
         for block in blocks:
-            for item in block["schema:name"]:
-                if isinstance(item, dict):
-                    if item["@value"] in HIGHER_EDUCATION_LEVELS:
-                        educational_levels.append(item["@value"])
+            if block["schema:name"]["@value"] in HIGHER_EDUCATION_LEVELS:
+                educational_levels.append(block["schema:name"]["@value"])
         return educational_levels
 
     @classmethod
@@ -187,7 +206,9 @@ class EdurepMetadataExtraction(ExtractProcessor):
         keyword_dict = node["schema:keywords"]
         keyword_values = []
         for keyword in keyword_dict:
-            if keyword.get("@value", None) is not None:
+            if isinstance(keyword, str):
+                keyword_values.append("keyword is a string?")
+            elif keyword.get("@value", None) is not None:
                 keyword_values.append(keyword["@value"])
             elif keyword.get("schema:termCode", None) is not None:
                 keyword_values.append(keyword["schema:termCode"])
@@ -207,7 +228,7 @@ class EdurepMetadataExtraction(ExtractProcessor):
 
     @classmethod
     def get_material_types(cls, node):
-        material_types = node["schema:learningResourceType"]
+        material_types = node.get("schema:learningResourceType", [])
         material_values = []
         if not material_types:
             return []
@@ -217,11 +238,20 @@ class EdurepMetadataExtraction(ExtractProcessor):
         return material_values
 
     @classmethod
-    def get_publisher_year(cls, node):
-        date = node.get("schema:publisherDate", None)
+    def get_publisher_date(cls, node):
+        date = node.get("schema:datePublished", None)
         if date is None:
-            return
-        datetime = date_parser(date)
+            date = node.get("schema:dateModified", None)
+        if date is None:
+            date = node.get("schema:publisherDate", None)
+        if date is None:
+            return None
+        return date_parser(date)
+
+    @classmethod
+    def get_publisher_year(cls, node):
+
+        datetime = cls.get_publisher_date(node)
         return datetime.year
 
     @classmethod
@@ -233,7 +263,7 @@ class EdurepMetadataExtraction(ExtractProcessor):
         files = cls.get_files(node)
         if not len(files):
             return False
-        match files["access_rights"], files["copyright"]:
+        match files[0]["access_rights"], files[0]["copyright"]:
             case "OpenAccess", _:
                 return True
             case "RestrictedAccess", copyright:
@@ -261,7 +291,7 @@ EDUREP_EXTRACTION_OBJECTIVE = {
     "authors": EdurepMetadataExtraction.get_authors,
     "organizations": EdurepMetadataExtraction.get_organizations,
     "publishers": EdurepMetadataExtraction.get_publisher,
-    "publisher_date": "$.schema:datePublished",
+    "publisher_date": EdurepMetadataExtraction.get_publisher_date,
     "publisher_year": EdurepMetadataExtraction.get_publisher_year,
 
     # Non-essential NPPO properties
