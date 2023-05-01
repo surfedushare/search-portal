@@ -272,21 +272,21 @@ LOGGING = {
         },
         'search_harvest': create_opensearch_handler(
             OPENSEARCH_HOST,
-            'harvest-logs',
+            f'harvest-logs-{environment.project.name}',
             OpensearchHandler.IndexNameFrequency.WEEKLY,
             environment.container.id,
             OPENSEARCH_PASSWORD
         ),
         'search_documents': create_opensearch_handler(
             OPENSEARCH_HOST,
-            'document-logs',
+            f'document-logs-{environment.project.name}',
             OpensearchHandler.IndexNameFrequency.YEARLY,
             environment.container.id,
             OPENSEARCH_PASSWORD
         ),
         'search_results': create_opensearch_handler(
             OPENSEARCH_HOST,
-            'harvest-results',
+            f'harvest-results-{environment.project.name}',
             OpensearchHandler.IndexNameFrequency.YEARLY,
             environment.container.id,
             OPENSEARCH_PASSWORD
