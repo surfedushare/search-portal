@@ -63,5 +63,5 @@ def deploy(ctx, mode):
         deploys.append(target_info["name"])
 
     print("Waiting for deploy(s) to finish ...")
-    await_steady_fargate_services(ecs_client, cluster_name, [])
+    await_steady_fargate_services(ecs_client, cluster_name, deploys)
     print("Done deploying")
