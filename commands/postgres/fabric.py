@@ -11,7 +11,7 @@ def setup_postgres_remote(conn):
     """
     if conn.host != conn.config.aws.bastion:
         raise Exit(f"Did not expect the host {conn.host} while the bastion is {conn.config.aws.bastion}")
-    if conn.config.env == "production":
+    if conn.config.service.env == "production":
         raise Exit("Cowardly refusing to recreate the production database")
     # Setup auto-responder
     postgres_user = conn.config.postgres.user
@@ -46,7 +46,7 @@ def setup_postgres_remote(conn):
             )
         # Migrate the application
         conn.local(
-            f"cd {conn.config.django.directory} && "
+            f"cd {conn.config.service.directory} && "
             f"AWS_PROFILE={conn.config.aws.profile_name} "
             f"POL_POSTGRES_HOST=localhost "
             f"POL_POSTGRES_PORT=1111 "
@@ -69,7 +69,7 @@ def setup_postgres_remote(conn):
         # Load data fixtures to get the project going
         for fixture in conn.config.django.fixtures:
             conn.local(
-                f"cd {conn.config.django.directory} && "
+                f"cd {conn.config.service.directory} && "
                 f"AWS_PROFILE={conn.config.aws.profile_name} "
                 f"POL_POSTGRES_HOST=localhost "
                 f"POL_POSTGRES_PORT=1111 "

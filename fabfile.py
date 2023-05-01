@@ -4,7 +4,7 @@ from invoke.config import Config
 from environments.project import create_configuration_and_session
 from commands.postgres.fabric import setup_postgres_remote
 from commands.services.service.fabric import create_snapshot, restore_snapshot
-from commands.services.harvester.fabric import connect_flower, connect_with_shell
+from commands.services.harvester.fabric import connect_with_shell
 
 
 service_environment, _ = create_configuration_and_session(
@@ -19,7 +19,7 @@ harvester_environment, _ = create_configuration_and_session(
     config_class=Config,
     service="harvester"
 )
-harvester_collection = Collection("hrv", setup_postgres_remote, connect_flower, connect_with_shell)
+harvester_collection = Collection("hrv", setup_postgres_remote, connect_with_shell)
 harvester_collection.configure(harvester_environment)
 
 

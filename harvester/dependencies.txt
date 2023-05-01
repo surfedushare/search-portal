@@ -1,12 +1,12 @@
 # Process management
-argh==0.26.2
+argh==0.28.1
 watchdog==2.2.1
 
 # Harvester Celery
 celery==5.2.7
 celery[redis]
 redis==4.3.4
-flower==1.0.0
+flower==1.2.0
 
 # Harvester other
 django-log-formatter-json==0.2.0

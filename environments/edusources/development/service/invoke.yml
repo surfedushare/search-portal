@@ -1,15 +1,15 @@
 service:
   name: "service"
+  directory: "service"
 
 django:
-  directory: "service"
   fixtures:
     - "surf/apps/locale/fixtures/locales-edusources.json"
     - "surf/vendor/surfconext/fixtures/privacy_statements.json"
     - "surf/apps/core/fixtures/initial.json"
   matomo_id: null
   administrative_emails: false
-  harvester_api: "http://harvester.pol/api/v1/"
+  harvester_api: "https://harvester.dev.surfedushare.nl/api/v1/"
   sentry:
     dsn: "https://21fab3e788584cbe999f20ea1bb7e2df@sentry.io/2964956"
 

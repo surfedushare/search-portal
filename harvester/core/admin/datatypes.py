@@ -96,6 +96,7 @@ class CollectionAdmin(DataStorageAdmin):
         '__str__', 'created_at', 'modified_at',
         'active_document_count', 'deleted_document_count', 'inactive_document_count'
     ]
+    ordering = ('-created_at',)
 
     def active_document_count(self, obj):
         return obj.document_set.filter(properties__state="active").count()

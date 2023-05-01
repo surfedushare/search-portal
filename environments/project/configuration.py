@@ -21,10 +21,20 @@ import sys
 MODE = os.environ.get("APPLICATION_MODE", "production")
 CONTEXT = os.environ.get("APPLICATION_CONTEXT", "container")
 PROJECT = os.environ.get("APPLICATION_PROJECT", "edusources")
+if PROJECT == "publinova":
+    PROJECT = "nppo"
+if PROJECT == "nppo" and MODE == "development":
+    MODE = "acceptance"
 ECS_CONTAINER_METADATA_URI = os.environ.get("ECS_CONTAINER_METADATA_URI", None)
 
 PREFIX = "POL"
 ENVIRONMENTS = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+ENVIRONMENT_NAMES_TO_CODES = {
+    "localhost": "dev",
+    "development": "dev",
+    "acceptance": "acc",
+    "production": "prod"
+}
 
 
 # Some dynamic configuration depends on the project and we load that module here
@@ -33,7 +43,6 @@ project_configuration = importlib.import_module(f"{PROJECT}.configuration")
 REPOSITORY = project_configuration.REPOSITORY
 REPOSITORY_AWS_PROFILE = project_configuration.REPOSITORY_AWS_PROFILE
 FARGATE_CLUSTER_NAME = project_configuration.FARGATE_CLUSTER_NAME
-SEARCH_FIELDS = project_configuration.SEARCH_FIELDS
 
 
 # Now we'll delete any items that are POL variables, but with empty values
@@ -49,6 +58,35 @@ for key in invalid_keys:
 # Using a custom configuration class
 class POLConfig(Config):
     env_prefix = PREFIX
+
+
+def build_configuration_defaults(environment):
+    environment_code = ENVIRONMENT_NAMES_TO_CODES[environment]
+    production_account_id = REPOSITORY.split(".")[0]
+    return {
+        "project": {
+            "name": PROJECT
+        },
+        "service": {
+            "env": environment,
+            "deploy": {
+                "tags": {
+                    "central": environment_code
+                }
+            }
+        },
+        "aws": {
+            "environment_code": environment_code,
+            "cluster_name": FARGATE_CLUSTER_NAME,
+            "production": {
+                "account": production_account_id,
+                "profile_name": REPOSITORY_AWS_PROFILE,
+                "registry": REPOSITORY
+            },
+            "repositories": ["harvester", "harvester-nginx", "search-portal", "search-portal-nginx"],
+            "task_definition_families": ["harvester", "search-portal", "celery", "harvester-command"]
+        },
+    }
 
 
 def create_configuration(mode, service=None, context="container", config_class=POLConfig):
@@ -68,6 +106,7 @@ def create_configuration(mode, service=None, context="container", config_class=P
     """
     mode_environment = os.path.join(ENVIRONMENTS, PROJECT, mode)
     config = config_class(
+        defaults=build_configuration_defaults(mode),
         system_prefix=mode_environment + os.path.sep,
         runtime_path=os.path.join(mode_environment, "superuser.invoke.yml") if context != "container" else None,
         project_location=os.path.join(mode_environment, service) if service else None,
@@ -133,227 +172,3 @@ def create_configuration_and_session(config_class=POLConfig, service=None):
             secrets[group_name][secret_name] = secret_payload[secret_name]
 
     return environment, session
-
-
-def create_open_search_index_configuration(lang, decompound_word_list=None):
-    language_analyzers = {
-        'nl': 'custom_dutch',
-        'en': 'english'
-    }
-    search_analyzer = language_analyzers.get(lang, "standard")
-    if decompound_word_list and lang == "nl":
-        search_analyzer = "dutch_dictionary_decompound"
-    configuration = {
-        "settings": {
-            "index": {
-                "number_of_shards": 1,
-                "number_of_replicas": 0
-            },
-            "analysis": {
-                "analyzer": {
-                    "trigram": {
-                        "type": "custom",
-                        "tokenizer": "standard",
-                        "filter": ["lowercase", "shingle"]
-                    },
-                    "folding": {
-                        "tokenizer": "standard",
-                        "filter":  ["lowercase", "asciifolding"]
-                    },
-                    "custom_dutch": {
-                        "tokenizer":  "standard",
-                        "filter": [
-                            "lowercase",
-                            "dutch_stop",
-                            "dutch_keywords",
-                            "dutch_override",
-                            "dutch_stemmer",
-                        ]
-                    },
-                },
-                "filter": {
-                    "dutch_stop": {
-                        "type": "stop",
-                        "stopwords": "_dutch_"
-                    },
-                    "shingle": {
-                        "type": "shingle",
-                        "min_shingle_size": 2,
-                        "max_shingle_size": 3
-                    },
-                    "dutch_keywords": {
-                        "type":       "keyword_marker",
-                        "keywords":   ["palliatieve"]
-                    },
-                    "dutch_stemmer": {
-                        "type":       "stemmer",
-                        "language":   "dutch"
-                    },
-                    "dutch_override": {
-                        "type":       "stemmer_override",
-                        "rules": []
-                    },
-                    "dutch_synonym": {
-                        "type": "synonym_graph",
-                        "synonyms": [
-                            "palliatie, palliatieve"
-                        ]
-                    }
-                }
-            }
-        },
-        'mappings': {
-            'properties': {
-                'title': {
-                    'type': 'text',
-                    'fields': {
-                        'analyzed': {
-                            'type': 'text',
-                            'analyzer': language_analyzers.get(lang, "standard"),
-                            'search_analyzer': search_analyzer,
-                        },
-                        'folded': {
-                            'type': 'text',
-                            'analyzer': 'folding'
-                        }
-                    }
-                },
-                'text': {
-                    'type': 'text',
-                    'fields': {
-                        'analyzed': {
-                            'type': 'text',
-                            'analyzer': language_analyzers.get(lang, "standard"),
-                            'search_analyzer': search_analyzer,
-                        },
-                        'folded': {
-                            'type': 'text',
-                            'analyzer': 'folding'
-                        }
-                    }
-                },
-                'description': {
-                    'type': 'text',
-                    'fields': {
-                        'analyzed': {
-                            'type': 'text',
-                            'analyzer': language_analyzers.get(lang, "standard"),
-                            'search_analyzer': search_analyzer,
-                        },
-                        'folded': {
-                            'type': 'text',
-                            'analyzer': 'folding'
-                        }
-                    }
-                },
-                'url': {'type': 'text'},
-                'authors': {
-                    'type': 'object',
-                    'properties': {
-                        'name': {
-                            'type': 'text',
-                            'fields': {
-                                'keyword': {
-                                    'type': 'keyword',
-                                    'ignore_above': 256
-                                },
-                                'folded': {
-                                    'type': 'text',
-                                    'analyzer': 'folding'
-                                }
-                            }
-                        },
-                        'email': {
-                            'type': 'keyword'
-                        },
-                        'external_id': {
-                            'type': 'keyword'
-                        },
-                        'dai': {
-                            'type': 'keyword'
-                        },
-                        'orcid': {
-                            'type': 'keyword'
-                        },
-                        'isni': {
-                            'type': 'keyword'
-                        }
-                    }
-                },
-                'publishers': {
-                    'type': 'text',
-                    'fields': {
-                        'keyword': {
-                            'type': 'keyword',
-                            'ignore_above': 256
-                        },
-                        'folded': {
-                            'type': 'text',
-                            'analyzer': 'folding'
-                        }
-                    }
-                },
-                'publisher_date': {
-                    'type': 'date',
-                    'format': 'strict_date_optional_time||yyyy-MM||epoch_millis'
-                },
-                'publisher_year': {
-                    'type': 'keyword'
-                },
-                'keywords': {
-                    'type': 'text',
-                    'fields': {
-                        'keyword': {
-                            'type': 'keyword',
-                            'ignore_above': 256
-                        },
-                        'folded': {
-                            'type': 'text',
-                            'analyzer': 'folding'
-                        }
-                    }
-                },
-                'technical_type': {
-                    'type': 'keyword'
-                },
-                'id': {'type': 'text'},
-                'external_id': {
-                    'type': 'keyword'
-                },
-                'harvest_source': {
-                    'type': 'keyword'
-                },
-                "suggest_completion": {
-                    "type": "completion"
-                },
-                "suggest_phrase": {
-                    "type": "text",
-                    "analyzer": "trigram"
-                },
-                'is_part_of': {
-                    'type': 'keyword'
-                },
-                'has_parts': {
-                    'type': 'keyword'
-                }
-            }
-        }
-    }
-
-    # Update the mapping properties with the project configuration
-    configuration["mappings"]["properties"].update(project_configuration.get_project_search_mapping_properties())
-
-    # Then if our (AWS) environment supports it we add decompound settings
-    if decompound_word_list:
-        configuration["settings"]["analysis"]["analyzer"]["dutch_dictionary_decompound"] = {
-            "type": "custom",
-            "tokenizer": "standard",
-            "filter": ["lowercase", "dutch_stop", "dutch_synonym", "dictionary_decompound"]
-        }
-        configuration["settings"]["analysis"]["filter"]["dictionary_decompound"] = {
-            "type": "dictionary_decompounder",
-            "word_list_path": decompound_word_list,
-            "updateable": True
-        }
-
-    return configuration

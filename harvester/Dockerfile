@@ -38,9 +38,9 @@ COPY harvester/requirements.txt /usr/src/app/
 COPY harvester/dependencies.txt /usr/src/app/
 RUN pip install -U --no-cache-dir --user pip
 RUN pip install wheel
-RUN pip install --no-cache-dir --user uwsgi==2.0.20
+RUN pip install --no-cache-dir --user uwsgi==2.0.21
 RUN pip install --no-cache-dir --user -r requirements.txt
-RUN pip install --no-cache-dir --user git+https://github.com/surfedushare/search-client.git@v0.3.0
+RUN pip install --no-cache-dir --user git+https://github.com/surfedushare/search-client.git@v0.3.1
 
 # Copy application
 COPY harvester /usr/src/app
@@ -61,6 +61,6 @@ ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
 CMD ["uwsgi", "--ini", "/usr/src/app/uwsgi.ini"]
 
 # EXPOSE port 8080 and 8888 to allow communication to/from server
-EXPOSE 8080 8888
+EXPOSE 8080 8888 8889
 # EXPOSE port 5555 for Flower a Celery monitor tool
 EXPOSE 5555

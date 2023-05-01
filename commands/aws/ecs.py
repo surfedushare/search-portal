@@ -4,41 +4,13 @@ import boto3
 from collections import defaultdict
 from math import ceil
 
-from environments.project import MODE, FARGATE_CLUSTER_NAME
+from environments.project import MODE
 from commands import TARGETS
-from commands.aws import ENVIRONMENT_NAMES_TO_CODES
 
 
-def run_task(ctx, target, mode, command, environment=None, extra_workers=False, is_harvester_command=False):
-    """
-    Executes any (Django) command on container cluster for development, acceptance or production environment on AWS
-    """
-    if mode != MODE:
-        raise Exit(f"Expected mode to match APPLICATION_MODE value but found: {mode}", code=1)
-
-    environment = environment or []
-    target_info = TARGETS[target]
-
-    # Setup the AWS SDK
-    print(f"Starting AWS session for: {mode}")
-    session = boto3.Session(profile_name=ctx.config.aws.profile_name, region_name="eu-central-1")
-    ecs_client = session.client('ecs')
-
-    # Building overrides configuration
-    cpu = int(target_info["cpu"])
-    overrides = {
-        "containerOverrides": [{
-            "name": f"{target_info['name']}-container",
-            "command": command,
-            "environment": environment
-        }],
-        "taskRoleArn": ctx.config.aws.superuser_task_role_arn,
-    }
-    if extra_workers:
-        overrides["cpu"] = str(cpu*2)
-
+def get_private_network_configuration(aws_session):
     print("Acquiring subnet")
-    ec2_client = session.client('ec2')
+    ec2_client = aws_session.client('ec2')
     subnets_response = ec2_client.describe_subnets()
     vpc_id, private_subnet = next(
         ((subnet["VpcId"], subnet["SubnetId"],)
@@ -58,27 +30,66 @@ def run_task(ctx, target, mode, command, environment=None, extra_workers=False, 
         ]
     )
     security_group_ids = [security_group["GroupId"] for security_group in security_groups_response["SecurityGroups"]]
+    return {
+        "awsvpcConfiguration": {
+            "subnets": [private_subnet],
+            "securityGroups": security_group_ids
+        }
+    }
+
+
+def _get_superuser_command_override(superuser_task_role_arn, container, command, environment):
+    return {
+        "containerOverrides": [{
+            "name": container,
+            "command": command,
+            "environment": environment
+        }],
+        "taskRoleArn": superuser_task_role_arn
+    }
+
+
+def run_task(ctx, target, mode, command, environment=None, extra_workers=False, is_harvester_command=False):
+    """
+    Executes any (Django) command on container cluster for development, acceptance or production environment on AWS
+    """
+    if mode != MODE:
+        raise Exit(f"Expected mode to match APPLICATION_MODE value but found: {mode}", code=1)
+
+    environment = environment or []
+    target_info = TARGETS[target]
+
+    # Setup the AWS SDK
+    print(f"Starting AWS session for: {mode}")
+    session = boto3.Session(profile_name=ctx.config.aws.profile_name, region_name="eu-central-1")
+    ecs_client = session.client('ecs')
+
+    # Building overrides configuration
+    cpu = int(target_info["cpu"])
+    overrides = _get_superuser_command_override(
+        ctx.config.aws.superuser_task_role_arn,
+        f"{target_info['name']}-container",
+        command,
+        environment
+    )
+    if extra_workers:
+        overrides["cpu"] = str(cpu*2)
 
     print(f"Target/mode: {target}/{mode}")
     print(f"Executing: {command}")
     ecs_client.run_task(
-        cluster=FARGATE_CLUSTER_NAME,
+        cluster=ctx.config.aws.cluster_name,
         taskDefinition=target_info["name"] if not is_harvester_command else "harvester-command",
         launchType="FARGATE",
         enableExecuteCommand=True,
         overrides=overrides,
-        networkConfiguration={
-            "awsvpcConfiguration": {
-                "subnets": [private_subnet],
-                "securityGroups": security_group_ids
-            }
-        },
+        networkConfiguration=get_private_network_configuration(session)
     )
 
 
 def _cleanup_ecs_task_registrations(ctx, ecs_client):
     next_token = None
-    families = iter(["harvester", "search-portal", "celery", "harvester-command"])
+    families = iter(ctx.config.aws.task_definition_families)
     family = next(families)
     print("Starting cleanup of task registrations for:", family)
     while True:
@@ -98,7 +109,7 @@ def _cleanup_ecs_task_registrations(ctx, ecs_client):
             is_valid_task_definition = next(
                 (
                     container for container in task_definition_details["taskDefinition"]["containerDefinitions"]
-                    if container["image"].endswith(ENVIRONMENT_NAMES_TO_CODES[ctx.config.env])
+                    if ctx.config.aws.environment_code in container["image"].split("/")[1]
                 ),
                 False
             )
@@ -117,11 +128,11 @@ def _cleanup_ecs_task_registrations(ctx, ecs_client):
 
 def _cleanup_ecr_images(ctx, ecr_client, version_cutoff):
     next_token = None
-    production_account = "322480324822" if ctx.config.project.prefix != "nppo" else "870512711545"
-    environments = ENVIRONMENT_NAMES_TO_CODES.values()
+    production_account = ctx.config.aws.production.account
+    environments = ["prod", "acc", "dev"]
     images = {
         repository: defaultdict(list)
-        for repository in ["harvester", "harvester-nginx", "search-portal", "search-portal-nginx"]
+        for repository in ctx.config.aws.repositories
     }
     repositories = iter(images.keys())
     repository = next(repositories)
@@ -161,15 +172,18 @@ def _cleanup_ecr_images(ctx, ecr_client, version_cutoff):
             if not version_cutoff:  # all other images remain unless a version_cutoff has been specified
                 continue
             for tag in tags:
-                if tag in environments:  # always skip any promoted images
+                is_promoted = next((env for env in environments if env in tag and len(tag) < 40), False)
+                if is_promoted:
                     print("Skipping delete of image digest for environment:", tag)
                     break
                 elif "." in tag:
                     raw_version = tag.split(".")
                     major_minor_version = float(".".join(raw_version[:2]))
-                    if major_minor_version < version_cutoff:
-                        print("Deleting image digest with version:", tag)
+                    if major_minor_version > version_cutoff:
+                        print("Skipping delete of image digest with version:", tag)
+                        break
             else:
+                print("Deleting image digest:", digest)
                 delete_digests.append({"imageDigest": digest})
         for offset in range(ceil(len(delete_digests)/100)):
             ecr_client.batch_delete_image(
@@ -177,6 +191,7 @@ def _cleanup_ecr_images(ctx, ecr_client, version_cutoff):
                 repositoryName=repository,
                 imageIds=list(delete_digests[offset:offset+100])
             )
+            sleep(1)
 
 
 @task(help={
@@ -191,6 +206,6 @@ def cleanup_ecs_artifacts(ctx, mode, version_cutoff=None):
     session = boto3.Session(profile_name=ctx.config.aws.profile_name, region_name="eu-central-1")
     ecs_client = session.client('ecs')
     _cleanup_ecs_task_registrations(ctx, ecs_client)
-    if ctx.config.env == "production":
-        ecr_client = boto3.client('ecr')
+    if ctx.config.service.env == "production":
+        ecr_client = session.client('ecr')
         _cleanup_ecr_images(ctx, ecr_client, version_cutoff)

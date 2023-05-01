@@ -9,7 +9,7 @@ from opensearchpy.helpers import streaming_bulk
 from opensearchpy.exceptions import NotFoundError
 from rest_framework import serializers
 
-from project.configuration import create_open_search_index_configuration
+from search_client.opensearch.configuration import create_open_search_index_configuration
 from core.models import DatasetVersion
 from core.models.choices import EducationalLevels
 from search.clients import get_opensearch_client
@@ -127,6 +127,7 @@ class ElasticIndex(models.Model):
             decompound_word_list = settings.OPENSEARCH_DECOMPOUND_WORD_LISTS.dutch
         return create_open_search_index_configuration(
             lang,
+            settings.DOCUMENT_TYPE,
             decompound_word_list=decompound_word_list
         )
 
