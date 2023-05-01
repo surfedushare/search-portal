@@ -98,7 +98,7 @@ services:
       - ./harvester:/usr/src/app
       - ./media:/usr/src/media
       - ./environments/${APPLICATION_PROJECT}/localhost/invoke.yml:/usr/src/environments/localhost/invoke.yml
-    command: celery -A harvester flower
+    command: celery -A harvester flower --url_prefix=flower
     ports:
       - "127.0.0.1:5555:5555"
     depends_on:
@@ -113,3 +113,4 @@ services:
     depends_on:
       - harvester
       - service
+      - flower
