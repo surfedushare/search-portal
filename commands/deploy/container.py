@@ -131,7 +131,7 @@ def push(ctx, target, commit=None, docker_login=False, push_latest=False):
     Pushes a previously made Docker image to the AWS container registry, that's shared between environments
     """
     commit = commit or get_commit_hash()
-    repository = ctx.config.aws.production.registry
+    registry = ctx.config.aws.production.registry
 
     # Check the input for validity
     if target not in TARGETS:
@@ -146,7 +146,7 @@ def push(ctx, target, commit=None, docker_login=False, push_latest=False):
 
     # Check if commit tag already exists in registry
     push_commit_tag = True
-    inspection = ctx.run(f"docker manifest inspect {repository}/{name}:{commit}", warn=True)
+    inspection = ctx.run(f"docker manifest inspect {registry}/{name}:{commit}", warn=True)
     if inspection.exited == 0:
         print("Can't push commit tag that already has an image in the registry. Skipping.")
         push_commit_tag = False
@@ -156,10 +156,10 @@ def push(ctx, target, commit=None, docker_login=False, push_latest=False):
     if push_latest:
         tags.append("latest")
     for tag in tags:
-        ctx.run(f"docker tag {name}:{commit} {repository}/{name}:{tag}", echo=True)
-        ctx.run(f"docker push {repository}/{name}:{tag}", echo=True, pty=True)
-        ctx.run(f"docker tag {name}-nginx:{commit} {repository}/{name}-nginx:{tag}", echo=True)
-        ctx.run(f"docker push {repository}/{name}-nginx:{tag}", echo=True, pty=True)
+        ctx.run(f"docker tag {name}:{commit} {registry}/{name}:{tag}", echo=True)
+        ctx.run(f"docker push {registry}/{name}:{tag}", echo=True, pty=True)
+        ctx.run(f"docker tag {name}-nginx:{commit} {registry}/{name}-nginx:{tag}", echo=True)
+        ctx.run(f"docker push {registry}/{name}-nginx:{tag}", echo=True, pty=True)
 
 
 @task(
@@ -192,7 +192,7 @@ def promote(ctx, target, commit=None, docker_login=False, version=None, exclude=
     is_version_promotion = bool(version)
 
     # Prepare promote
-    repository = ctx.config.aws.production.registry
+    registry = ctx.config.aws.production.registry
     version = version or target_info["version"]
     deploy_tags = dict(**ctx.config.service.deploy.tags)
     for exclusion in exclude:
@@ -207,7 +207,7 @@ def promote(ctx, target, commit=None, docker_login=False, version=None, exclude=
         aws_docker_login(ctx)
 
     # Check if version tag already exists in registry
-    inspection = ctx.run(f"docker manifest inspect {repository}/{name}:{version}", warn=True)
+    inspection = ctx.run(f"docker manifest inspect {registry}/{name}:{version}", warn=True)
     version_exists = inspection.exited == 0
     if version_exists:
         print("Skipping version tagging, because version already exists in registry")
@@ -218,15 +218,15 @@ def promote(ctx, target, commit=None, docker_login=False, version=None, exclude=
     print("Tags added by promotion:", promote_tags)
 
     # Pull the source images
-    ctx.run(f"docker pull {repository}/{name}:{source_tag}", echo=True, pty=True)
-    ctx.run(f"docker pull {repository}/{name}-nginx:{source_tag}", echo=True, pty=True)
+    ctx.run(f"docker pull {registry}/{name}:{source_tag}", echo=True, pty=True)
+    ctx.run(f"docker pull {registry}/{name}-nginx:{source_tag}", echo=True, pty=True)
 
     # Tagging and pushing of our image and nginx image with relevant tags
     for promote_tag in promote_tags:
-        ctx.run(f"docker tag {repository}/{name}:{source_tag} {repository}/{name}:{promote_tag}", echo=True)
-        ctx.run(f"docker push {repository}/{name}:{promote_tag}", echo=True, pty=True)
-        ctx.run(f"docker tag {repository}/{name}-nginx:{source_tag} {repository}/{name}-nginx:{promote_tag}", echo=True)
-        ctx.run(f"docker push {repository}/{name}-nginx:{promote_tag}", echo=True, pty=True)
+        ctx.run(f"docker tag {registry}/{name}:{source_tag} {registry}/{name}:{promote_tag}", echo=True)
+        ctx.run(f"docker push {registry}/{name}:{promote_tag}", echo=True, pty=True)
+        ctx.run(f"docker tag {registry}/{name}-nginx:{source_tag} {registry}/{name}-nginx:{promote_tag}", echo=True)
+        ctx.run(f"docker push {registry}/{name}-nginx:{promote_tag}", echo=True, pty=True)
 
 
 @task(help={
