@@ -156,7 +156,7 @@ def create_configuration(mode=None, context="container"):
         lazy=True
     )
     config._project_path = os.path.join(configuration_directory, f"{PROJECT}.yml")
-    if context != "container":
+    if context == "host":
         config.set_runtime_path(os.path.join(configuration_directory, mode, "superuser.invoke.yml"))
     config.load_system()
     config.load_user()
