@@ -16,10 +16,11 @@ def get_or_create_metadata_value(term, field, parent):
     except MetadataValue.DoesNotExist:
         pass
 
-    vocabulary = MetadataValue(value=term["value"])
+    vocabulary = MetadataValue(value=term["value"], is_manual=True)
     translation = MetadataTranslation.objects.create(
         nl=term["name"],
-        en=translate_with_deepl(term["name"])
+        en=translate_with_deepl(term["name"]),
+        is_fuzzy=True
     )
     vocabulary.translation = translation
     vocabulary.field = field
@@ -77,11 +78,12 @@ class Command(BaseCommand):
 
         field_translation, _ = MetadataTranslation.objects.get_or_create(
             nl="vakvocabulaire",
-            en="study_vocabulary"
+            en="study_vocabulary",
+            is_fuzzy=True
         )
         field, _ = MetadataField.objects.get_or_create(
-            name="study_vocabulary",
-            defaults={"translation": field_translation}
+            name="study_vocabulary.keyword",
+            defaults={"translation": field_translation, "is_manual": True, "is_hidden": True}
         )
 
         if vocabulary is not None:

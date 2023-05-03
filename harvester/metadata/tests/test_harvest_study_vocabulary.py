@@ -29,3 +29,11 @@ class TestHarvestStudyVocabulary(TestCase):
                          ["Biopython", "Data Cleaning with Python", "Data Visualisation with Python",
                           "Machine Learning  with Python", "NumPy", "Pandas", "Python Basics",
                           "SciPy", "Statistics with Python"])
+        self.assertTrue(value.is_manual, "Expected values to be manual to prevent automatic deletion")
+        self.assertEqual(
+            value.field.name, "study_vocabulary.keyword",
+            "Expected field to be a keyword Open Search field"
+        )
+        self.assertTrue(value.translation.nl)
+        self.assertTrue(value.translation.en)
+        self.assertTrue(value.translation.is_fuzzy)
