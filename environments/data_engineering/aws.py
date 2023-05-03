@@ -31,7 +31,6 @@ AWS_ENVIRONMENT_CONFIGURATIONS = {
 }
 
 AWS_ACCOUNT_CONFIGURATIONS = {
-    "cluster_arn": "arn:aws:ecs:eu-central-1:{account}:cluster/datascope-engineering",
     "superuser_task_role_arn": "arn:aws:iam::{account}:role/detSuperuserTaskExecutionRole",
     "postgres_password_arn": "arn:aws:secretsmanager:eu-central-1:{account}:secret:postgres",
     "task_role_arn": "arn:aws:iam::{account}:role/detHarvesterTaskExecutionRole",
