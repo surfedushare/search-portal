@@ -26,55 +26,55 @@ ENVIRONMENT_NAMES_TO_ACCOUNT_IDS = {
 }
 
 AWS_ENVIRONMENT_CONFIGURATIONS = {
-    "bastion": "bastion.{}.surfedushare.nl",
-    "profile_name": "pol-{}",
+    "bastion": "bastion.{environment_code}.surfedushare.nl",
+    "profile_name": "pol-{environment_code}",
 }
 
 AWS_ACCOUNT_CONFIGURATIONS = {
-    "cluster_arn": "arn:aws:ecs:eu-central-1:{}:cluster/datascope-engineering",
-    "superuser_task_role_arn": "arn:aws:iam::{}:role/detSuperuserTaskExecutionRole",
-    "postgres_password_arn": "arn:aws:secretsmanager:eu-central-1:{}:secret:postgres",
-    "task_role_arn": "arn:aws:iam::{}:role/detHarvesterTaskExecutionRole",
+    "cluster_arn": "arn:aws:ecs:eu-central-1:{account}:cluster/datascope-engineering",
+    "superuser_task_role_arn": "arn:aws:iam::{account}:role/detSuperuserTaskExecutionRole",
+    "postgres_password_arn": "arn:aws:secretsmanager:eu-central-1:{account}:secret:postgres",
+    "task_role_arn": "arn:aws:iam::{account}:role/detHarvesterTaskExecutionRole",
 }
 
 AWS_SECRET_CONFIGURATIONS = {
     "postgres": {
-        "password": "arn:aws:secretsmanager:eu-central-1:{}:secret:harvester/postgres-application",
-        "application_password": "arn:aws:secretsmanager:eu-central-1:{}:secret:harvester/postgres-application",
+        "password": "arn:aws:secretsmanager:eu-central-1:{account}:secret:harvester/postgres-application",
+        "application_password": "arn:aws:secretsmanager:eu-central-1:{account}:secret:harvester/postgres-application",
     },
     "opensearch": {
-        "password": "arn:aws:secretsmanager:eu-central-1:{}:secret:opensearch/password",
+        "password": "arn:aws:secretsmanager:eu-central-1:{account}:secret:opensearch/password",
     },
     "django": {
-        "secret_key": "arn:aws:secretsmanager:eu-central-1:{}:secret:harvester/django",
-        "admin_password": "arn:aws:secretsmanager:eu-central-1:{}:secret:harvester/django",
+        "secret_key": "arn:aws:secretsmanager:eu-central-1:{account}:secret:harvester/django",
+        "admin_password": "arn:aws:secretsmanager:eu-central-1:{account}:secret:harvester/django",
     },
     "sharekit": {
-        "api_key": "arn:aws:secretsmanager:eu-central-1:{}:secret:credentials/sharekit",
+        "api_key": "arn:aws:secretsmanager:eu-central-1:{account}:secret:credentials/sharekit",
     },
     "harvester": {
-        "api_key": "arn:aws:secretsmanager:eu-central-1:{}:secret:harvester/credentials",
-        "webhook_secret": "arn:aws:secretsmanager:eu-central-1:{}:secret:harvester/credentials",
+        "api_key": "arn:aws:secretsmanager:eu-central-1:{account}:secret:harvester/credentials",
+        "webhook_secret": "arn:aws:secretsmanager:eu-central-1:{account}:secret:harvester/credentials",
     },
     "matomo": {
-        "api_key": "arn:aws:secretsmanager:eu-central-1:{}:secret:harvester/matomo-api-key",
+        "api_key": "arn:aws:secretsmanager:eu-central-1:{account}:secret:harvester/matomo-api-key",
     },
     "eduterm": {
-        "api_key": "arn:aws:secretsmanager:eu-central-1:{}:secret:eduterm",
+        "api_key": "arn:aws:secretsmanager:eu-central-1:{account}:secret:eduterm",
     },
     "deepl": {
-        "api_key": "arn:aws:secretsmanager:eu-central-1:{}:secret:search-portal/deepl",
+        "api_key": "arn:aws:secretsmanager:eu-central-1:{account}:secret:search-portal/deepl",
     },
     "teams_webhooks": {
-        "harvester": "arn:aws:secretsmanager:eu-central-1:{}:secret:harvester/teams-webhooks",
+        "harvester": "arn:aws:secretsmanager:eu-central-1:{account}:secret:harvester/teams-webhooks",
     },
     "hanze": {
-        "api_key": "arn:aws:secretsmanager:eu-central-1:{}:secret:credentials/hanze",
+        "api_key": "arn:aws:secretsmanager:eu-central-1:{account}:secret:credentials/hanze",
     },
     "hva": {
-        "api_key": "arn:aws:secretsmanager:eu-central-1:{}:secret:credentials/hva",
+        "api_key": "arn:aws:secretsmanager:eu-central-1:{account}:secret:credentials/hva",
     },
     "buas": {
-        "api_key": "arn:aws:secretsmanager:eu-central-1:{}:secret:credentials/buas",
+        "api_key": "arn:aws:secretsmanager:eu-central-1:{account}:secret:credentials/buas",
     },
 }

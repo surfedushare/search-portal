@@ -56,11 +56,27 @@ class POLConfig(Config):
     def load_project(self, merge=True):
         self._load_file(prefix="project", absolute=True, merge=merge)
 
+    def render_configuration_templates(self):
+        def _render(configuration):
+            if isinstance(configuration, dict):
+                for key, value in configuration.items():
+                    configuration[key] = _render(value)
+            if not isinstance(configuration, str):
+                return configuration
+            for replacement in ["account", "environment_code"]:
+                if f"{{{replacement}}}" in configuration:
+                    value = getattr(self.aws, replacement)
+                    configuration = configuration.format(**{replacement: value})
+                    return configuration
+            return configuration
+        for key, value in self._config.items():
+            self._config[key] = _render(value)
+
 
 def build_configuration_defaults(environment):
     environment_code = ENVIRONMENT_NAMES_TO_CODES[environment]
     account_id = ENVIRONMENT_NAMES_TO_ACCOUNT_IDS[environment]
-    # Formatting configuration templates with prefix and account_id
+    # Computing and updating various default values including configuration template strings
     defaults = {
         "project": {
             "name": PROJECT
@@ -91,19 +107,9 @@ def build_configuration_defaults(environment):
         },
         "secrets": dict()
     }
-    defaults["aws"].update({
-        config: template.format(environment_code)
-        for config, template in AWS_ENVIRONMENT_CONFIGURATIONS.items()
-    })
-    defaults["aws"].update({
-        config: template.format(account_id)
-        for config, template in AWS_ACCOUNT_CONFIGURATIONS.items()
-    })
-    for config, secrets in AWS_SECRET_CONFIGURATIONS.items():
-        defaults["secrets"][config] = {
-            secret: template.format(account_id) if template is not None else template
-            for secret, template in secrets.items()
-        }
+    defaults["aws"].update(**AWS_ENVIRONMENT_CONFIGURATIONS)
+    defaults["aws"].update(**AWS_ACCOUNT_CONFIGURATIONS)
+    defaults["secrets"].update(**AWS_SECRET_CONFIGURATIONS)
     # We'll fetch the container metadata.
     # For more background on ECS_CONTAINER_METADATA_URI read:
     # https://docs.aws.amazon.com/AmazonECS/latest/userguide/task-metadata-endpoint-v3-fargate.html
@@ -153,6 +159,7 @@ def create_configuration(mode=None, context="container"):
     config.load_project()
     config.load_runtime()
     config.load_shell_env()
+    config.render_configuration_templates()
     return config
 
 
