@@ -218,6 +218,7 @@ HVA_EXTRACTION_OBJECTIVE = {
     "aggregation_level": lambda node: None,
     "lom_educational_levels": lambda node: [],
     "studies": lambda node: [],
+    "study_vocabulary": lambda node: [],
     "ideas": lambda node: [],
     "is_part_of": lambda node: [],
     "has_parts": lambda node: [],

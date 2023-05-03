@@ -139,6 +139,14 @@ class TestGetHarvestSeedsSharekit(SeedExtractionTestCase):
             self.assertIn(idea, possible_ideas, "Expected material with idea elements to return the spliced strings")
         self.assertEqual(seeds[2]["ideas"], [], "Expected material without ideas to return empty list")
 
+    def test_study_vocabulary_property(self):
+        seeds = self.seeds
+        self.assertEqual(
+            seeds[0]["study_vocabulary"],
+            ["http://purl.edustandaard.nl/concept/8f984395-e090-41be-96df-503f53ddaa09"]
+        )
+        self.assertEqual(seeds[2]["study_vocabulary"], [], "Expected material without ideas to return empty list")
+
     def test_lom_educational_level(self):
         seeds = self.seeds
         self.assertEqual(seeds[0]["lom_educational_levels"], ["HBO"],

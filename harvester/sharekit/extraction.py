@@ -228,6 +228,12 @@ class SharekitMetadataExtraction(ExtractProcessor):
         return list(set(ideas))
 
     @classmethod
+    def get_study_vocabulary(cls, node):
+        vocabularies = node["attributes"].get("vocabularies", {})
+        terms = chain(*vocabularies.values())
+        return [term["source"] for term in terms]
+
+    @classmethod
     def get_is_restricted(cls, node):
         return not cls.get_analysis_allowed(node)
 
@@ -294,6 +300,7 @@ SHAREKIT_EXTRACTION_OBJECTIVE = {
     "lowest_educational_level": SharekitMetadataExtraction.get_lowest_educational_level,
     "studies": SharekitMetadataExtraction.get_empty_list,
     "ideas": SharekitMetadataExtraction.get_ideas,
+    "study_vocabulary": SharekitMetadataExtraction.get_study_vocabulary,
     "from_youtube": SharekitMetadataExtraction.get_from_youtube,
     "is_restricted": SharekitMetadataExtraction.get_is_restricted,
     "analysis_allowed": SharekitMetadataExtraction.get_analysis_allowed,
