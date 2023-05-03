@@ -1,0 +1,48 @@
+# NB: This file is committed in a public repo. DO NOT COMMIT REAL SECRETS!
+# It uses AWS Secret Manager to lookup any secrets at application bootstrap
+
+django:
+  debug: false
+  protocol: "https"
+  logging:
+    level: "DEBUG"
+    is_opensearch: true
+  send_admin_notifications: false
+  sentry:
+    dsn: "https://365ba37a8b544e3199ab60d53920613f@o356528.ingest.sentry.io/5318021"
+
+harvester:
+  data_retention:
+    purge_after:
+      days: 14
+    keep_versions: 3
+  repositories:
+    edurep: "https://wszoeken.edurep.kennisnet.nl"
+    sharekit: "https://api.surfsharekit.nl"
+    han: "https://repository.han.nl"
+    hva: "https://pure.hva.nl"
+    hanze: "https://hanzetest.azure-api.net"
+
+postgres:
+  host: "surfpol-edushare.cikhmbah79es.eu-central-1.rds.amazonaws.com"
+  port: 5432
+
+redis:
+  host: "harvester.2rmfel.0001.euc1.cache.amazonaws.com:6379"
+
+opensearch:
+  host: "https://search-surfpol-main-lg7ozt5vp3oamyuiykxbghsthq.eu-central-1.es.amazonaws.com"
+  verify_certs: true
+  enable_decompound_analyzers: true
+  decompound_word_lists:
+    dutch: "analyzers/F20018998"
+  domain_name: "surfpol-main"
+
+sharekit:
+  webhook_allowed_ips:
+    - "20.56.15.206"
+    - "20.56.8.62"
+
+aws:
+  is_aws: true
+  load_secrets: true
