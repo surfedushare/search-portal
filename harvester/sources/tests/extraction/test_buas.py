@@ -83,6 +83,22 @@ class TestGetHarvestSeedsBuas(TestCase):
         seeds = self.seeds
         self.assertEqual(seeds[0]["title"], "Edinburgh inspiring capital : ensuring world beats a path to our doors")
 
+    def test_get_description(self):
+        seeds = self.seeds
+        self.assertEqual(
+            seeds[0]["description"],
+            "<p>Edinburgh inspiring capital : ensuring world beats a path to our doors</p>"
+        )
+        self.assertIsNone(seeds[1]["description"])
+
+    def test_get_keywords(self):
+        seeds = self.seeds
+        self.assertEqual(seeds[0]["keywords"], [
+            "inspiring capital",
+            "beat the world",
+        ])
+        self.assertEqual(seeds[1]["keywords"], [])
+
     def test_authors_property(self):
         seeds = self.seeds
         self.assertEqual(seeds[0]['authors'], [

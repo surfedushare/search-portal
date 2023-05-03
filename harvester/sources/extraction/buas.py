@@ -109,6 +109,17 @@ class BuasMetadataExtraction(ExtractProcessor):
         return cls._serialize_access_rights(files[0]["access_rights"])
 
     @classmethod
+    def get_keywords(cls, node):
+        results = []
+        for keywords in node.get("keywordGroups", []):
+            match keywords["logicalName"]:
+                case "keywordContainers":
+                    for container in keywords["keywordContainers"]:
+                        for free_keywords in container["freeKeywords"]:
+                            results += free_keywords["freeKeywords"]
+        return results
+
+    @classmethod
     def get_from_youtube(cls, node):
         url = cls.get_url(node)
         if not url:
@@ -185,8 +196,8 @@ BuasMetadataExtraction.OBJECTIVE = {
     "copyright": BuasMetadataExtraction.get_copyright,
     "title": "$.title.value",
     "language": BuasMetadataExtraction.get_language,
-    "keywords": lambda node: [],
-    "description": lambda node: None,
+    "keywords": BuasMetadataExtraction.get_keywords,
+    "description": "$.abstract.text.0.value",
     "mime_type": BuasMetadataExtraction.get_mime_type,
     "authors": BuasMetadataExtraction.get_authors,
     "organizations": BuasMetadataExtraction.get_organizations,
