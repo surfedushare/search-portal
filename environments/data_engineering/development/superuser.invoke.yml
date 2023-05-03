@@ -1,6 +1,6 @@
 secrets:
   postgres:
-    password: "arn:aws:secretsmanager:eu-central-1:322480324822:secret:postgres"
+    password: "arn:aws:secretsmanager:eu-central-1:{account}:secret:postgres"
 
 postgres:
   user: "postgres"

@@ -1,5 +1,5 @@
 aws:
-  harvest_content_bucket: "surfpol-harvester-content-dev"
+  harvest_content_bucket: "surfpol-harvester-content-{environment_code}"
 
 postgres:
   database: "harvester_edusources"
@@ -10,7 +10,7 @@ opensearch:
   alias_prefix: "edusources"
 
 django:
-  domain: "harvester.dev.surfedushare.nl"
+  domain: "harvester.{environment_code}.surfedushare.nl"
   fixtures:
     - "core/fixtures/initial-edusources.json"
     - "metadata/fixtures/initial-metadata-edusources.json"

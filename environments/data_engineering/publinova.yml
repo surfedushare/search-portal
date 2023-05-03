@@ -1,5 +1,5 @@
 aws:
-  harvest_content_bucket: "publinova-harvester-content-dev"
+  harvest_content_bucket: "publinova-harvester-content-{environment_code}"
 
 postgres:
   database: "harvester_publinova"
@@ -10,7 +10,7 @@ opensearch:
   alias_prefix: "publinova"
 
 django:
-  domain: "harvester.dev.publinova.nl"
+  domain: "harvester.{environment_code}.publinova.nl"
   fixtures:
     - "core/fixtures/initial-publinova.json"
     - "metadata/fixtures/initial-metadata-publinova.json"
