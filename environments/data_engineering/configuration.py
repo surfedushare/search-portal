@@ -56,6 +56,10 @@ class POLConfig(Config):
     def load_project(self, merge=True):
         self._load_file(prefix="project", absolute=True, merge=merge)
 
+    def merge(self):
+        super().merge()
+        self.render_configuration_templates()
+
     def render_configuration_templates(self):
         def _render(configuration):
             if isinstance(configuration, dict):
