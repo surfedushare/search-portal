@@ -29,7 +29,6 @@ from data_engineering.aws import (AWS_ENVIRONMENT_CONFIGURATIONS, AWS_ACCOUNT_CO
 
 
 MODE = os.environ.get("APPLICATION_MODE", "production")
-MODE_PREFIX = "prod" if MODE == "production" else MODE[:3]
 CONTEXT = os.environ.get("APPLICATION_CONTEXT", "container")
 PROJECT = os.environ.get("APPLICATION_PROJECT", "edusources")
 TEAM = os.environ.get("APPLICATION_TEAM", "web")
