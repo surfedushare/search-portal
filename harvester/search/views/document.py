@@ -144,7 +144,7 @@ class DocumentSearchDetailAPIView(GenericAPIView):
     def get_object(self):
         client = get_search_client(self.document_type)
         response = client.get_documents_by_id([self.kwargs["external_id"]])
-        records = response.get("records", [])
+        records = response.get("results", [])
         if not records:
             raise Http404()
         document = records[0]
