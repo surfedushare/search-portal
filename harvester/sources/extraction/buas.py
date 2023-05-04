@@ -116,7 +116,7 @@ class BuasMetadataExtraction(ExtractProcessor):
                 case "keywordContainers":
                     for container in keywords["keywordContainers"]:
                         for free_keywords in container["freeKeywords"]:
-                            results += free_keywords["freeKeywords"]
+                            results += free_keywords.get("freeKeywords", [])
         return results
 
     @classmethod
