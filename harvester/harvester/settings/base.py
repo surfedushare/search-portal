@@ -22,6 +22,7 @@ from celery.schedules import crontab
 
 from project import create_configuration_and_session, MODE, CONTEXT, PROJECT
 from utils.packaging import get_package_info
+from search_client.version import VERSION as SEARCH_CLIENT_VERSION
 from search_client.opensearch.logging import OpensearchHandler, create_opensearch_handler
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -29,6 +30,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 
 # Then we read some variables from the (build) environment
 PACKAGE_INFO = get_package_info()
+PACKAGE_INFO["versions"]["search-client"] = SEARCH_CLIENT_VERSION
 GIT_COMMIT = PACKAGE_INFO.get("commit", "unknown-git-commit")
 VERSION = PACKAGE_INFO.get("versions").get("harvester", "0.0.0")
 environment, session = create_configuration_and_session(service='harvester')
