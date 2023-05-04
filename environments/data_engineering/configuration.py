@@ -81,7 +81,8 @@ def build_configuration_defaults(environment):
     environment_code = ENVIRONMENT_NAMES_TO_CODES[environment]
     account_id = ENVIRONMENT_NAMES_TO_ACCOUNT_IDS[environment]
     # Computing and updating various default values including configuration template strings
-    defaults = {
+    defaults = POLConfig.global_defaults()
+    defaults.update({
         "project": {
             "name": PROJECT
         },
@@ -110,7 +111,7 @@ def build_configuration_defaults(environment):
             "task_definition_families": ["web", "celery", "central", "command-edusources", "command-publinova"]
         },
         "secrets": dict()
-    }
+    })
     defaults["aws"].update(**AWS_ENVIRONMENT_CONFIGURATIONS)
     defaults["aws"].update(**AWS_ACCOUNT_CONFIGURATIONS)
     defaults["secrets"].update(**AWS_SECRET_CONFIGURATIONS)
