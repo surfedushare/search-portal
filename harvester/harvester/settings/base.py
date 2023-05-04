@@ -20,24 +20,23 @@ from sentry_sdk.integrations.logging import ignore_logger
 
 from celery.schedules import crontab
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-# We're adding the environments directory outside of the project directory to the path
-# That way we can load the environments and re-use them in different contexts
-# Like maintenance tasks and harvesting tasks
-sys.path.append(os.path.join(BASE_DIR, "..", "environments"))
 from project import create_configuration_and_session, MODE, CONTEXT, PROJECT
 from utils.packaging import get_package_info
+from search_client.version import VERSION as SEARCH_CLIENT_VERSION
 from search_client.opensearch.logging import OpensearchHandler, create_opensearch_handler
+
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 # Then we read some variables from the (build) environment
 PACKAGE_INFO = get_package_info()
+PACKAGE_INFO["versions"]["search-client"] = SEARCH_CLIENT_VERSION
 GIT_COMMIT = PACKAGE_INFO.get("commit", "unknown-git-commit")
 VERSION = PACKAGE_INFO.get("versions").get("harvester", "0.0.0")
 environment, session = create_configuration_and_session(service='harvester')
 credentials = session.get_credentials()
 IS_AWS = environment.aws.is_aws
-ENVIRONMENT = environment.env
+ENVIRONMENT = environment.service.env
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -89,6 +88,7 @@ INSTALLED_APPS = [
 
     'core',
     'metadata',
+    'search',
     'sources',
 
     'edurep',
@@ -240,6 +240,7 @@ OPENSEARCH_ANALYSERS = {
 OPENSEARCH_ENABLE_DECOMPOUND_ANALYZERS = environment.opensearch.enable_decompound_analyzers
 OPENSEARCH_DECOMPOUND_WORD_LISTS = environment.opensearch.decompound_word_lists
 OPENSEARCH_PASSWORD = environment.secrets.opensearch.password
+OPENSEARCH_ALIAS_PREFIX = environment.opensearch.alias_prefix
 
 
 # Logging
@@ -330,7 +331,7 @@ if not DEBUG:
     sentry_sdk.init(
         before_send=strip_sensitive_data,
         dsn=environment.django.sentry.dsn,
-        environment=environment.env,
+        environment=environment.service.env,
         integrations=[DjangoIntegration(), CeleryIntegration()],
         send_default_pii=False  # GDPR requirement
     )
@@ -490,8 +491,8 @@ if DEBUG:
 
 DATAGROWTH_DATA_DIR = os.path.join(BASE_DIR, "..", "data", "harvester")
 DATAGROWTH_BIN_DIR = os.path.join(BASE_DIR, "harvester", "bin")
-DATA_RETENTION_PURGE_AFTER = environment.django.data_retention.purge_after or {}
-DATA_RETENTION_KEEP_VERSIONS = environment.django.data_retention.keep_versions
+DATA_RETENTION_PURGE_AFTER = environment.harvester.data_retention.purge_after or {}
+DATA_RETENTION_KEEP_VERSIONS = environment.harvester.data_retention.keep_versions
 
 
 # Internal credentials
@@ -502,13 +503,13 @@ HARVESTER_WEBHOOK_SECRET = environment.secrets.harvester.webhook_secret
 # Sharekit
 
 SHAREKIT_API_KEY = environment.secrets.sharekit.api_key
-SHAREKIT_BASE_URL = environment.django.repositories.sharekit
+SHAREKIT_BASE_URL = environment.harvester.repositories.sharekit
 SHAREKIT_WEBHOOK_ALLOWED_IPS = environment.sharekit.webhook_allowed_ips
 
 
 # Edurep & Eduterm
 
-EDUREP_BASE_URL = environment.django.repositories.edurep
+EDUREP_BASE_URL = environment.harvester.repositories.edurep
 EDUTERM_API_KEY = environment.secrets.eduterm.api_key
 
 
@@ -552,11 +553,11 @@ TEAMS_HARVESTER_WEBHOOK = environment.secrets.teams_webhooks.harvester
 
 SOURCES = {
     "han": {
-        "endpoint": environment.django.repositories.han,
+        "endpoint": environment.harvester.repositories.han,
         "api_key": None
     },
     "hva": {
-        "endpoint": environment.django.repositories.hva,
+        "endpoint": environment.harvester.repositories.hva,
         "api_key": environment.secrets.hva.api_key
     },
     "hku": {
@@ -572,7 +573,7 @@ SOURCES = {
         "api_key": environment.secrets.buas.api_key
     },
     "hanze": {
-        "endpoint": environment.django.repositories.hanze,
+        "endpoint": environment.harvester.repositories.hanze,
         "api_key": environment.secrets.hanze.api_key
     },
 }

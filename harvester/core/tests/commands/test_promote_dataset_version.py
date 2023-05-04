@@ -41,7 +41,7 @@ class TestPromoteDatasetVersion(TestCase):
         )
 
     @override_settings(VERSION="0.0.1")
-    @patch("core.models.search.index.get_search_client", return_value=search_client)
+    @patch("core.models.search.index.get_opensearch_client", return_value=search_client)
     def test_promote_dataset(self, get_search_client):
         get_search_client.reset_mock()
         call_command("promote_dataset_version", "--dataset=test")
@@ -52,7 +52,7 @@ class TestPromoteDatasetVersion(TestCase):
         self.assert_index_promoted()
         self.assert_is_current(True)
 
-    @patch("core.models.search.index.get_search_client", return_value=search_client)
+    @patch("core.models.search.index.get_opensearch_client", return_value=search_client)
     def test_promote_dataset_version(self, get_search_client):
         get_search_client.reset_mock()
         call_command("promote_dataset_version", "--dataset-version=1")

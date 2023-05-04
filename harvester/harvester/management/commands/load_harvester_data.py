@@ -88,7 +88,7 @@ class Command(base.LabelCommand):
         should_index = options.get("index")
         download_edurep = options["download_edurep"]
 
-        assert harvest_source or environment.env != "localhost", \
+        assert harvest_source or environment.service.env != "localhost", \
             "Expected a harvest source argument for a localhost environment"
         source_environment = create_configuration(harvest_source, service="harvester") \
             if harvest_source else environment

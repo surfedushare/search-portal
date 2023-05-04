@@ -20,7 +20,7 @@ services:
       - POL_OPENSEARCH_HOST=${POL_OPENSEARCH_HOST}
       - POL_OPENSEARCH_ALIAS_PREFIX=${POL_OPENSEARCH_ALIAS_PREFIX}
       - POL_SECRETS_OPENSEARCH_PASSWORD=${POL_SECRETS_OPENSEARCH_PASSWORD}
-      - SURFCONEXT=WKValAutTzvfHX6xV2Fc
+      - SURFCONEXT=${SURFCONEXT}
     ports:
       - "127.0.0.1:8000:8080"
       - "127.0.0.1:8001:8081"
@@ -48,11 +48,13 @@ services:
       - APPLICATION_PROJECT=${APPLICATION_PROJECT}
       - POL_DJANGO_DEBUG=${POL_DJANGO_DEBUG}
     ports:
-      - "127.0.0.1:8888:8080"
+      - "127.0.0.1:8888:8888"
+      - "127.0.0.1:8889:8889"
     volumes:
       - ./harvester:/usr/src/app
       - ./media:/usr/src/media
       - ./environments/${APPLICATION_PROJECT}/localhost/invoke.yml:/usr/src/environments/localhost/invoke.yml
+      - ../search-client:/usr/src/search_client
     depends_on:
       - postgres
 

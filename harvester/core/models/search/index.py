@@ -9,10 +9,10 @@ from opensearchpy.helpers import streaming_bulk
 from opensearchpy.exceptions import NotFoundError
 from rest_framework import serializers
 
-from project.configuration import create_open_search_index_configuration
+from search_client.opensearch.configuration import create_open_search_index_configuration
 from core.models import DatasetVersion
 from core.models.choices import EducationalLevels
-from core.utils.search import get_search_client
+from search.clients import get_opensearch_client
 from core.constants import SITE_SHORTHAND_BY_DOMAIN
 
 
@@ -33,7 +33,7 @@ class ElasticIndex(models.Model):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.client = get_search_client()
+        self.client = get_opensearch_client()
 
     def delete(self, using=None, keep_parents=False):
         if self.remote_exists:
@@ -127,6 +127,7 @@ class ElasticIndex(models.Model):
             decompound_word_list = settings.OPENSEARCH_DECOMPOUND_WORD_LISTS.dutch
         return create_open_search_index_configuration(
             lang,
+            settings.DOCUMENT_TYPE,
             decompound_word_list=decompound_word_list
         )
 

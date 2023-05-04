@@ -1,14 +1,15 @@
+from django.conf import settings
 from django.db import models
 from rest_framework import serializers
 
-from core.utils.search import get_search_client
+from search.clients import get_opensearch_client
 from metadata.models import MetadataTranslation, MetadataTranslationSerializer, MetadataValueSerializer
 
 
 class MetadataFieldManager(models.Manager):
 
-    def fetch_value_frequencies(self, alias_prefix="latest", **kwargs):
-        client = get_search_client()
+    def fetch_value_frequencies(self, alias_prefix=settings.OPENSEARCH_ALIAS_PREFIX, **kwargs):
+        client = get_opensearch_client()
         aggregation_query = {
             field.name: {
                 "terms": {

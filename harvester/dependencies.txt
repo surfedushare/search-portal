@@ -1,12 +1,12 @@
 # Process management
-argh==0.26.2
+argh==0.28.1
 watchdog==2.2.1
 
 # Harvester Celery
 celery==5.2.7
 celery[redis]
 redis==4.3.4
-flower==1.0.0
+flower==1.2.0
 
 # Harvester other
 django-log-formatter-json==0.2.0
@@ -29,3 +29,5 @@ urlobject==2.4.3
 git+https://github.com/fako/django-json-field.git
 lxml==4.8.0
 datagrowth==0.18.2
+pandas==1.5.3
+

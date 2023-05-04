@@ -19,10 +19,73 @@ class HarvesterSchema(AutoSchema):
 
     def get_operation(self, path, method):
         operation = super().get_operation(path, method)
-        if path.startswith("/dataset"):
+        if path.startswith("/dataset") or path.startswith("/document"):
             operation["tags"] = ["Download data"]
         elif path.startswith("/extension"):
             operation["tags"] = ["Extending data"]
+        elif path.startswith("/search") or path.startswith("/find"):
+            operation["tags"] = ["Search"]
+            if "search/documents" in path:
+                operation["parameters"] += [
+                    {
+                        "name": "include_filter_counts",
+                        "in": "query",
+                        "required": False,
+                        "description": "When set to 1 the response will include the counts of documents "
+                                       "per combination of metadata field and metadata value "
+                                       "in the filter_counts property",
+                        'schema': {
+                            'type': 'number',
+                        }
+                    }
+                ]
+            if "search/autocomplete" in path:
+                operation["parameters"] += [
+                    {
+                        "name": "query",
+                        "in": "query",
+                        "required": True,
+                        "description": "The search query you want to autocomplete for.",
+                        'schema': {
+                            'type': 'string',
+                        }
+                    }
+                ]
+        elif path.startswith("/suggestions"):
+            operation["tags"] = ["Suggestions"]
+            if "similarity" in path:
+                operation["parameters"] += [
+                    {
+                        "name": "external_id",
+                        "in": "query",
+                        "required": True,
+                        "description": "The external_id of the document you want similar documents for.",
+                        'schema': {
+                            'type': 'string',
+                        }
+                    },
+                    {
+                        "name": "language",
+                        "in": "query",
+                        "required": True,
+                        "description": "The language of the document you want similar documents for.",
+                        'schema': {
+                            'type': 'string',
+                        }
+                    }
+                ]
+            if "author" in path:
+                operation["parameters"] += [
+                    {
+                        "name": "author_name",
+                        "in": "query",
+                        "required": True,
+                        "description": "The name of the author you want documents for.",
+                        'schema': {
+                            'type': 'string',
+                        }
+                    }
+                ]
         elif path.startswith("/metadata"):
             operation["tags"] = ["Metadata"]
             if "tree" in path:

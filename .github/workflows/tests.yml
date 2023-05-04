@@ -45,7 +45,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-        pip install git+https://github.com/surfedushare/search-client.git@v0.2.0
+        pip install git+https://github.com/surfedushare/search-client.git@v0.3.2
     - name: Setup repository
       run: |
         invoke aws.sync-repository-state --no-profile --bucket-prefix=nppo-prod

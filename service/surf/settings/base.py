@@ -23,6 +23,7 @@ sys.path.append(os.path.join(BASE_DIR, "..", "..", "environments"))
 from project import create_configuration_and_session, MODE, CONTEXT, PROJECT
 from utils.packaging import get_package_info
 from search_client.opensearch.logging import create_opensearch_handler, OpensearchHandler
+from surf.vendor.surfconext.logging import strip_surfconext_data
 
 # We're adding the environments directory outside of the project directory to the path
 # That way we can load the environments and re-use them in different contexts
@@ -347,13 +348,15 @@ if not DEBUG:
         if user_agent:
             del event['request']['headers']['User-Agent']
 
+        strip_surfconext_data(event)
+
         return event
 
     # Initiates sentry without sending personal data
     sentry_sdk.init(
         before_send=strip_sensitive_data,
         dsn=environment.django.sentry.dsn,
-        environment=environment.env,
+        environment=environment.service.env,
         integrations=[DjangoIntegration()]
     )
 

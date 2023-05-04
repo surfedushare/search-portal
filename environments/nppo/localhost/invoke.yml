@@ -4,8 +4,6 @@
 
 # NB: When making changes restart your container or development server to load the update
 
-env: "localhost"
-
 django:
   debug: true
   protocol: "http"

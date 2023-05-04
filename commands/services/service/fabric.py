@@ -56,7 +56,7 @@ def restore_snapshot(conn, source_profile, snapshot_name=None):
     """
     if conn.host != conn.config.aws.bastion:
         raise Exit(f"Did not expect the host {conn.host} while the bastion is {conn.config.aws.bastion}")
-    if conn.config.env == "production":
+    if conn.config.service.env == "production":
         raise Exit("Cowardly refusing to restore the production database")
 
     snapshot_file_path = download_snapshot(snapshot_name, conn.config.aws.search_content_bucket, source_profile)

@@ -326,6 +326,7 @@ GREENI_EXTRACTION_OBJECTIVE = {
     "aggregation_level": lambda soup, el: None,
     "lom_educational_levels": lambda soup, el: [],
     "studies": lambda soup, el: [],
+    "study_vocabulary": lambda soup, el: [],
     "ideas": lambda soup, el: [],
     "is_part_of": lambda soup, el: [],
     "has_parts": lambda soup, el: [],

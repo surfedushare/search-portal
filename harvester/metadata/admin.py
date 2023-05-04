@@ -73,7 +73,7 @@ class MetadataValueAdmin(DraggableMPTTAdmin):
     list_display = ('tree_actions', 'indented_title', 'is_hidden', 'is_manual', 'frequency', 'deleted_at',)
     list_display_links = ('indented_title',)
     list_filter = ('is_hidden', 'site', 'field', TrashListFilter)
-    readonly_fields = ('frequency', 'deleted_at', 'value', 'site',)
+    readonly_fields = ('frequency', 'deleted_at', 'site',)
 
     actions = [unhide_filters, trash_nodes, restore_nodes]
 
@@ -92,6 +92,12 @@ class MetadataValueAdmin(DraggableMPTTAdmin):
             if "restore_nodes" in actions.keys():
                 del actions["restore_nodes"]
         return actions
+
+    def get_readonly_fields(self, request, obj=None):
+        fields = super().get_readonly_fields(request, obj)
+        if obj is not None:
+            fields += ("value",)
+        return fields
 
 
 admin.site.register(MetadataValue, MetadataValueAdmin)
