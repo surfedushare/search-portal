@@ -102,7 +102,10 @@ class TestGetHarvestSeedsBuas(TestCase):
     def test_authors_property(self):
         seeds = self.seeds
         self.assertEqual(seeds[0]['authors'], [
-            {'name': 'KJ Dinnie', 'email': None, 'external_id': 28956, 'dai': None, 'orcid': None, 'isni': None}
+            {
+                'name': 'KJ Dinnie', 'email': None, 'external_id': '6f1bbf4a-b32a-4923-9f47-bb764f3dbbde',
+                'dai': None, 'orcid': None, 'isni': None
+            }
         ])
 
     def test_publisher_year(self):

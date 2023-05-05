@@ -82,7 +82,7 @@ class Command(BaseCommand):
             is_fuzzy=True
         )
         field, _ = MetadataField.objects.get_or_create(
-            name="study_vocabulary.keyword",
+            name="study_vocabulary",
             defaults={"translation": field_translation, "is_manual": True, "is_hidden": True}
         )
 

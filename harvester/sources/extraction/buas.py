@@ -141,7 +141,7 @@ class BuasMetadataExtraction(ExtractProcessor):
             authors.append({
                 "name": full_name,
                 "email": None,
-                "external_id": person["pureId"],
+                "external_id": person.get("person", {}).get("uuid", None),
                 "dai": None,
                 "orcid": None,
                 "isni": None

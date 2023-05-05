@@ -63,7 +63,8 @@ class POLConfig(Config):
 def build_configuration_defaults(environment):
     environment_code = ENVIRONMENT_NAMES_TO_CODES[environment]
     production_account_id = REPOSITORY.split(".")[0]
-    return {
+    defaults = POLConfig.global_defaults()
+    defaults.update({
         "project": {
             "name": PROJECT
         },
@@ -86,7 +87,8 @@ def build_configuration_defaults(environment):
             "repositories": ["harvester", "harvester-nginx", "search-portal", "search-portal-nginx"],
             "task_definition_families": ["harvester", "search-portal", "celery", "harvester-command"]
         },
-    }
+    })
+    return defaults
 
 
 def create_configuration(mode, service=None, context="container", config_class=POLConfig):
