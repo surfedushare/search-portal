@@ -38,7 +38,7 @@ class TestMetadataFieldManager(TestCase):
         self.assertEqual(frequencies, {"field1": {"value1": 1, "value2": 2, "value3": 3}})
         # See if call to ES was made correctly
         args, kwargs = search_client_mock.search.call_args
-        self.assertEqual(kwargs["index"], ["test-nl", "test-en", "test-unk"])
+        self.assertEqual(kwargs["index"], ["latest-nl", "latest-en", "latest-unk"])
         fields = kwargs["body"]["aggs"]
         for field in MetadataField.objects.all():
             self.assertIn(field.name, fields)
