@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.db import models
 from rest_framework import serializers
 
@@ -8,7 +7,7 @@ from metadata.models import MetadataTranslation, MetadataTranslationSerializer, 
 
 class MetadataFieldManager(models.Manager):
 
-    def fetch_value_frequencies(self, alias_prefix=settings.OPENSEARCH_ALIAS_PREFIX, **kwargs):
+    def fetch_value_frequencies(self, alias_prefix="latest", **kwargs):
         client = get_opensearch_client()
         aggregation_query = {
             field.name: {
