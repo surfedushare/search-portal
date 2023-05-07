@@ -15,5 +15,12 @@ then
 fi
 
 
+# Check for AWS credentials on localhost
+# If the credentials are not available stop loading secrets to prevent errors
+if [ "$APPLICATION_MODE" == "localhost" ] && [ ! -e "/home/app/.aws/credentials" ]; then
+    echo "Not loading AWS secrets on localhost, because ~/.aws/credentials is missing. Errors may occur at runtime."
+    export POL_AWS_LOAD_SECRETS=0
+    unset AWS_PROFILE
+fi
 # Executing the normal commands
 exec "$@"
