@@ -237,6 +237,5 @@ HKU_EXTRACTION_OBJECTIVE = {
     "copyright_description": lambda node: None,
     "learning_material_disciplines": lambda node: [],
     "consortium": lambda node: None,
-    "lom_educational_level": lambda node: None,
     "lowest_educational_level": lambda node: 2,
 }

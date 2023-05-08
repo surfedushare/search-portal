@@ -333,6 +333,5 @@ GREENI_EXTRACTION_OBJECTIVE = {
     "copyright_description": lambda soup, el: None,
     "learning_material_disciplines": lambda soup, el: [],
     "consortium": lambda soup, el: None,
-    "lom_educational_level": lambda soup, el: None,
     "lowest_educational_level": lambda soup, el: 2,
 }
