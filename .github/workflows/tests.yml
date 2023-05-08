@@ -48,7 +48,7 @@ jobs:
         pip install git+https://github.com/surfedushare/search-client.git@v0.3.2
     - name: Setup repository
       run: |
-        invoke aws.sync-repository-state --no-profile --bucket-prefix=nppo-prod
+        invoke aws.sync-repository-state --no-profile
     - name: Run tests
       run:
         invoke test.harvester
