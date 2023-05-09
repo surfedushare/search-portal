@@ -48,12 +48,6 @@ class SharekitMetadataHarvest(HarvestHttpResource):
         "page[size]": 25
     }
 
-    def parameters(self, **kwargs):
-        parameters = copy(self.PARAMETERS)
-        if settings.PROJECT == "nppo":
-            parameters["filter[termsOfUse][NEQ]"] = "alle-rechten-voorbehouden"
-        return parameters
-
     def auth_headers(self):
         return {
             "Authorization": f"Bearer {settings.SHAREKIT_API_KEY}"
