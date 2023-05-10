@@ -113,3 +113,13 @@ services:
     depends_on:
       - harvester
       - service
+
+  tika:
+    build:
+      dockerfile: "tika/Dockerfile-tika"
+      context: .
+    volumes:
+      - ./tika/tika-config.xml:/config/tika-config.xml
+      - ./tika/tika-extras:/tika-extras
+    ports:
+      - "127.0.0.1:9998:9998"
