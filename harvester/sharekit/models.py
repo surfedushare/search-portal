@@ -1,4 +1,3 @@
-from copy import copy
 from urlobject import URLObject
 
 from django.conf import settings
