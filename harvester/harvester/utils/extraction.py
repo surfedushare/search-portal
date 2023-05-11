@@ -14,7 +14,7 @@ def prepare_seed(seed):
         return
     if seed["lowest_educational_level"] < 2 and settings.PROJECT == "edusources":  # lower level than HO
         seed["state"] = "inactive"
-    if "SURF edusources test" in seed["publishers"] and settings.ENVIRONMENT == "production":
+    if settings.SHAREKIT_TEST_ORGANIZATION in seed["publishers"] and settings.ENVIRONMENT == "production":
         seed["state"] = "skipped"
 
 
