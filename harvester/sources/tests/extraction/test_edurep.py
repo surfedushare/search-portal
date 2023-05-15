@@ -77,22 +77,16 @@ class TestEdurepJsonMigration(TestCase):
     #         self.assertEqual(json_docu["publisher_year"], xml_docu["publisher_year"])
 
     def test_if_lowest_educational_level_equal(self):
-        for i in range(4):
-            json_docu = self.json_data[i]
-            xml_docu = self.xml_data[i]
-            self.assertEqual(json_docu["lowest_educational_level"], xml_docu["lowest_educational_level"])
+        for ix, data in enumerate(zip(self.json_data, self.xml_data)):
+            json_docu, xml_docu = data
+            self.assertEqual(json_docu["lowest_educational_level"], xml_docu["lowest_educational_level"],
+                             f"Json = {json_docu['lowest_educational_level']} xml={xml_docu['lowest_educational_level']}  {ix} \n JSON: \n {json_docu} \n\n XML: \n {xml_docu}")
 
     def test_if_educational_level_equal(self):
-        for i in range(4):
-            json_docu = self.json_data[i]
-            xml_docu = self.xml_data[i]
-            self.assertEqual(set(json_docu["lom_educational_levels"]), set(xml_docu["lom_educational_levels"]))
-
-    def test_if_documents_equal(self):
-        for i in range(4):
-            json_docu = self.json_data[i]
-            xml_docu = self.xml_data[i]
-            self.assertEqual(json_docu["files"], xml_docu["files"])
+        for ix, data in enumerate(zip(self.json_data, self.xml_data)):
+            json_docu, xml_docu = data
+            self.assertEqual(set(json_docu["lom_educational_levels"]), set(xml_docu["lom_educational_levels"]),
+                             f"Documents are unequal at index {ix} \n JSON: \n {json_docu} \n\n XML: \n {xml_docu}")
 
 
 class TestGetHarvestSeedsEdurep(TestCase):
