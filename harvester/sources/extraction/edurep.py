@@ -7,18 +7,6 @@ from dateutil.parser import parse as date_parser
 from datagrowth.processors import ExtractProcessor
 from django.utils.text import slugify
 
-
-FILE_TYPE_TO_MIME_TYPE = {
-    "TEXT": "application/pdf",
-    "VIDEO": "video/mp4",
-    "AUDIO": "audio/mp3",
-    "IMAGE": "image/jpeg",
-    "DOCUMENT": "application/x-Wikiwijs-Arrangement",
-    "WEBSITE": "text/html",
-    "NOT_SET": None
-}
-
-
 class EdurepMetadataExtraction(ExtractProcessor):
 
     youtube_regex = re.compile(r".*(youtube\.com|youtu\.be).*", re.IGNORECASE)
@@ -47,9 +35,9 @@ class EdurepMetadataExtraction(ExtractProcessor):
             return []
         # This whole method is complete crap,
         # it needs to be replaced as soon as edurep makes some data consistency promises.
-        mime_type = FILE_TYPE_TO_MIME_TYPE.get(node["schema:encodingFormat"][0]) \
+        mime_type = node["schema:encodingFormat"][0] \
             if isinstance(node["schema:encodingFormat"], list) \
-            else FILE_TYPE_TO_MIME_TYPE.get(node["schema:encodingFormat"])
+            else node["schema:encodingFormat"]
 
         if isinstance(node["schema:url"], list):
             documents = []
