@@ -198,6 +198,7 @@ HVA_EXTRACTION_OBJECTIVE = {
     "description": "$.abstract.en_GB",
     "mime_type": HvaMetadataExtraction.get_mime_type,
     "authors": HvaMetadataExtraction.get_authors,
+    "provider": HvaMetadataExtraction.get_provider,
     "organizations": HvaMetadataExtraction.get_organizations,
     "publishers": HvaMetadataExtraction.get_publishers,
     "publisher_date": lambda node: None,
