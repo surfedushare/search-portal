@@ -11,7 +11,7 @@ from django.db import connection
 from datagrowth.utils import get_dumps_path, objects_from_disk
 from project.configuration import create_configuration
 from harvester.settings import environment
-from core.models import Dataset, DatasetVersion, Extension
+from core.models import Dataset, DatasetVersion, Extension, HarvestSource, ElasticIndex
 
 
 logger = logging.getLogger("harvester")
@@ -40,6 +40,7 @@ class Command(base.LabelCommand):
 
         parser.add_argument('-de', '--download-edurep', action="store_true")
         parser.add_argument('-s', '--skip-download', action="store_true")
+        parser.add_argument('-wd', '--wipe-data', action="store_true")
         parser.add_argument('-hs', '--harvest-source', type=str)
         parser.add_argument('-i', '--index', action="store_true", default=True)
 
@@ -87,6 +88,7 @@ class Command(base.LabelCommand):
         harvest_source = options.get("harvest_source", None)
         should_index = options.get("index")
         download_edurep = options["download_edurep"]
+        wipe_data = options["wipe_data"]
 
         assert harvest_source or environment.service.env != "localhost", \
             "Expected a harvest source argument for a localhost environment"
@@ -94,6 +96,11 @@ class Command(base.LabelCommand):
             if harvest_source else environment
 
         # Delete old datasets
+        if wipe_data:
+            Dataset.objects.all().delete()
+            DatasetVersion.objects.all().delete()
+            ElasticIndex.objects.all().delete()
+            HarvestSource.objects.all().delete()
         dataset = Dataset.objects.filter(name=dataset_label).last()
         if dataset is not None:
             dataset.harvestsource_set.all().delete()
