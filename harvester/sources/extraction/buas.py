@@ -200,6 +200,7 @@ BuasMetadataExtraction.OBJECTIVE = {
     "description": "$.abstract.text.0.value",
     "mime_type": BuasMetadataExtraction.get_mime_type,
     "authors": BuasMetadataExtraction.get_authors,
+    "provider": BuasMetadataExtraction.get_provider,
     "organizations": BuasMetadataExtraction.get_organizations,
     "publishers": BuasMetadataExtraction.get_publishers,
     "publisher_date": lambda node: None,

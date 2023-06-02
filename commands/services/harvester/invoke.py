@@ -22,9 +22,10 @@ def run_harvester_task(ctx, mode, command, **kwargs):
             "Must match APPLICATION_MODE",
     "source": "Source you want to import from: development, acceptance or production.",
     "dataset": "The name of the greek letter that represents the dataset you want to import",
-    "download_edurep": "If edurep should be downloaded, defaults to False"
+    "download_edurep": "If edurep should be downloaded, defaults to False",
+    "wipe_data": "Whether old data should be deleted before load, defaults to True"
 })
-def load_data(ctx, mode, source, dataset, download_edurep=False):
+def load_data(ctx, mode, source, dataset, download_edurep=False, wipe_data=True):
     """
     Loads the production database and sets up Open Search data on localhost or an AWS cluster
     """
@@ -40,6 +41,10 @@ def load_data(ctx, mode, source, dataset, download_edurep=False):
     if source == "localhost":
         print(f"Will try to import {dataset} using pre-downloaded files")
         command += ["--skip-download"]
+
+    if wipe_data:
+        print("Will wipe data before loading")
+        command += ["--wipe-data"]
 
     run_harvester_task(ctx, mode, command)
 

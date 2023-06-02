@@ -68,13 +68,3 @@ class TestSharekitMetadataHarvest(TestCase):
         empty = SharekitMetadataHarvestFactory(is_empty=True)
         empty.handle_errors()
         self.assertEqual(empty.status, 204)
-
-    def test_parameters(self):
-        instance = SharekitMetadataHarvestFactory()
-        self.assertEqual(instance.parameters(), instance.PARAMETERS)
-        with override_settings(PROJECT="nppo"):
-            instance = SharekitMetadataHarvestFactory()
-            self.assertEqual(instance.parameters(), {
-                "filter[termsOfUse][NEQ]": "alle-rechten-voorbehouden",
-                "page[size]": 25
-            })

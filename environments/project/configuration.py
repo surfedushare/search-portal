@@ -87,6 +87,7 @@ def build_configuration_defaults(environment):
             "repositories": ["harvester", "harvester-nginx", "search-portal", "search-portal-nginx"],
             "task_definition_families": ["harvester", "search-portal", "celery", "harvester-command"]
         },
+        "secrets": dict()
     })
     return defaults
 

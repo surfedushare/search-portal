@@ -17,7 +17,7 @@ harvester:
     keep_versions: 2
   repositories:
     edurep: "https://wszoeken.edurep.kennisnet.nl"
-    sharekit: "https://api.acc.surfsharekit.nl"
+    sharekit: "https://api.surfsharekit.nl"
     han: "https://repository.han.nl"
     hva: "https://pure.hva.nl"
     hanze: "https://hanzetest.azure-api.net"
