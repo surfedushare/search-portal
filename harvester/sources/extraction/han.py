@@ -40,13 +40,6 @@ class HanDataExtraction(object):
         card = "\n".join(field.strip() for field in el.text.strip().split("\n"))
         return vobject.readOne(card)
 
-    @staticmethod
-    def _serialize_access_rights(access_rights):
-        access_rights = access_rights.replace("Access", "")
-        access_rights = access_rights.lower()
-        access_rights += "-access"
-        return access_rights
-
     @classmethod
     def get_oaipmh_records(cls, soup):
         return soup.find_all('record')
@@ -147,8 +140,8 @@ class HanDataExtraction(object):
     def get_copyright(cls, soup, el):
         files = cls.get_files(soup, el)
         if not len(files):
-            return "closed-access"
-        return cls._serialize_access_rights(files[0]["access_rights"])
+            return "ClosedAccess"
+        return files[0]["access_rights"]
 
     @classmethod
     def get_language(cls, soup, el):

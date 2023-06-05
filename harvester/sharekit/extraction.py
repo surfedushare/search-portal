@@ -103,7 +103,13 @@ class SharekitMetadataExtraction(ExtractProcessor):
 
     @classmethod
     def get_copyright(cls, node):
-        return node["attributes"].get("termsOfUse", None)
+        copyright_ = node["attributes"].get("termsOfUse", None)
+        if copyright_:
+            return copyright_
+        files = cls.get_files(node)
+        if not len(files):
+            return "ClosedAccess"
+        return files[0]["access_rights"]
 
     @classmethod
     def get_from_youtube(cls, node):

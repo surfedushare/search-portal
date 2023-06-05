@@ -48,13 +48,6 @@ class BuasMetadataExtraction(ExtractProcessor):
             "access_rights": access_rights
         }
 
-    @staticmethod
-    def _serialize_access_rights(access_rights):
-        access_rights = access_rights.replace("Access", "")
-        access_rights = access_rights.lower()
-        access_rights += "-access"
-        return access_rights
-
     @classmethod
     def get_files(cls, node):
         if "electronicVersions" not in node:
@@ -105,8 +98,8 @@ class BuasMetadataExtraction(ExtractProcessor):
     def get_copyright(cls, node):
         files = cls.get_files(node)
         if not len(files):
-            return "closed-access"
-        return cls._serialize_access_rights(files[0]["access_rights"])
+            return "ClosedAccess"
+        return files[0]["access_rights"]
 
     @classmethod
     def get_keywords(cls, node):
