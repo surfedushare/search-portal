@@ -164,8 +164,14 @@ class HanDataExtraction(object):
             family_name = author.find('mods:namepart', attrs={"type": "family"})
             if not given_name and not family_name:
                 continue
+            elif not given_name:
+                name = family_name.text.strip()
+            elif not family_name:
+                name = given_name.text.strip()
+            else:
+                name = f"{given_name.text.strip()} {family_name.text.strip()}"
             authors.append({
-                "name": f"{given_name.text.strip()} {family_name.text.strip()}",
+                "name": name,
                 "email": None,
                 "external_id": None,
                 "dai": None,
