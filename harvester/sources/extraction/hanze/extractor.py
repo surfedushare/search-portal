@@ -101,13 +101,6 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
         return settings.MIME_TYPE_TO_TECHNICAL_TYPE.get(mime_type, "unknown")
 
     @classmethod
-    def get_copyright(cls, node):
-        files = cls.get_files(node)
-        if not len(files):
-            return "ClosedAccess"
-        return files[0]["access_rights"]
-
-    @classmethod
     def get_description(cls, node):
         if "abstract" not in node:
             return
@@ -275,7 +268,7 @@ HanzeResourceObjectExtraction.OBJECTIVE = {
     # Essential NPPO properties
     "url": HanzeResourceObjectExtraction.get_url,
     "files": HanzeResourceObjectExtraction.get_files,
-    "copyright": HanzeResourceObjectExtraction.get_copyright,
+    "copyright": lambda node: None,
     "title": "$.title.value",
     "language": HanzeResourceObjectExtraction.get_language,
     "keywords": HanzeResourceObjectExtraction.get_keywords,

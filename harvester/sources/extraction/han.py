@@ -137,13 +137,6 @@ class HanDataExtraction(object):
         return files[0]["mime_type"].strip()
 
     @classmethod
-    def get_copyright(cls, soup, el):
-        files = cls.get_files(soup, el)
-        if not len(files):
-            return "ClosedAccess"
-        return files[0]["access_rights"]
-
-    @classmethod
     def get_language(cls, soup, el):
         return "unk"
 
@@ -258,7 +251,7 @@ HAN_EXTRACTION_OBJECTIVE = {
     # Essential NPPO properties
     "url": HanDataExtraction.get_url,
     "files": HanDataExtraction.get_files,
-    "copyright": HanDataExtraction.get_copyright,
+    "copyright": lambda soup, el: None,
     "title": HanDataExtraction.get_title,
     "language": HanDataExtraction.get_language,
     "keywords": lambda soup, el: [],

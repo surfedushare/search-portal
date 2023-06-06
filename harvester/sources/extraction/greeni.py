@@ -148,13 +148,6 @@ class GreeniDataExtraction(object):
         return files[0]["mime_type"].strip() if files[0]["mime_type"] else None
 
     @classmethod
-    def get_copyright(cls, soup, el):
-        files = cls.get_files(soup, el)
-        if not len(files):
-            return "ClosedAccess"
-        return files[0]["access_rights"]
-
-    @classmethod
     def get_language(cls, soup, el):
         metadata = cls.find_metadata(el)
         if not metadata:
@@ -291,7 +284,7 @@ GREENI_EXTRACTION_OBJECTIVE = {
     # Essential NPPO properties
     "url": GreeniDataExtraction.get_url,
     "files": GreeniDataExtraction.get_files,
-    "copyright": GreeniDataExtraction.get_copyright,
+    "copyright": lambda soup, el: None,
     "title": GreeniDataExtraction.get_title,
     "language": GreeniDataExtraction.get_language,
     "keywords": lambda soup, el: [],

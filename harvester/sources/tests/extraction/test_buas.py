@@ -64,11 +64,6 @@ class TestGetHarvestSeedsBuas(TestCase):
         self.assertIsNone(seeds[0]["mime_type"])
         self.assertEqual(seeds[1]["mime_type"], "text/html")
 
-    def test_get_copyright(self):
-        seeds = self.seeds
-        self.assertEqual(seeds[0]["copyright"], "closed-access")
-        self.assertEqual(seeds[1]["copyright"], "open-access")
-
     def test_get_analysis_allowed(self):
         seeds = self.seeds
         self.assertFalse(seeds[0]["analysis_allowed"])

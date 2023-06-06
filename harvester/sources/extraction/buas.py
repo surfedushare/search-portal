@@ -95,13 +95,6 @@ class BuasMetadataExtraction(ExtractProcessor):
         return settings.MIME_TYPE_TO_TECHNICAL_TYPE.get(mime_type, "unknown")
 
     @classmethod
-    def get_copyright(cls, node):
-        files = cls.get_files(node)
-        if not len(files):
-            return "ClosedAccess"
-        return files[0]["access_rights"]
-
-    @classmethod
     def get_keywords(cls, node):
         results = []
         for keywords in node.get("keywordGroups", []):
@@ -186,7 +179,7 @@ BuasMetadataExtraction.OBJECTIVE = {
     # Essential NPPO properties
     "url": BuasMetadataExtraction.get_url,
     "files": BuasMetadataExtraction.get_files,
-    "copyright": BuasMetadataExtraction.get_copyright,
+    "copyright": lambda node: None,
     "title": "$.title.value",
     "language": BuasMetadataExtraction.get_language,
     "keywords": BuasMetadataExtraction.get_keywords,

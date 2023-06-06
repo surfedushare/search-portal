@@ -59,14 +59,6 @@ class TestGetHarvestSeedsHan(TestCase):
         self.assertEqual(seeds[0]["mime_type"], "application/pdf")
         self.assertIsNone(seeds[2]["mime_type"], "Expected deleted record to have no mime_type")
 
-    def test_get_copyright(self):
-        seeds = self.seeds
-        self.assertEqual(seeds[0]["copyright"], "open-access")
-        self.assertEqual(
-            seeds[2]["copyright"], "closed-access",
-            "Expected deleted record to have closed access copyright"
-        )
-
     def test_get_language(self):
         self.skipTest("Not implemented yet, but seems essential for the system to function")
 

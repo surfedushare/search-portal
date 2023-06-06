@@ -94,13 +94,6 @@ class HvaMetadataExtraction(ExtractProcessor):
         return settings.MIME_TYPE_TO_TECHNICAL_TYPE.get(mime_type, "unknown")
 
     @classmethod
-    def get_copyright(cls, node):
-        files = cls.get_files(node)
-        if not len(files):
-            return "ClosedAccess"
-        return files[0]["access_rights"]
-
-    @classmethod
     def get_from_youtube(cls, node):
         url = cls.get_url(node)
         if not url:
@@ -184,7 +177,7 @@ HVA_EXTRACTION_OBJECTIVE = {
     # Essential NPPO properties
     "url": HvaMetadataExtraction.get_url,
     "files": HvaMetadataExtraction.get_files,
-    "copyright": HvaMetadataExtraction.get_copyright,
+    "copyright": lambda node: None,
     "title": "$.title.value",
     "language": HvaMetadataExtraction.get_language,
     "keywords": "$.keywordGroups.0.keywords.0.freeKeywords",
