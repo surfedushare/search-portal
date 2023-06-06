@@ -6,7 +6,7 @@ from harvester.utils.extraction import get_harvest_seeds
 from core.constants import Repositories
 from core.tests.base import SeedExtractionTestCase
 from sharekit.tests.factories import SharekitMetadataHarvestFactory
-from sharekit.extraction import SHAREKIT_EXTRACTION_OBJECTIVE
+from sharekit.extraction import SHAREKIT_EXTRACTION_OBJECTIVE, SharekitMetadataExtraction
 
 
 class TestGetHarvestSeedsSharekit(SeedExtractionTestCase):
@@ -46,6 +46,14 @@ class TestGetHarvestSeedsSharekit(SeedExtractionTestCase):
             datetime(year=2020, month=2, day=9, hour=22, minute=22)), include_deleted=False)
         self.assertEqual(len(seeds), 4)
         self.check_seed_integrity(seeds, include_deleted=False)
+
+    def test_parse_access_rights(self):
+        self.assertEqual(SharekitMetadataExtraction.parse_access_rights("openaccess"), "OpenAccess")
+        self.assertEqual(SharekitMetadataExtraction.parse_access_rights("restrictedaccess"), "RestrictedAccess")
+        self.assertEqual(SharekitMetadataExtraction.parse_access_rights("closedaccess"), "ClosedAccess")
+        self.assertEqual(SharekitMetadataExtraction.parse_access_rights("OpenAccess"), "OpenAccess")
+        self.assertEqual(SharekitMetadataExtraction.parse_access_rights("RestrictedAccess"), "RestrictedAccess")
+        self.assertEqual(SharekitMetadataExtraction.parse_access_rights("ClosedAccess"), "ClosedAccess")
 
     def test_from_youtube_property(self):
         seeds = self.seeds

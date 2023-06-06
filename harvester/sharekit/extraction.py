@@ -26,6 +26,8 @@ class SharekitMetadataExtraction(ExtractProcessor):
 
     @classmethod
     def parse_access_rights(cls, access_rights):
+        if access_rights[0].isupper():  # value according to standard; no parsing necessary
+            return access_rights
         access_rights = access_rights.replace("access", "")
         access_rights = access_rights.capitalize()
         access_rights += "Access"

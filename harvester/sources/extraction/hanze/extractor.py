@@ -49,13 +49,6 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
             "access_rights": access_rights
         }
 
-    @staticmethod
-    def _serialize_access_rights(access_rights):
-        access_rights = access_rights.replace("Access", "")
-        access_rights = access_rights.lower()
-        access_rights += "-access"
-        return access_rights
-
     @classmethod
     def get_files(cls, node):
         electronic_versions = node.get("electronicVersions", []) + node.get("additionalFiles", [])
@@ -106,13 +99,6 @@ class HanzeResourceObjectExtraction(ExtractProcessor):
             return
         mime_type, encoding = guess_type(file_url)
         return settings.MIME_TYPE_TO_TECHNICAL_TYPE.get(mime_type, "unknown")
-
-    @classmethod
-    def get_copyright(cls, node):
-        files = cls.get_files(node)
-        if not len(files):
-            return "closed-access"
-        return cls._serialize_access_rights(files[0]["access_rights"])
 
     @classmethod
     def get_description(cls, node):
@@ -282,7 +268,7 @@ HanzeResourceObjectExtraction.OBJECTIVE = {
     # Essential NPPO properties
     "url": HanzeResourceObjectExtraction.get_url,
     "files": HanzeResourceObjectExtraction.get_files,
-    "copyright": HanzeResourceObjectExtraction.get_copyright,
+    "copyright": lambda node: None,
     "title": "$.title.value",
     "language": HanzeResourceObjectExtraction.get_language,
     "keywords": HanzeResourceObjectExtraction.get_keywords,

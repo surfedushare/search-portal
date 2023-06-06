@@ -59,11 +59,6 @@ class TestGetHarvestSeedsGreeni(TestCase):
         self.assertEqual(seeds[0]["language"], {"metadata": "nl"})
         self.assertEqual(seeds[30]["language"], {"metadata": "en"})
 
-    def test_get_copyright(self):
-        seeds = self.seeds
-        self.assertEqual(seeds[0]["copyright"], "open-access")
-        self.assertEqual(seeds[1]["copyright"], "closed-access")
-
     def test_get_analysis_allowed(self):
         seeds = self.seeds
         self.assertTrue(seeds[0]["analysis_allowed"], "OpenAccess document should allow analysis")

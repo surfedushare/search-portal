@@ -46,13 +46,6 @@ class HvaMetadataExtraction(ExtractProcessor):
             "access_rights": access_rights
         }
 
-    @staticmethod
-    def _serialize_access_rights(access_rights):
-        access_rights = access_rights.replace("Access", "")
-        access_rights = access_rights.lower()
-        access_rights += "-access"
-        return access_rights
-
     @classmethod
     def get_files(cls, node):
         electronic_versions = node.get("electronicVersions", []) + node.get("additionalFiles", [])
@@ -99,13 +92,6 @@ class HvaMetadataExtraction(ExtractProcessor):
             return
         mime_type, encoding = guess_type(file_url)
         return settings.MIME_TYPE_TO_TECHNICAL_TYPE.get(mime_type, "unknown")
-
-    @classmethod
-    def get_copyright(cls, node):
-        files = cls.get_files(node)
-        if not len(files):
-            return "closed-access"
-        return cls._serialize_access_rights(files[0]["access_rights"])
 
     @classmethod
     def get_from_youtube(cls, node):
@@ -191,7 +177,7 @@ HVA_EXTRACTION_OBJECTIVE = {
     # Essential NPPO properties
     "url": HvaMetadataExtraction.get_url,
     "files": HvaMetadataExtraction.get_files,
-    "copyright": HvaMetadataExtraction.get_copyright,
+    "copyright": lambda node: None,
     "title": "$.title.value",
     "language": HvaMetadataExtraction.get_language,
     "keywords": "$.keywordGroups.0.keywords.0.freeKeywords",

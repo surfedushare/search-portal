@@ -48,13 +48,6 @@ class BuasMetadataExtraction(ExtractProcessor):
             "access_rights": access_rights
         }
 
-    @staticmethod
-    def _serialize_access_rights(access_rights):
-        access_rights = access_rights.replace("Access", "")
-        access_rights = access_rights.lower()
-        access_rights += "-access"
-        return access_rights
-
     @classmethod
     def get_files(cls, node):
         if "electronicVersions" not in node:
@@ -100,13 +93,6 @@ class BuasMetadataExtraction(ExtractProcessor):
             return
         mime_type, encoding = guess_type(file_url)
         return settings.MIME_TYPE_TO_TECHNICAL_TYPE.get(mime_type, "unknown")
-
-    @classmethod
-    def get_copyright(cls, node):
-        files = cls.get_files(node)
-        if not len(files):
-            return "closed-access"
-        return cls._serialize_access_rights(files[0]["access_rights"])
 
     @classmethod
     def get_keywords(cls, node):
@@ -193,7 +179,7 @@ BuasMetadataExtraction.OBJECTIVE = {
     # Essential NPPO properties
     "url": BuasMetadataExtraction.get_url,
     "files": BuasMetadataExtraction.get_files,
-    "copyright": BuasMetadataExtraction.get_copyright,
+    "copyright": lambda node: None,
     "title": "$.title.value",
     "language": BuasMetadataExtraction.get_language,
     "keywords": BuasMetadataExtraction.get_keywords,
