@@ -48,9 +48,9 @@ class TestGetHarvestSeedsSharekit(SeedExtractionTestCase):
         self.check_seed_integrity(seeds, include_deleted=False)
 
     def test_parse_access_rights(self):
-        self.assertEqual(SharekitMetadataExtraction.parse_access_rights("open-access"), "OpenAccess")
-        self.assertEqual(SharekitMetadataExtraction.parse_access_rights("restricted-access"), "RestrictedAccess")
-        self.assertEqual(SharekitMetadataExtraction.parse_access_rights("closed-access"), "ClosedAccess")
+        self.assertEqual(SharekitMetadataExtraction.parse_access_rights("openaccess"), "OpenAccess")
+        self.assertEqual(SharekitMetadataExtraction.parse_access_rights("restrictedaccess"), "RestrictedAccess")
+        self.assertEqual(SharekitMetadataExtraction.parse_access_rights("closedaccess"), "ClosedAccess")
         self.assertEqual(SharekitMetadataExtraction.parse_access_rights("OpenAccess"), "OpenAccess")
         self.assertEqual(SharekitMetadataExtraction.parse_access_rights("RestrictedAccess"), "RestrictedAccess")
         self.assertEqual(SharekitMetadataExtraction.parse_access_rights("ClosedAccess"), "ClosedAccess")
