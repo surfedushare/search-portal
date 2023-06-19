@@ -80,13 +80,26 @@ class TestGetHarvestSeedsHva(TestCase):
     def test_authors_property(self):
         seeds = self.seeds
         self.assertEqual(seeds[0]['authors'], [
-            {'name': 'Ruben Fukkink', 'email': None, 'external_id': 140056, 'dai': None, 'orcid': None, 'isni': None},
-            {'name': 'Sandra van Otterloo', 'email': None, 'external_id': 140057, 'dai': None, 'orcid': None, 'isni':
-                None},
-            {'name': 'Lotje Cohen', 'email': None, 'external_id': 140058, 'dai': None, 'orcid': None, 'isni': None},
-            {'name': 'Merel van der Wouden', 'email': None, 'external_id': 140059, 'dai': None, 'orcid': None, 'isni':
-                None},
-            {'name': 'Bonne Zijlstra', 'email': None, 'external_id': 140060, 'dai': None, 'orcid': None, 'isni': None}
+            {
+                'name': 'Ruben Fukkink', 'email': None, 'external_id': "c16dbff7-4c77-463a-9d91-933bf59bbc53",
+                'dai': None, 'orcid': None, 'isni': None
+            },
+            {
+                'name': 'Sandra van Otterloo', 'email': None, 'external_id': "hva:person:140057",
+                'dai': None, 'orcid': None, 'isni': None
+            },
+            {
+                'name': 'Lotje Cohen', 'email': None, 'external_id': "hva:person:140058",
+                'dai': None, 'orcid': None, 'isni': None
+            },
+            {
+                'name': 'Merel van der Wouden', 'email': None, 'external_id': "hva:person:140059",
+                'dai': None, 'orcid': None, 'isni': None
+            },
+            {
+                'name': 'Bonne Zijlstra', 'email': None, 'external_id': "hva:person:140060",
+                'dai': None, 'orcid': None, 'isni': None
+            }
         ])
 
     def test_publisher_year(self):

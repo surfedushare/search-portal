@@ -116,7 +116,7 @@ class HvaMetadataExtraction(ExtractProcessor):
             authors.append({
                 "name": full_name,
                 "email": None,
-                "external_id": person_data.get("uuid", None),
+                "external_id": person_data.get("uuid", f"hva:person:{person['pureId']}"),
                 "dai": None,
                 "orcid": None,
                 "isni": None
