@@ -20,7 +20,7 @@ markupsafe==2.0.1
 
 # AWS
 awscli==1.27.114
-boto3==1.26.114
+boto3==1.26.133
 requests-aws4auth==1.0
 django-storages==1.12.3
 
