@@ -22,7 +22,7 @@ django-storages==1.12.3
 # Tools
 ipython==8.12.0
 tqdm==4.64.1
-invoke==1.7.0
+invoke==1.7.3
 ipdb==0.13.13
 sentry-sdk==1.0.0
 beautifulsoup4==4.12.2
